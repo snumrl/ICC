@@ -2,15 +2,31 @@
 
 #include "Environment.h"
 
-
-
 namespace ICC
 {
 
 Environment::
-Environment()
+Environment(int num_actors)
 {
 	std::cout << "Initializing Environment" << std::endl;
+
+	// Create actors
+	this->mNumActors = num_actors;
+	for(int i = 0; i < this->mNumActors; i++){
+		this->mActors.emplace_back(new Character(std::string(DPHY_DIR)+std::string("/characters/humanoid.xml")));
+	}
+
+	// Create gound
+	this->mGround = new Character(std::string(DPHY_DIR)+std::string("/character/ground.xml"));
+
+	// Create motion references
+	//  - fixed trajectory
+	//  - interactive control
+
+	// Set initial configurations
+	this->mWorld->setTimeStep(1.0/(double)mSimulationHz);
+	this->mWorld->getConstraintSolver()->setCollisionDetector(dart::collision::DARTCollisionDetector::create());
+	dynamic_cast<dart::constraint::BoxedLcpConstraintSolver*>(mWorld->getConstraintSolver())->setBoxedLcpSolver(std::make_shared<dart::constraint::PgsBoxedLcpSolver>());
 }
 
 void

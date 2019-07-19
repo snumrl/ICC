@@ -1,6 +1,7 @@
 #pragma once
 
 #include "dart/dart.hpp"
+#include "Character.h"
 
 namespace ICC
 {
@@ -15,13 +16,13 @@ class Environment
 {
 public:
 	/// Constructor
-	Environment();
+	Environment(int num_actors=1);
 
 	/// Step environment
 	void step();
 
 	/// Reset environment
-	void Reset();
+	void reset();
 
 	/// Get state
 	Eigen::VectorXd getState();
@@ -38,17 +39,22 @@ public:
 	bool isNan();
 
 	/// Get the size of the state
-	int getStateSize();
+	int getNumStates(){ return this->mNumStates; }
 	/// Get the size of the action
-	int getActionSize();
+	int getNumActions(){ return this->mNumActions; }
 
 	/// Get dart world pointer
 	const dart::simulation::WorldPtr& getWorld(){ return this->mWorld; }
 
 protected:
-	dart::simulation::WorldPtr mWrold;
+	dart::simulation::WorldPtr mWorld;
 	std::vector<Character*> mActors;
 	Character* mGround;
+
+	int mNumActors, mNumObstacles;
+	int mNumStates, mNumActions;
+
+	int mControlHz, mSimulationHz;
 };
 
 }
