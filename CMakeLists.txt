@@ -22,3 +22,4 @@ find_package(TinyXML REQUIRED)
 
 add_subdirectory(environment)
 add_subdirectory(renderer)
+add_subdirectory(environment_wrapper)

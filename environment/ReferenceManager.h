@@ -36,9 +36,18 @@ public:
 		this->mCurFrame = frame;
 	}
 
+	/// Get total frame
+	int getTotalFrame(){
+		return this->mTotalFrame;
+	}
+
 	/// Increase current frame
 	void increaseCurrentFrame(){
 		this->mCurFrame++;
+	}
+
+	bool isEndOfTrajectory(){
+		return this->mCurFrame >= this->mTotalFrame - 1;
 	}
 
 

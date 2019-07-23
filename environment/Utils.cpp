@@ -420,7 +420,7 @@ Eigen::Quaterniond getYRotation(Eigen::Quaterniond q){
 Eigen::Vector3d changeToRNNPos(Eigen::Vector3d pos){
 	Eigen::Vector3d ret;
 	ret[0] = pos[2]*100;
-	ret[1] = (pos[1]-ROOT_HEIGHT_OFFSET)*100;
+	ret[1] = (pos[1] - Configurations::instance().getRootHeightOffset())*100;
 	ret[2] = -pos[0]*100;
 	return ret;
 }

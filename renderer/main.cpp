@@ -8,7 +8,7 @@ int main(){
 	// Eigen::VectorXd action = state;
 	// env->setAction(action);
 	// env->step();
-	// env->getReward();
+	env->getReward();
 
 	return 0;
 }

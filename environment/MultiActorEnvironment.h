@@ -20,33 +20,33 @@ enum class TerminationReason{
 
 /**
 *
-* @brief Environment class
+* @brief MultiActorEnvironment class
 * @details execute forward dynamics simulations
 * 
 */
-class Environment
+class MultiActorEnvironment
 {
 public:
 	/// Constructor
-	Environment();
+	MultiActorEnvironment();
 
-	/// Step environment
+	/// Step MultiActorEnvironment
 	void step();
 
-	/// Reset environment
-	void reset(double reset_time = 0);
+	/// Reset MultiActorEnvironment
+	void reset(int reset_time = 0);
 
 	/// Get state
-	Eigen::VectorXd getState();
+	std::vector<Eigen::VectorXd> getState();
 
 	/// Get end effector state from joint p, v
 	Eigen::VectorXd getEndEffectorStatePV(const dart::dynamics::SkeletonPtr skel, const Eigen::VectorXd& pv);
 
 	/// Set action
-	void setAction(const Eigen::VectorXd& action);
+	void setAction(Eigen::MatrixXd action);
 
 	/// Get reward
-	std::vector<double> getReward();
+	std::vector<std::vector<double>> getReward();
 
 	/// Check whether the episode is terminated or not
 	bool isTerminal();
@@ -68,16 +68,19 @@ public:
 	const dart::simulation::WorldPtr& getWorld(){ return this->mWorld; }
 
 	/// Set reference trajectory
-	void setReferenceTrajectory(Eigen::MatrixXd trajectory);
+	void setReferenceTrajectory(int idx, Eigen::MatrixXd trajectory);
+
+	/// Set all reference trajectory
+	void setReferenceTrajectoryAll(Eigen::MatrixXd trajectory);
 
 	std::vector<Eigen::VectorXd> getPositionsForMG();
 protected:
 	dart::simulation::WorldPtr mWorld;
-
-	Character* mActor;
+	std::vector<Character*> mActors;
 	Character* mGround;
-	ReferenceManager* mReferenceManager;
+	std::vector<ReferenceManager*> mReferenceManagers;
 
+ 	int mNumActors, mNumObstacles;
 	int mStateSize, mActionSize;
 	int mNumReferences;
 
@@ -89,14 +92,14 @@ protected:
 	// Joints used in reward evaluation
 	std::vector<std::string> mRewardJoints;
 
-	Eigen::VectorXd mAction;
+	std::vector<Eigen::VectorXd> mActions;
 
 	bool mIsTerminal;
 	bool mIsNanAtTerminal;
 	TerminationReason mTerminationReason;
 
-	Eigen::VectorXd mTargetPositions, mTargetVelocities;
-	Eigen::VectorXd mModifiedTargetPositions, mModifiedTargetVelocities;
+	std::vector<Eigen::VectorXd> mTargetPositions, mTargetVelocities;
+	std::vector<Eigen::VectorXd> mModifiedTargetPositions, mModifiedTargetVelocities;
 
 };
 
