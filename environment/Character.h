@@ -20,6 +20,9 @@ public:
 	/// Get skeleton pointer
 	const dart::dynamics::SkeletonPtr& getSkeleton(){ return this->mSkeleton; }
 
+	/// Get skeleton dof
+	int getNumDofs(){ return this->mSkeletonDof; }
+
 	/// Get character file path
 	const std::string& getCharacterFilePath(){ return this->mCharacterFilePath; }
 

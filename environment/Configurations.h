@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 // #define MOTION_WALK_EXTENSION
 // #define MOTION_BASKETBALL
 // #define MOTION_ZOMBIE
@@ -139,3 +141,96 @@
 #define FORCE_MAGNITUDE (20)
 #define FORCE_APPLYING_FRAME (60)
 #define FORCE_APPLYING_BODYNODE ("Neck")
+
+
+namespace ICC
+{
+
+
+enum class ReferenceType
+{
+	FIXED,
+	INTERACTIVE,
+};
+
+class Configurations
+{
+public:
+	static Configurations& instance(){
+		static Configurations* instance = new Configurations();
+		return *instance;
+	}
+
+	double getJointDamping(){
+		return this->mJointDamping;
+	}
+
+	int getControlHz(){
+		return this->mControlHz;
+	}
+
+	int getMotionHz(){
+		return this->mMotionHz;
+	}
+
+	int getSimulationHz(){
+		return this->mSimulationHz;
+	}
+
+	ReferenceType getReferenceType(){
+		return this->mReferenceType;
+	}
+
+	int getFutureCount(){
+		return this->mFutureCount;
+	}
+
+	double getRootHeightOffset(){
+		return this->mRootHeightOffset;
+	}
+
+	int getNumActors(){
+		return this->mNumActors;
+	}
+
+	std::vector<int>& getPredictionsInState(){
+		return this->mPredictionsInState;
+	}
+
+private:
+	Configurations(){
+		this->mJointDamping = 0.05;
+
+		this->mMotionHz = 30;
+		this->mControlHz = 30;
+		this->mSimulationHz = 600;
+
+		this->mReferenceType = ReferenceType::FIXED;
+		this->mFutureCount = 1;
+
+		this->mRootHeightOffset = 0.0;
+
+		// predictions included in stae
+		// 0 : very next prediction
+		this->mPredictionsInState.clear();
+		this->mPredictionsInState.emplace_back(0);
+		this->mPredictionsInState.emplace_back(1);
+	}
+
+	double mJointDamping;
+
+	int mMotionHz, mControlHz, mSimulationHz;
+
+	ReferenceType mReferenceType;
+	int mNumActors;
+
+	int mFutureCount;
+
+	double mRootHeightOffset;
+
+	std::vector<int> mPredictionsInState;
+
+
+};
+
+}

@@ -430,36 +430,6 @@ Eigen::Isometry3d getJointTransform(dart::dynamics::SkeletonPtr skel, std::strin
 		*skel->getBodyNode(bodyname)->getParentJoint()->getTransformFromParentBodyNode();
 }
 
-Eigen::Vector4d rootDecomposition(dart::dynamics::SkeletonPtr skel, Eigen::VectorXd positions){
-	// DEBUG : decomposition
-	Eigen::VectorXd p_save = skel->getPositions();
-	skel->setPositions(positions);
-	int femur_l_idx = skel->getBodyNode("FemurL")->getParentJoint()->getIndexInSkeleton(0);
-	int femur_r_idx = skel->getBodyNode("FemurR")->getParentJoint()->getIndexInSkeleton(0);
-
-	Eigen::Isometry3d femur_l_transform = getJointTransform(skel, "FemurL");
-	Eigen::Isometry3d femur_r_transform = getJointTransform(skel, "FemurR");
-
-	Eigen::Vector3d up_vec = Eigen::Vector3d::UnitY();
-	Eigen::Vector3d x_vec = femur_l_transform.translation() - femur_r_transform.translation();
-	x_vec.normalize();
-	Eigen::Vector3d z_vec = x_vec.cross(up_vec);
-	z_vec[1] = 0;
-	z_vec.normalize();
-	double angle = std::atan2(z_vec[0], z_vec[2]);
-
-	skel->setPositions(p_save);
-
-	Eigen::AngleAxisd aa_root(angle, Eigen::Vector3d::UnitY());
-	Eigen::AngleAxisd aa_hip(positions.segment<3>(0).norm(), positions.segment<3>(0).normalized());
-
-	Eigen::Vector3d hip_dart = quatToDart(Eigen::Quaterniond(aa_root).inverse()*Eigen::Quaterniond(aa_hip));
-	
-	Eigen::Vector4d ret;
-	ret << angle, hip_dart;
-
-	return ret;
-}
 
 Eigen::VectorXd solveIK(dart::dynamics::SkeletonPtr skel, const std::string& bodyname, const Eigen::Vector3d& delta, const Eigen::Vector3d& offset)
 {
@@ -630,6 +600,36 @@ Eigen::VectorXd solveMCIK(dart::dynamics::SkeletonPtr skel, const std::vector<st
 }
 
 
+Eigen::Vector4d rootDecomposition(dart::dynamics::SkeletonPtr skel, Eigen::VectorXd positions){
+	// DEBUG : decomposition
+	Eigen::VectorXd p_save = skel->getPositions();
+	skel->setPositions(positions);
+	int femur_l_idx = skel->getBodyNode("FemurL")->getParentJoint()->getIndexInSkeleton(0);
+	int femur_r_idx = skel->getBodyNode("FemurR")->getParentJoint()->getIndexInSkeleton(0);
+
+	Eigen::Isometry3d femur_l_transform = getJointTransform(skel, "FemurL");
+	Eigen::Isometry3d femur_r_transform = getJointTransform(skel, "FemurR");
+
+	Eigen::Vector3d up_vec = Eigen::Vector3d::UnitY();
+	Eigen::Vector3d x_vec = femur_l_transform.translation() - femur_r_transform.translation();
+	x_vec.normalize();
+	Eigen::Vector3d z_vec = x_vec.cross(up_vec);
+	z_vec[1] = 0;
+	z_vec.normalize();
+	double angle = std::atan2(z_vec[0], z_vec[2]);
+
+	skel->setPositions(p_save);
+
+	Eigen::AngleAxisd aa_root(angle, Eigen::Vector3d::UnitY());
+	Eigen::AngleAxisd aa_hip(positions.segment<3>(0).norm(), positions.segment<3>(0).normalized());
+
+	Eigen::Vector3d hip_dart = quatToDart(Eigen::Quaterniond(aa_root).inverse()*Eigen::Quaterniond(aa_hip));
+	
+	Eigen::Vector4d ret;
+	ret << angle, hip_dart;
+
+	return ret;
+}
 
 }
 
