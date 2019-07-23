@@ -53,7 +53,7 @@ buildFromFile(const std::string& filename){
 	
 	std::string skelname = skeldoc->Attribute("name");
 	SkeletonPtr skel = Skeleton::create(skelname);
-	std::cout << skelname << std::endl;
+	// std::cout << skelname << std::endl;
 
 	for(TiXmlElement *body = skeldoc->FirstChildElement("Joint"); body != nullptr; body = body->NextSiblingElement("Joint")){
 		// type

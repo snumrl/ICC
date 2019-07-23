@@ -79,7 +79,6 @@ protected:
 	ReferenceManager* mReferenceManager;
 
 	int mStateSize, mActionSize;
-	int mNumReferences;
 
 	int mControlHz, mSimulationHz;
 

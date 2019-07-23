@@ -136,7 +136,6 @@ private:
 		// 0 : very next prediction
 		this->mPredictionsInState.clear();
 		this->mPredictionsInState.emplace_back(0);
-		this->mPredictionsInState.emplace_back(1);
 
 		this->mRewardType = RewardType::MULTIPLICATION;
 

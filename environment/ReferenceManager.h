@@ -47,7 +47,7 @@ public:
 	}
 
 	bool isEndOfTrajectory(){
-		return this->mCurFrame >= this->mTotalFrame - 1;
+		return (this->mCurFrame >= (this->mTotalFrame - 1));
 	}
 
 

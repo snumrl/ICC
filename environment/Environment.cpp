@@ -10,8 +10,6 @@ namespace ICC
 Environment::
 Environment()
 {
-	std::cout << "Initializing Environment" << std::endl;
-
 	// Create world
 	this->mWorld = std::make_shared<dart::simulation::World>();
 	this->mWorld->setGravity(Eigen::Vector3d(0,-9.81,0));
@@ -34,9 +32,6 @@ Environment()
 	this->mIsNanAtTerminal = false;
 	this->mTerminationReason = TerminationReason::NOT_TERMINATED;
 
-	/// Compute state and action sizes
-	this->mStateSize = this->getState().rows();
-	this->mActionSize = this->mActor->getNumDofs()-6;
 
 	// Define reward bodynodes
 	this->mRewardJoints.clear();
@@ -72,6 +67,9 @@ Environment()
 	this->mEndEffectors.emplace_back("Head");
 
 
+	/// Compute state and action sizes
+	this->mStateSize = this->getState().rows();
+	this->mActionSize = this->mActor->getNumDofs()-6;
 
 	// set pd gain
 	Eigen::VectorXd p_gain, v_gain;
@@ -90,8 +88,6 @@ void
 Environment::
 reset(double reset_time)
 {
-	std::cout << "Environment::reset()" << std::endl;
-
 	// reset reference manager
 	this->mReferenceManager->setCurrentFrame((int)(this->mReferenceManager->getTotalFrame()*reset_time));
 
@@ -121,8 +117,6 @@ void
 Environment::
 step()
 {
-	std::cout << "Environment::step()" << std::endl;
-
 	// check terminal
 	if(this->isTerminal()){
 		return;
@@ -159,17 +153,13 @@ step()
 
 	// time stepping
 	if(Configurations::instance().getReferenceType() == ReferenceType::FIXED){
-		for(int i = 0; i < this->mNumReferences; i++){
-			this->mReferenceManager->increaseCurrentFrame();		
-		}
+		this->mReferenceManager->increaseCurrentFrame();		
 	}
 	// get target positions and velocities
-	for(int i = 0; i < this->mNumReferences; i++){
-		Eigen::VectorXd pv = this->mReferenceManager->getPositionsAndVelocities();
-		int dof = this->mActor->getNumDofs();
-		this->mTargetPositions = pv.head(dof);
-		this->mTargetVelocities = pv.tail(dof);
-	}
+	Eigen::VectorXd pv = this->mReferenceManager->getPositionsAndVelocities();
+	int dof = this->mActor->getNumDofs();
+	this->mTargetPositions = pv.head(dof);
+	this->mTargetVelocities = pv.tail(dof);
 
 }
 
@@ -224,8 +214,6 @@ Eigen::VectorXd
 Environment::
 getState()
 {
-	std::cout << "Environment::getState()" << std::endl;
-
 	if(this->mIsTerminal)
 		return Eigen::VectorXd::Zero(this->mStateSize);
 
@@ -317,8 +305,6 @@ std::vector<double>
 Environment::
 getReward()
 {
-	std::cout << "Environment::getReward()" << std::endl;
-
 	auto& skel = this->mActor->getSkeleton();
 
 	// Position and velocities differences
@@ -407,8 +393,6 @@ void
 Environment::
 setAction(const Eigen::VectorXd& action)
 {
-	std::cout << "Environment::setAction()" << std::endl;
-
 	this->mAction = action;
 }
 
