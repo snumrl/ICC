@@ -539,9 +539,9 @@ isTerminal()
 			this->mTerminationReason = TerminationReason::OUT_OF_AREA;
 		}
 		if(root_pos_diff.norm() > Configurations::instance().getRootDiffThreshold()){
-		this->mIsNanAtTerminal = false;
-		this->mIsTerminal = true;
-		this->mTerminationReason = TerminationReason::ROOT_DIFF;
+			this->mIsNanAtTerminal = false;
+			this->mIsTerminal = true;
+			this->mTerminationReason = TerminationReason::ROOT_DIFF;
 		}
 		if(std::abs(angle) > Configurations::instance().getRootAngleDiffThreshold()){
 			this->mIsNanAtTerminal = false;

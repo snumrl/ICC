@@ -47,5 +47,5 @@ class AdaptiveSampler:
 		self._rewardWeights = np.zeros(self._size)
 		self._counts = np.zeros(self._size)
 
-	def save(self, path, save_count):
-		return
+	def save(self, path):
+		np.save(path+"asWeights.npy", self._rewardWeights)

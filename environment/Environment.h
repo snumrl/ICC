@@ -10,14 +10,14 @@ namespace ICC
 {
 
 enum class TerminationReason{
-	NOT_TERMINATED,
-	ROOT_HEIGHT,
-	ROOT_DIFF,
-	ROOT_ANGLE_DIFF,
-	OUT_OF_AREA,
-	NAN_P,
-	NAN_V,
-	END_OF_TRAJECTORY,
+	NOT_TERMINATED=1,
+	ROOT_HEIGHT=2,
+	ROOT_DIFF=3,
+	ROOT_ANGLE_DIFF=4,
+	OUT_OF_AREA=5,
+	NAN_P=6,
+	NAN_V=7,
+	END_OF_TRAJECTORY=8,
 };
 
 /**
@@ -67,7 +67,8 @@ public:
 	}
 	/// Check whether the episode is temrinated by end of trajectory or not
 	bool isEndOfTrajectory(){
-		// std::cout << (int)this->mTerminationReason << std::endl;
+		// if(this->mIsTerminal)
+		// 	std::cout << (int)this->mTerminationReason << std::endl;
 		return this->mTerminationReason == TerminationReason::END_OF_TRAJECTORY;
 	}
 

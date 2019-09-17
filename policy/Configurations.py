@@ -18,8 +18,7 @@ class Configurations:
 		self._policyLayerSize = 512
 		self._policyLayerNumber = 4
 
-		self._activationFunction = tf.nn.relu
-		self._kernelInitializationFunction = tf.keras.initializers.GlorotUniform()
+		self._activationFunction = 'relu'
 
 		self._valueLayerSize = 256
 		self._valueLayerNumber = 2
@@ -27,7 +26,7 @@ class Configurations:
 		self._numSlaves = 8
 		self._motion = "walkrunfall"
 
-		self._gamma = 0.95
+		self._gamma = 0.99
 		self._lambd = 0.95
 		self._clipRange = 0.2
 
@@ -38,7 +37,7 @@ class Configurations:
 		self._batchSize = 1024
 		self._transitionsPerIteration = 20000
 
-		self._trajectoryLength = 2000
+		self._trajectoryLength = 20000
 		self._useOrigin = True
 		self._originOffset = 0
 

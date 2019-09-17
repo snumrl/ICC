@@ -45,13 +45,11 @@ class Policy:
 		)
 
 		# std
-		self._std = tf.exp(self._logstd)
 
 		self._layers = [tf.keras.layers.Dense(Configurations.instance().policyLayerSize,
 						activation=Configurations.instance().activationFunction,
-						kernel_initializer=Configurations.instance().kernelInitializationFunction,
 						dtype=tf.float32) for _ in range(Configurations.instance().policyLayerNumber)]
-		self._layers.append(tf.keras.layers.Dense(action_size, kernel_initializer=Configurations.instance().kernelInitializationFunction, dtype=tf.float32))
+		self._layers.append(tf.keras.layers.Dense(action_size, dtype=tf.float32))
 
 		self._mean = tf.keras.Sequential(self._layers)
 
@@ -64,9 +62,9 @@ class Policy:
 	def getMeanAction(self, states):
 		return self._mean(states)
 
-	@property
+	@tf.function
 	def std(self):
-		return self._std
+		return tf.exp(self._logstd)
 
 	@property
 	def logstd(self):
@@ -79,15 +77,11 @@ class Policy:
 	@tf.function
 	def action(self, states):
 		mean = self.mean(states)
-		return mean + self._std*np.random.normal(size=np.shape(mean))
+		return mean + self.std()*tf.random.normal(tf.shape(mean))
 	
 	@tf.function
 	def neglogprob(self, actions, states):
-		a = 0.5 * tf.math.reduce_sum(tf.math.square((actions - self._mean(states)) / self._std), axis=-1)
-		b = 0.5 * tf.math.log(tf.constant(2.0 * 3.1415926535, dtype=tf.float32)) * tf.cast(tf.shape(actions), tf.float32)[-1]
-		c = tf.math.reduce_sum(self._logstd, axis=-1)
-		d = a+b+c
-		return d
+		return 0.5 * tf.math.reduce_sum(tf.math.square((actions - self._mean(states)) / self.std()), axis=-1) + 0.5 * tf.math.log(tf.constant(2.0 * 3.1415926535, dtype=tf.float32)) * tf.cast(tf.shape(actions), tf.float32)[-1] + tf.math.reduce_sum(self._logstd, axis=-1)
 
 	def trainable_variables(self):
 		return self._mean.trainable_variables + [self._logstd]
@@ -103,9 +97,8 @@ class ValueFunction:
 	def createModel(self):
 		self._layers = [tf.keras.layers.Dense(Configurations.instance().valueLayerSize,
 						activation=Configurations.instance().activationFunction,
-						kernel_initializer=Configurations.instance().kernelInitializationFunction,
 						dtype=tf.float32) for _ in range(Configurations.instance().valueLayerNumber)]
-		self._layers.append(tf.keras.layers.Dense(1, kernel_initializer=Configurations.instance().kernelInitializationFunction, dtype=tf.float32))
+		self._layers.append(tf.keras.layers.Dense(1, dtype=tf.float32))
 
 		self._value = tf.keras.Sequential(self._layers)
 
@@ -382,26 +375,26 @@ class TrackingController:
 			selectedActions = tf.convert_to_tensor(self._collectedActions[selectedIndex])
 			selectedNeglogprobs = tf.convert_to_tensor(self._collectedNeglogprobs[selectedIndex])
 			selectedTDs = tf.convert_to_tensor(self._collectedTDs[selectedIndex])
-			selectedGAE = tf.convert_to_tensor(GAE[selectedIndex])
+			selectedGAEs = tf.convert_to_tensor(GAE[selectedIndex])
 
-			self.optimizeStep(selectedActions, selectedStates, selectedNeglogprobs, selectedTDs, selectedGAE)
-
+			self.optimizeStep(selectedActions, selectedStates, selectedNeglogprobs, selectedTDs, selectedGAEs)
 
 	def optimizeStep(self, a, s, nl, td, gae):
 		with tf.GradientTape() as tape:
 			curNeglogprob = self._policy.neglogprob(a, s)
 			ratio = tf.exp(nl - curNeglogprob)
 			clippedRatio = tf.clip_by_value(ratio, 1.0 - self._clipRange, 1.0 + self._clipRange)
-
-			policyLoss = -tf.reduce_mean(tf.minimum(clippedRatio*gae, ratio*gae))
+			policyLoss = -tf.reduce_mean(tf.minimum(ratio*gae, clippedRatio*gae))
 			
 		gradients = tape.gradient(policyLoss, self._policy.trainable_variables())
+		gradients, _grad_norm = tf.clip_by_global_norm(gradients, 0.5)
 		self._policyOptimizer.apply_gradients(zip(gradients, self._policy.trainable_variables()))
 
 		# optimize value function
 		with tf.GradientTape() as tape:
 			valueLoss = tf.reduce_mean(tf.square(self._valueFunction.getValue(s) - td))
 		gradients = tape.gradient(valueLoss, self._valueFunction._value.trainable_variables)
+		gradients, _grad_norm = tf.clip_by_global_norm(gradients, 0.5)
 		self._valueFunctionOptimizer.apply_gradients(zip(gradients, self._valueFunction._value.trainable_variables))
 
 
@@ -504,7 +497,7 @@ class TrackingController:
 				while True:
 					# set action
 					actions, logprobs = self._policy.getActionAndNeglogprob(states)
-					values = self._valueFunction.getValue(states)
+					values = self._valueFunction.getValue(states)			
 					self._env.setActions(actions.numpy())
 
 					# run one step
@@ -593,7 +586,7 @@ class TrackingController:
 			self._summary_total_rewards.append(self._summary_reward_per_iteration/self._summary_num_episodes_per_iteration)
 			self._summary_total_rewards_by_parts = np.insert(self._summary_total_rewards_by_parts, self._summary_total_rewards_by_parts.shape[1], np.asarray(self._summary_reward_by_part_per_iteration).sum(axis=0)/self._summary_num_episodes_per_iteration, axis=1)
 			self._summary_mean_rewards.append(np.asarray(self._summary_total_rewards)[-10:].mean())
-			self._summary_noise_records.append(self._policy.std.numpy().mean())
+			self._summary_noise_records.append(self._policy.std().numpy().mean())
 
 
 			self._summary_num_episodes_total += self._summary_num_episodes_per_iteration
@@ -837,7 +830,7 @@ class TrackingController:
 
 
 		# save reward
-		self._adaptiveSampler.save(self._directory, self._summary_num_log)
+		self._adaptiveSampler.save(self._directory)
 
 
 		# save network
@@ -878,4 +871,4 @@ class TrackingController:
 		self._ckpt.write(path)
 
 	def restore(self, path):
-		self._ckpt.restore(path).assert_consumed()
+		self._ckpt.restore(path)
