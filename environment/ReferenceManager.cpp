@@ -12,8 +12,6 @@ ReferenceManager::
 ReferenceManager(Character* character) 
 : mCharacter(character), mTotalFrame(0)
 {
-	std::cout << "Initializing ReferenceManager" << std::endl;
-
 	if(this->mCharacter == nullptr){
 		std::cout << "Character is null" << std::endl;
 	}
@@ -46,8 +44,6 @@ void
 ReferenceManager::
 setReferenceTrajectory(Eigen::MatrixXd& trajectory)
 {
-	std::cout << "ReferenceManager::setReferenceMotion()" << std::endl;
-
 	this->mTotalFrame = trajectory.rows();
 	this->mReferenceTrajectory.clear();
 	this->mReferenceTrajectory.resize(this->mTotalFrame);

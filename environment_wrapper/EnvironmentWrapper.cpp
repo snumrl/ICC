@@ -39,9 +39,9 @@ getActionSize()
 //For each slave
 void 
 EnvironmentWrapper::
-step(int id)
+step(int id, bool record)
 {
-	this->mSlaves[id]->step();
+	this->mSlaves[id]->step(record);
 }
 
 void 
@@ -92,15 +92,15 @@ getReward(int id)
 //For all slaves
 void
 EnvironmentWrapper::
-steps()
+steps(bool record)
 {
 	if( this->mNumSlaves == 1){
-		this->step(0);
+		this->step(0, record);
 	}
 	else{
 #pragma omp parallel for
 		for (int id = 0; id < this->mNumSlaves; id++){
-			this->step(id);
+			this->step(id, record);
 		}
 	}
 }
@@ -182,22 +182,30 @@ setReferenceTrajectories(int frame, np::ndarray ref_trajectory)
 	}
 }
 
-// void
-// EnvironmentWrapper::
-// followReference(int id)
-// {
-// 	this->mSlaves[id]->followReference();
-// }
+void
+EnvironmentWrapper::
+followReference(int id)
+{
+	this->mSlaves[id]->followReference();
+}
 
-// void
-// EnvironmentWrapper::
-// writeRecords(std::string path)
-// {
-// 	for (int id = 0; id < this->mNumSlaves; id++){
-// 		mSlaves[id]->WriteCompactRecords(path + std::to_string(id) + ".rec");	
-// 		// mSlaves[id]->WriteRecords(path + std::to_string(id) + "_full.rec");	
-// 	}
-// }
+void
+EnvironmentWrapper::
+followReferences()
+{
+	for (int id = 0; id < this->mNumSlaves; id++)
+		this->mSlaves[id]->followReference();
+}
+
+void
+EnvironmentWrapper::
+writeRecords(std::string path)
+{
+	for (int id = 0; id < this->mNumSlaves; id++){
+		mSlaves[id]->writeRecords(path + std::to_string(id) + ".rec");	
+		// mSlaves[id]->writeFullRecords(path + std::to_string(id) + "_full.rec");	
+	}
+}
 
 using namespace boost::python;
 
@@ -223,5 +231,8 @@ BOOST_PYTHON_MODULE(environment_wrapper)
 		.def("setActions",&EnvironmentWrapper::setActions)
 		.def("getRewards",&EnvironmentWrapper::getRewards)
 		.def("setReferenceTrajectory",&EnvironmentWrapper::setReferenceTrajectory)
-		.def("setReferenceTrajectories",&EnvironmentWrapper::setReferenceTrajectories);
+		.def("setReferenceTrajectories",&EnvironmentWrapper::setReferenceTrajectories)
+		.def("followReference",&EnvironmentWrapper::followReference)
+		.def("followReferences",&EnvironmentWrapper::followReferences)
+		.def("writeRecords",&EnvironmentWrapper::writeRecords);
 }

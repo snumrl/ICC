@@ -139,7 +139,7 @@ private:
 
 		this->mRewardType = RewardType::MULTIPLICATION;
 
-		this->mRootHeightLowerLimit = 0.5;
+		this->mRootHeightLowerLimit = 0.0;
 		this->mRootHeightUpperLimit = 2.0;
 
 		this->mRootDiffThreshold = 1.0;

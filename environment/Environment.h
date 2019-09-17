@@ -4,6 +4,8 @@
 #include "Character.h"
 #include "ReferenceManager.h"
 
+#include <string>
+
 namespace ICC
 {
 
@@ -31,7 +33,16 @@ public:
 	Environment();
 
 	/// Step environment
-	void step();
+	void step(bool record);
+
+	/// just follow reference motion
+	void followReference();
+
+	/// record status
+	void record();
+
+	/// write records
+	void writeRecords(std::string filename);
 
 	/// Reset environment
 	void reset(double reset_time = 0);
@@ -56,6 +67,7 @@ public:
 	}
 	/// Check whether the episode is temrinated by end of trajectory or not
 	bool isEndOfTrajectory(){
+		// std::cout << (int)this->mTerminationReason << std::endl;
 		return this->mTerminationReason == TerminationReason::END_OF_TRAJECTORY;
 	}
 
@@ -96,6 +108,8 @@ protected:
 
 	Eigen::VectorXd mTargetPositions, mTargetVelocities;
 	Eigen::VectorXd mModifiedTargetPositions, mModifiedTargetVelocities;
+
+	std::vector<Eigen::VectorXd> mRecords, mReferenceRecords;
 
 };
 

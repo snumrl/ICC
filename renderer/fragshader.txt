@@ -1,0 +1,54 @@
+#version 120
+varying vec3 N;
+varying vec3 v; 
+#define MAX_LIGHTS 4
+void main (void) 
+{ 
+   vec3 N = normalize(N);
+   vec4 finalColor = vec4(0.0, 0.0, 0.0, 0.0);
+   
+   for (int i=0;i<MAX_LIGHTS;i++)
+   {
+
+      vec3 lightDir = vec3(gl_LightSource[i].position.xyz-v);
+      float dist = length(lightDir)/15;
+      float att = 3.0 / (gl_LightSource[i].constantAttenuation/2 +
+               gl_LightSource[i].linearAttenuation*3 * dist +
+               gl_LightSource[i].quadraticAttenuation*3 * dist * dist);
+      vec3 L = normalize(gl_LightSource[i].position.xyz - v); 
+      vec3 E = normalize(-v); // we are in Eye Coordinates, so EyePos is (0,0,0) 
+      vec3 R = normalize(-reflect(L,N)); 
+   
+      //calculate Ambient Term: 
+      vec4 Iamb = gl_FrontLightProduct[i].ambient; 
+      //calculate Diffuse Term: 
+      vec4 Idiff = gl_FrontLightProduct[i].diffuse * max(dot(N,L), 0.0);
+      Idiff = clamp(Idiff, 0.0, 1.0); 
+   
+      // calculate Specular Term:
+      float spec_multiflier = 1;
+      vec4 Ispec = gl_FrontLightProduct[i].specular * spec_multiflier
+             * pow(max(dot(R,E),0.0),0.3*gl_FrontMaterial.shininess);
+      Ispec[3] = Ispec[3]/spec_multiflier;
+      Ispec = clamp(Ispec, 0.0, 1.0); 
+      
+      finalColor += att*(Iamb + Idiff + Ispec);
+   }
+   finalColor[3] = finalColor[3]/MAX_LIGHTS/3;
+   
+   // write Total Color: 
+   float fog = 1;
+   vec3 vec_from_char = v-gl_LightSource[0].position.xyz;
+   vec_from_char[1] = 0;
+   float dist_v = length(vec_from_char);
+   float fog_max = 20;
+   float fog_min = 3;
+   if(dist_v > fog_max){
+      fog = 0;
+   }
+   else if(dist_v > fog_min){
+      fog = 1 - (dist_v-fog_min)/(fog_max-fog_min);
+   }
+   float fog_color = 1.0;
+   gl_FragColor = (gl_FrontLightModelProduct.sceneColor + finalColor)*fog + (1-fog)*vec4(fog_color, fog_color, fog_color, 1.0);
+}

@@ -20,7 +20,8 @@ public:
 	int getActionSize();
 
 	// For each slave
-	void step(int id);
+	void step(int id, bool record);
+	void followReference(int id);
 	void reset(int id,double time);
 	bool isTerminal(int id);
 	p::tuple isNanAtTerminal(int id);
@@ -30,7 +31,8 @@ public:
 	np::ndarray getReward(int id);
 
 	// For all slaves
-	void steps();
+	void steps(bool record);
+	void followReferences();
 	void resets();
 	np::ndarray isTerminals();
 
@@ -42,9 +44,7 @@ public:
 	void setReferenceTrajectory(int id, int frame, np::ndarray ref_trajectory);
     void setReferenceTrajectories(int frame, np::ndarray ref_trajectory);
 
-    // TODO
-	// void followReference(int id);
-	// void writeRecords(std::string path);
+	void writeRecords(std::string path);
 
 private:
 	std::vector<ICC::Environment*> mSlaves;

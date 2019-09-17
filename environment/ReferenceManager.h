@@ -5,7 +5,7 @@
 #include "Character.h"
 
 namespace ICC
-{
+{ 
 /**
 *
 * @brief Reference manager
@@ -19,9 +19,6 @@ public:
 	/// Constructor
 	ReferenceManager(Character* character);
 
-	/// Get motion : current positions, next positions, current velocities
-	std::tuple<Eigen::VectorXd, Eigen::VectorXd, Eigen::VectorXd> getMotion(int time);
-	
 	/// Get positions and velocities at time
 	Eigen::VectorXd getPositionsAndVelocities(int time=0);
 

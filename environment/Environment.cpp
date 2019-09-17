@@ -89,7 +89,7 @@ Environment::
 reset(double reset_time)
 {
 	// reset reference manager
-	this->mReferenceManager->setCurrentFrame((int)(this->mReferenceManager->getTotalFrame()*reset_time));
+	this->mReferenceManager->setCurrentFrame((int)((this->mReferenceManager->getTotalFrame()-3)*reset_time));
 
 	// set new character positions and velocities
 	Eigen::VectorXd pv = this->mReferenceManager->getPositionsAndVelocities();
@@ -111,11 +111,15 @@ reset(double reset_time)
 	this->mIsTerminal = false;
 	this->mIsNanAtTerminal = false;
 	this->mTerminationReason = TerminationReason::NOT_TERMINATED;
+
+	// reset records
+	this->mRecords.clear();
+	this->mReferenceRecords.clear();
 }
 
 void
 Environment::
-step()
+step(bool record)
 {
 	// check terminal
 	if(this->isTerminal()){
@@ -143,6 +147,9 @@ step()
 
 		for(int j=0;j<2;j++)
 		{
+			// record
+			if(record)
+				this->record();
 			// apply forces for all characters
 			this->mActor->applyForces(torques);
 
@@ -155,11 +162,86 @@ step()
 	if(Configurations::instance().getReferenceType() == ReferenceType::FIXED){
 		this->mReferenceManager->increaseCurrentFrame();		
 	}
+	
+	// check terminal
+	if(this->isTerminal()){
+		return;
+	}
+
 	// get target positions and velocities
 	Eigen::VectorXd pv = this->mReferenceManager->getPositionsAndVelocities();
 	int dof = this->mActor->getNumDofs();
 	this->mTargetPositions = pv.head(dof);
 	this->mTargetVelocities = pv.tail(dof);
+
+}
+
+void
+Environment::
+followReference()
+{
+	// check terminal
+	if(this->isTerminal()){
+		return;
+	}
+
+	int per = Configurations::instance().getSimulationHz()/Configurations::instance().getControlHz();
+	for(int i=0;i<per;i+=1){
+		this->record();
+		this->mActor->getSkeleton()->setPositions(this->mTargetPositions);
+		this->mActor->getSkeleton()->setVelocities(this->mTargetVelocities);
+	}
+
+	// time stepping
+	if(Configurations::instance().getReferenceType() == ReferenceType::FIXED){
+		this->mReferenceManager->increaseCurrentFrame();		
+	}
+	
+	// check terminal
+	if(this->isTerminal()){
+		return;
+	}
+
+	// get target positions and velocities
+	Eigen::VectorXd pv = this->mReferenceManager->getPositionsAndVelocities();
+	int dof = this->mActor->getNumDofs();
+	this->mTargetPositions = pv.head(dof);
+	this->mTargetVelocities = pv.tail(dof);
+}
+
+void
+Environment::
+record()
+{
+	this->mRecords.emplace_back(this->mActor->getSkeleton()->getPositions());
+	this->mReferenceRecords.emplace_back(this->mTargetPositions);
+}
+
+void
+Environment::
+writeRecords(std::string filename)
+{
+	std::ofstream ofs(filename);
+	if(!ofs.is_open()){
+		std::cout << "File dosen't exist" << std::endl;
+		exit(0);
+	}
+
+	// write skeleton file name
+	ofs << this->mActor->getCharacterFilePath() << std::endl;
+
+	int per = Configurations::instance().getSimulationHz()/Configurations::instance().getControlHz();
+
+	// write total frame
+	ofs << this->mRecords.size()/per << std::endl;
+
+	// write joint angles
+	for(int i = 1; i <= this->mRecords.size()/per; i++)
+		ofs << this->mRecords[per*i-1].transpose() << std::endl;
+
+	// write ref joint angles
+	for(int i = 1; i <= this->mRecords.size()/per; i++)
+		ofs << this->mReferenceRecords[per*i-1].transpose() << std::endl;
 
 }
 
@@ -332,7 +414,7 @@ getReward()
 	Eigen::Vector3d com_diff;
 
 	for(int i = 0; i < this->mEndEffectors.size(); i++){
-		ee_transforms.push_back(skel->getBodyNode(this->mEndEffectors[i])->getWorldTransform());
+		ee_transforms.emplace_back(skel->getBodyNode(this->mEndEffectors[i])->getWorldTransform());
 	}
 	com_diff = skel->getCOM();
 
