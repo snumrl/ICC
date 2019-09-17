@@ -348,7 +348,7 @@ class TrackingController:
 			startIdx += size
 
 
-		self._collectedStates = np.array(self._collectedStates, dtype= np.float32)
+		self._collectedStates = np.array(self._collectedStates, dtype=np.float32)
 		self._collectedActions = tf.convert_to_tensor(self._collectedActions).numpy()
 		self._collectedNeglogprobs = tf.convert_to_tensor(self._collectedNeglogprobs).numpy()
 		self._collectedTDs = np.array(self._collectedTDs, dtype=np.float32)
@@ -460,10 +460,10 @@ class TrackingController:
 
 		while True:
 			print("\nTraining start")
-			self._summary_num_episodes_per_iteration = 0
-			self._summary_num_transitions_per_iteration = 0
-			self._summary_reward_per_iteration = 0
-			self._summary_reward_by_part_per_iteration = []
+			self._summary_num_episodes_per_epoch = 0
+			self._summary_num_transitions_per_epoch = 0
+			self._summary_reward_per_epoch = 0
+			self._summary_reward_by_part_per_epoch = []
 			self._summary_max_episode_length = 0
 
 			for it in range(num_iteration):
@@ -492,7 +492,7 @@ class TrackingController:
 				for j in range(self._numSlaves):
 					episodes[j] = Episode()
 
-				local_step = 0
+				self._summary_num_transitions_per_iteration = 0
 				last_print = 0
 				while True:
 					# set action
@@ -512,10 +512,10 @@ class TrackingController:
 						if nan_occur is not True:
 							r = self._env.getReward(j)
 							rewards[j] = r[0]
-							self._summary_reward_per_iteration += rewards[j]
-							self._summary_reward_by_part_per_iteration.append(r)
+							self._summary_reward_per_epoch += rewards[j]
+							self._summary_reward_by_part_per_epoch.append(r)
 							episodes[j].push(states[j], actions[j], rewards[j], values[j], logprobs[j])
-							local_step += 1
+							self._summary_num_transitions_per_iteration += 1
 						else:
 							nan_count += 1
 
@@ -528,7 +528,7 @@ class TrackingController:
 								# update adaptive sampling weights
 								self._adaptiveSampler.updateWeights(self._timeIndices[j], episodes[j].getTotalReward(), end_of_trajectory)
 
-							if local_step < self._transitionsPerIteration:
+							if self._summary_num_transitions_per_iteration < self._transitionsPerIteration:
 								episodes[j] = Episode()
 
 								# select time index
@@ -540,15 +540,15 @@ class TrackingController:
 								terminated[j] = True
 
 					# if local step exceeds t_p_i: wait for others to terminate
-					if local_step >= self._transitionsPerIteration:  
+					if self._summary_num_transitions_per_iteration >= self._transitionsPerIteration:  
 						if all(t is True for t in terminated):
-							print('{}/{} : {}/{}'.format(it+1, num_iteration, local_step, self._transitionsPerIteration),end='\r')
+							print('{}/{} : {}/{}'.format(it+1, num_iteration, self._summary_num_transitions_per_iteration, self._transitionsPerIteration),end='\r')
 							break
 
 					# print progress per 100 steps
-					if last_print + 100 < local_step: 
-						print('{}/{} : {}/{}'.format(it+1, num_iteration, local_step, self._transitionsPerIteration),end='\r')
-						last_print = local_step
+					if last_print + 100 < self._summary_num_transitions_per_iteration: 
+						print('{}/{} : {}/{}'.format(it+1, num_iteration, self._summary_num_transitions_per_iteration, self._transitionsPerIteration),end='\r')
+						last_print = self._summary_num_transitions_per_iteration
 
 					# update states				
 					states = self._env.getStates()
@@ -564,8 +564,8 @@ class TrackingController:
 				if(nan_count > 0):
 					print("nan_count : {}".format(nan_count))
 
-				self._summary_num_episodes_per_iteration += len(self._collectedEpisodes)
-				self._summary_num_transitions_per_iteration += local_step
+				self._summary_num_episodes_per_epoch += len(self._collectedEpisodes)
+				self._summary_num_transitions_per_epoch += self._summary_num_transitions_per_iteration
 
 				self.optimize()  ##SM) after getting all tuples, optimize once
 
@@ -583,17 +583,17 @@ class TrackingController:
 				self.evaluation()
 
 
-			self._summary_total_rewards.append(self._summary_reward_per_iteration/self._summary_num_episodes_per_iteration)
-			self._summary_total_rewards_by_parts = np.insert(self._summary_total_rewards_by_parts, self._summary_total_rewards_by_parts.shape[1], np.asarray(self._summary_reward_by_part_per_iteration).sum(axis=0)/self._summary_num_episodes_per_iteration, axis=1)
+			self._summary_total_rewards.append(self._summary_reward_per_epoch/self._summary_num_episodes_per_epoch)
+			self._summary_total_rewards_by_parts = np.insert(self._summary_total_rewards_by_parts, self._summary_total_rewards_by_parts.shape[1], np.asarray(self._summary_reward_by_part_per_epoch).sum(axis=0)/self._summary_num_episodes_per_epoch, axis=1)
 			self._summary_mean_rewards.append(np.asarray(self._summary_total_rewards)[-10:].mean())
 			self._summary_noise_records.append(self._policy.std().numpy().mean())
 
 
-			self._summary_num_episodes_total += self._summary_num_episodes_per_iteration
-			self._summary_num_transitions_total += self._summary_num_transitions_per_iteration
+			self._summary_num_episodes_total += self._summary_num_episodes_per_epoch
+			self._summary_num_transitions_total += self._summary_num_transitions_per_epoch
 			t_per_e = 0
-			if self._summary_num_episodes_per_iteration is not 0:
-				t_per_e = self._summary_num_transitions_per_iteration / self._summary_num_episodes_per_iteration
+			if self._summary_num_episodes_per_epoch is not 0:
+				t_per_e = self._summary_num_transitions_per_epoch / self._summary_num_episodes_per_epoch
 			self._summary_transition_per_episodes.append(t_per_e)
 
 			# print summary
@@ -751,14 +751,14 @@ class TrackingController:
 		if self._summary_num_episodes_total is not 0:
 			total_t_per_e = self._summary_num_transitions_total / self._summary_num_episodes_total
 		print('Total trans per epi  : {:.2f}'.format(total_t_per_e))
-		print('Episode              : {}'.format(self._summary_num_episodes_per_iteration))
-		print('Transition           : {}'.format(self._summary_num_transitions_per_iteration))
+		print('Episode              : {}'.format(self._summary_num_episodes_per_epoch))
+		print('Transition           : {}'.format(self._summary_num_transitions_per_epoch))
 		print('Trans per epi        : {:.2f}'.format(self._summary_transition_per_episodes[-1]))
 		print('Max episode length   : {}'.format(self._summary_max_episode_length))
 		print('Rewards per episodes : {:.2f}'.format(self._summary_total_rewards[-1]))
 
 		if(self._useEvaluation):
-			evaluation_t_per_e = self._summary_evaluation_num_transitions_per_iteration/self._numSlaves
+			evaluation_t_per_e = self._summary_evaluation_num_transitions_per_epoch/self._numSlaves
 			self._summary_evaluation_transition_per_episodes.append(evaluation_t_per_e)
 			print('Eval trans per epi   : {:.2f}'.format(evaluation_t_per_e))
 			print('Eval rew per epi     : {:.2f}'.format(self._summary_evaluation_total_rewards[-1]))
@@ -814,14 +814,14 @@ class TrackingController:
 		out.write('Total episode        : {}\n'.format(self._summary_num_episodes_total))
 		out.write('Total trans          : {}\n'.format(self._summary_num_transitions_total))
 		out.write('Total trans per epi  : {:.2f}\n'.format(total_t_per_e))
-		out.write('Episode              : {}\n'.format(self._summary_num_episodes_per_iteration))
-		out.write('Transition           : {}\n'.format(self._summary_num_transitions_per_iteration))
+		out.write('Episode              : {}\n'.format(self._summary_num_episodes_per_epoch))
+		out.write('Transition           : {}\n'.format(self._summary_num_transitions_per_epoch))
 		out.write('Trans per epi        : {:.2f}\n'.format(self._summary_transition_per_episodes[-1]))
 		out.write('Max episode length   : {}\n'.format(self._summary_max_episode_length))
 		out.write('Rewards per episodes : {:.2f}\n'.format(self._summary_total_rewards[-1]))
 
 		if(self._useEvaluation):
-			evaluation_t_per_e = self._summary_evaluation_num_transitions_per_iteration/self._numSlaves
+			evaluation_t_per_e = self._summary_evaluation_num_transitions_per_epoch/self._numSlaves
 			self._summary_evaluation_transition_per_episodes.append(evaluation_t_per_e)
 			out.write('Eval trans per epi   : {:.2f}\n'.format(evaluation_t_per_e))
 			out.write('Eval rew per epi     : {:.2f}\n'.format(self._summary_evaluation_total_rewards[-1]))
