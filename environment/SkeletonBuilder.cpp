@@ -5,8 +5,6 @@
 
 using namespace dart::dynamics;
 
-double _default_damping_coefficient = JOINT_DAMPING;
-
 namespace ICC
 {
 Eigen::Vector3d proj(const Eigen::Vector3d& u,const Eigen::Vector3d& v)
@@ -550,7 +548,7 @@ makeBallJointBody(
 
 	JointPtr jn = bn->getParentJoint();
 	for(int i = 0; i < jn->getNumDofs(); i++){
-		jn->getDof(i)->setDampingCoefficient(_default_damping_coefficient);
+		jn->getDof(i)->setDampingCoefficient(ICC::Configurations::instance().getJointDamping());
 	}
 
 	if(contact){
@@ -668,7 +666,7 @@ makeRevoluteJointBody(
 
 	JointPtr jn = bn->getParentJoint();
 	for(int i = 0; i < jn->getNumDofs(); i++){
-		jn->getDof(i)->setDampingCoefficient(_default_damping_coefficient);
+		jn->getDof(i)->setDampingCoefficient(ICC::Configurations::instance().getJointDamping());
 	}
 
 	if(contact)

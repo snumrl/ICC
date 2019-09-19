@@ -22,7 +22,7 @@ MultiActorEnvironment()
 	dynamic_cast<dart::constraint::BoxedLcpConstraintSolver*>(mWorld->getConstraintSolver())->setBoxedLcpSolver(std::make_shared<dart::constraint::PgsBoxedLcpSolver>());
 
 	/// Create ground
-	this->mGround = new Character(std::string(DPHY_DIR)+std::string("/characters/ground.xml"));
+	this->mGround = new Character(std::string(ICC_DIR)+std::string("/characters/ground.xml"));
 	this->mWorld->addSkeleton(this->mGround->getSkeleton());
 
 	/// Create actors
@@ -39,7 +39,7 @@ MultiActorEnvironment()
 	this->mReferenceManagers.clear();
 
 	for(int i = 0; i < this->mNumActors; i++){
-		this->mActors.emplace_back(new Character(std::string(DPHY_DIR)+std::string("/characters/humanoid.xml")));
+		this->mActors.emplace_back(new Character(std::string(ICC_DIR)+std::string("/characters/humanoid.xml")));
 		this->mWorld->addSkeleton(this->mActors[i]->getSkeleton());
 		this->mReferenceManagers.emplace_back(new ReferenceManager(this->mActors[i]));
 	}

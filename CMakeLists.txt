@@ -11,7 +11,7 @@ add_compile_options(-std=c++11)
 add_compile_options(-Wdeprecated-declarations)
 # add_compile_options(-lm)
 
-add_definitions(-DDPHY_DIR="${CMAKE_HOME_DIRECTORY}")
+add_definitions(-DICC_DIR="${CMAKE_HOME_DIRECTORY}")
 set(CMAKE_MODULE_PATH "${CMAKE_HOME_DIRECTORY}/cmake_modules")
 
 find_package(DART REQUIRED COMPONENTS gui optimizer-ipopt collision-bullet collision-ode CONFIG)

@@ -31,6 +31,8 @@ Eigen::VectorXd toEigenVector(const np::ndarray& array,int n);
 Eigen::VectorXd toEigenVector(const p::object& array,int n);
 Eigen::MatrixXd toEigenMatrix(const np::ndarray& array,int n,int m);
 // Utilities
+std::vector<int> splitToInt(const std::string& input, int num);
+std::vector<int> splitToInt(const std::string& input);
 std::vector<double> splitToDouble(const std::string& input, int num);
 std::vector<double> splitToDouble(const std::string& input);
 Eigen::Vector3d stringToVector3d(const std::string& input);

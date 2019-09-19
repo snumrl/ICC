@@ -20,11 +20,11 @@ Environment()
 	dynamic_cast<dart::constraint::BoxedLcpConstraintSolver*>(mWorld->getConstraintSolver())->setBoxedLcpSolver(std::make_shared<dart::constraint::PgsBoxedLcpSolver>());
 
 	/// Create ground
-	this->mGround = new Character(std::string(DPHY_DIR)+std::string("/characters/ground.xml"));
+	this->mGround = new Character(std::string(ICC_DIR)+std::string("/characters/ground.xml"));
 	this->mWorld->addSkeleton(this->mGround->getSkeleton());
 
 	/// Create actors
-	this->mActor = new Character(std::string(DPHY_DIR)+std::string("/characters/humanoid.xml"));
+	this->mActor = new Character(std::string(ICC_DIR)+std::string("/characters/humanoid.xml"));
 	this->mWorld->addSkeleton(this->mActor->getSkeleton());
 	this->mReferenceManager = new ReferenceManager(this->mActor);
 

@@ -2,26 +2,9 @@
 
 #include <cmath>
 #include <vector>
+#include <tinyxml.h>
 
-// #define MOTION_WALK_EXTENSION
-// #define MOTION_BASKETBALL
-// #define MOTION_ZOMBIE
-// #define MOTION_GORILLA
-// #define MOTION_WALKRUN
-// #define MOTION_WALK_NEW
-// #define MOTION_WALKFALL
-// #define MOTION_JOG_ROLL
-#define MOTION_WALKRUNFALL
-
-#define FUTURE_TIME (0.33)
-#define FUTURE_COUNT (0)
-#define FUTURE_DISPLAY_COUNT (1)
-#define JOINT_DAMPING (0.05)
-
-#define FORCE_MAGNITUDE (20)
-#define FORCE_APPLYING_FRAME (60)
-#define FORCE_APPLYING_BODYNODE ("Neck")
-
+#include "Utils.h"
 
 namespace ICC
 {
@@ -118,38 +101,85 @@ public:
 	int getMGMotionSize(){
 		return this->mMGMotionSize;
 	}
-private:
-	Configurations(){
-		this->mJointDamping = 0.05;
 
-		this->mMotionHz = 30;
-		this->mControlHz = 30;
-		this->mSimulationHz = 600;
+	void LoadConfigurations(std::string filename){
+		TiXmlDocument doc;
+		if(!doc.LoadFile(filename)){
+			std::cout << "Can't open file : " << filename << std::endl;
+			return;
+		}
 
-		this->mReferenceType = ReferenceType::FIXED;
-		this->mUseEarlyTermination = true;
-		this->mFutureCount = 1;
+		TiXmlElement *config = doc.FirstChildElement("Configuration");
 
-		this->mRootHeightOffset = 0.0;
+		// slave num for multi threading
+		this->mNumSlaves = atoi(config->Attribute("numSlaves"));
+
+		TiXmlElement *sim = config->FirstChildElement("Simulation");
+
+		// joint damping
+		this->mJointDamping = atof(sim->FirstChildElement("JointDamping")->GetText());
+
+		// control, motion, simulation hz
+		this->mControlHz = atoi(sim->FirstChildElement("ControlHz")->GetText());
+		this->mMotionHz = atoi(sim->FirstChildElement("MotionHz")->GetText());
+		this->mSimulationHz = atoi(sim->FirstChildElement("SimulationHz")->GetText());
+
+		// root height offset
+		this->mRootHeightOffset = atof(sim->FirstChildElement("RootHeightOffset")->GetText());
+
+		// reward type
+		std::string reward_type = sim->FirstChildElement("RewardType")->GetText();
+		if(reward_type == "Mul"){
+			this->mRewardType = RewardType::MULTIPLICATION;
+		}
+		else if(reward_type == "Sum"){
+			this->mRewardType = RewardType::SUMMATION;
+		}
+		else{
+			std::cout << "environment::Configurations.h : Unspecified reward type!" << std::endl;
+			exit(0);
+		}
+
+		// early termination
+		std::string early_termination = sim->FirstChildElement("EarlyTermination")->GetText();
+		if(early_termination=="True"){
+			this->mUseEarlyTermination = true;
+		}
+		else if(early_termination=="False"){
+			this->mUseEarlyTermination = false;	
+		}
+		else{
+			std::cout << "environment::Configurations.h : Unspecified early termination!" << std::endl;
+			exit(0);
+		}
+		
+		// motion size of TC and MG. It depends on the character configuration and motion generator design
+		this->mTCMotionSize = atoi(sim->FirstChildElement("TCMotionSize")->GetText());
+		this->mMGMotionSize = atoi(sim->FirstChildElement("MGMotionSize")->GetText());
 
 		// predictions included in stae
 		// 0 : very next prediction
-		this->mPredictionsInState.clear();
-		this->mPredictionsInState.emplace_back(0);
+		this->mPredictionsInState = ICC::Utils::splitToInt(sim->FirstChildElement("Predictions")->GetText());
 
-		this->mRewardType = RewardType::MULTIPLICATION;
+		// required futures for interactive mode
+		this->mFutureCount = 1 + *std::max_element(this->mPredictionsInState.begin(), this->mPredictionsInState.end());
 
-		this->mRootHeightLowerLimit = 0.0;
-		this->mRootHeightUpperLimit = 2.0;
+		// terminal condition
+		TiXmlElement *terminal = sim->FirstChildElement("TerminalCondition");
+		this->mRootDiffThreshold = atof(terminal->FirstChildElement("RootDiff")->GetText());
+		this->mRootAngleDiffThreshold = atof(terminal->FirstChildElement("RootAngleDiff")->GetText());
+		this->mRootHeightLowerLimit = atof(terminal->FirstChildElement("RootHeight")->Attribute("lower"));
+		this->mRootHeightUpperLimit = atof(terminal->FirstChildElement("RootHeight")->Attribute("upper"));
 
-		this->mRootDiffThreshold = 1.0;
-		this->mRootAngleDiffThreshold = 0.7*M_PI;
-		
-		this->mNumSlaves = 8;
 
-		this->mTCMotionSize = 54;
-		this->mMGMotionSize = 111;
 	}
+private:
+	Configurations(){
+		// Reference type is not set by configuration file.
+		// It depends on it is interactive mode or not
+		this->mReferenceType = ReferenceType::FIXED;
+	}
+
 
 	double mJointDamping;
 

@@ -258,6 +258,28 @@ std::string join(const std::vector<std::string> &v, char delim=' '){
 	return ss.str();
 }
 
+std::vector<int> splitToInt(const std::string& input, int num)
+{
+    std::vector<int> result;
+    std::string::size_type sz = 0, nsz = 0;
+    for(int i = 0; i < num; i++){
+        result.push_back(std::stoi(input.substr(sz), &nsz));
+        sz += nsz;
+    }
+    return result;
+}
+
+std::vector<int> splitToInt(const std::string& input)
+{
+    std::vector<int> result;
+    std::string::size_type sz = 0, nsz = 0;
+    while(sz< input.length()){
+        result.push_back(std::stoi(input.substr(sz), &nsz));
+        sz += nsz;
+    }
+    return result;
+}
+
 std::vector<double> splitToDouble(const std::string& input, int num)
 {
     std::vector<double> result;
@@ -306,7 +328,7 @@ Eigen::VectorXd stringToVectorXd(const std::string& input){
     return res;
 }
 
-    Eigen::Matrix3d stringToMatrix3d(const std::string& input){
+Eigen::Matrix3d stringToMatrix3d(const std::string& input){
 	std::vector<double> v = splitToDouble(input, 9);
 	Eigen::Matrix3d res;
 	res << v[0], v[1], v[2],

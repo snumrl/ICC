@@ -13,7 +13,7 @@ namespace np = boost::python::numpy;
 class EnvironmentWrapper
 {
 public:
-	EnvironmentWrapper();
+	EnvironmentWrapper(std::string configuration_filepath);
 
 	// For general properties
 	int getStateSize();

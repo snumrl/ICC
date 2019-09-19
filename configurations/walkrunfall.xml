@@ -1,0 +1,34 @@
+<Configuration name="walkrunfall" numSlaves="8">
+	<Learning>
+		<Motion>walkrunfall</Motion>
+		<Gamma>0.95</Gamma>
+		<Lambd>0.95</Lambd>
+		<ClipRange>0.2</ClipRange>
+		<ValueLayer size="256" number="2"/>
+		<PolicyLayer size="512" number="4"/>
+		<ActivationFunction>relu</ActivationFunction>
+		<LearningRate policy="2e-4" value="1e-3" decay="0.9993"/>
+		<BatchSize>1024</BatchSize>
+		<TransitionsPerIteration>20000</TransitionsPerIteration>
+		<Trajectory length="20000" origin="True" offset="0"/>
+		<Evaluation>False</Evaluation>
+	</Learning>
+	<Simulation>
+		<ReferenceType>Fixed</ReferenceType>
+		<EarlyTermination>True</EarlyTermination>
+		<Predictions>0</Predictions>
+		<SimulationHz>600</SimulationHz>
+		<ControlHz>30</ControlHz>
+		<MotionHz>30</MotionHz>
+		<JointDamping>0.05</JointDamping>
+		<RootHeightOffset>0.0</RootHeightOffset>
+		<RewardType>Mul</RewardType>
+		<TerminalCondition>
+			<RootDiff>1.0</RootDiff>
+			<RootAngleDiff>2.2</RootAngleDiff>
+			<RootHeight lower="0.0" upper="2.0"/>
+		</TerminalCondition>
+		<TCMotionSize>54</TCMotionSize>
+		<MGMotionSize>111</MGMotionSize>
+	</Simulation>
+</Configuration>

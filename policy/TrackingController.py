@@ -158,7 +158,7 @@ class TrackingController:
 		self._sessionName				= Configurations.instance().sessionName
 
 		# initialize environment
-		self._env = environment()
+		self._env = environment(configuration_filepath)
 		self._stateSize = self._env.getStateSize()
 		self._actionSize = self._env.getActionSize()
 		self._rms = RunningMeanStd(shape=(self._stateSize))

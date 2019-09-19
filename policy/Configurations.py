@@ -1,4 +1,8 @@
 import tensorflow as tf
+import numpy as np
+from xml.dom.minidom import parse
+
+from IPython import embed
 
 class Configurations:
 	_instance = None
@@ -15,41 +19,67 @@ class Configurations:
 		return cls.__instance
 
 	def __init__(self):
-		self._policyLayerSize = 512
-		self._policyLayerNumber = 4
-
-		self._activationFunction = 'relu'
-
-		self._valueLayerSize = 256
-		self._valueLayerNumber = 2
-
-		self._numSlaves = 8
-		self._motion = "walkrunfall"
-
-		self._gamma = 0.99
-		self._lambd = 0.95
-		self._clipRange = 0.2
-
-		self._learningRatePolicy = 2e-4
-		self._learningRatePolicyDecay = 0.9993
-		self._learningRateValueFunction = 1e-3
-
-		self._batchSize = 1024
-		self._transitionsPerIteration = 20000
-
-		self._trajectoryLength = 20000
-		self._useOrigin = True
-		self._originOffset = 0
-
-		self._adaptiveSamplingSize = 1000
-
-		self._useEvaluation = False
 		self._sessionName = "test_session"
 
 	def loadData(self, filename):
 		print("TODO : Configurations.py loadData")
 		# TODO
-		return
+		with parse(filename) as doc:
+			config = doc.getElementsByTagName("Configuration")[0]
+
+			self._numSlaves = int(config.getAttribute("numSlaves"))
+			self._sessionName = config.getAttribute("name")
+
+			learn = config.getElementsByTagName("Learning")[0]
+
+			self._motion = learn.getElementsByTagName("Motion")[0].firstChild.nodeValue
+
+			self._gamma = float(learn.getElementsByTagName("Gamma")[0].firstChild.nodeValue)
+			self._lambd = float(learn.getElementsByTagName("Lambd")[0].firstChild.nodeValue)
+			self._clipRange = float(learn.getElementsByTagName("ClipRange")[0].firstChild.nodeValue)
+
+			valueLayer = learn.getElementsByTagName("ValueLayer")[0]
+			self._valueLayerSize = int(valueLayer.getAttribute("size"))
+			self._valueLayerNumber = int(valueLayer.getAttribute("number"))
+
+			policyLayer = learn.getElementsByTagName("PolicyLayer")[0]
+			self._policyLayerSize = int(policyLayer.getAttribute("size"))
+			self._policyLayerNumber = int(policyLayer.getAttribute("number"))
+
+			self._activationFunction = learn.getElementsByTagName("ActivationFunction")[0].firstChild.nodeValue
+
+			lr = learn.getElementsByTagName("LearningRate")[0]
+			self._learningRatePolicy = float(lr.getAttribute("policy"))
+			self._learningRatePolicyDecay = float(lr.getAttribute("decay"))
+			self._learningRateValueFunction = float(lr.getAttribute("value"))
+
+			self._batchSize = int(learn.getElementsByTagName("BatchSize")[0].firstChild.nodeValue)
+			self._transitionsPerIteration = int(learn.getElementsByTagName("TransitionsPerIteration")[0].firstChild.nodeValue)
+
+			trajectory = learn.getElementsByTagName("Trajectory")[0]
+			self._trajectoryLength = int(trajectory.getAttribute("length"))
+
+			origin = trajectory.getAttribute("origin")
+			if origin == "True":
+				self._useOrigin = True
+			elif origin == "False":
+				self._useOrigin = False
+			else:
+				print("Configurations.py : loadData : Unavailable origin type")
+				exit()
+
+			self._originOffset = int(trajectory.getAttribute("offset"))
+
+			evaluation = learn.getElementsByTagName("Evaluation")[0].firstChild.nodeValue
+			if evaluation == "True":
+				self._useEvaluation = True
+			elif evaluation == "False":
+				self._useEvaluation = False
+			else:
+				print("Configurations.py : loadData : Unavailable evaluation type")
+				exit()
+
+		self._adaptiveSamplingSize = min(self._trajectoryLength/10, 1000)
 
 	@property
 	def policyLayerSize(self):
