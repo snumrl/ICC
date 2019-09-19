@@ -252,9 +252,9 @@ class TrackingController:
 
 		# load netowrk
 		if network_num is not None:
-			network_dir = "{}network-{}".format(directory, network_num)
+			network_dir = "{}/network-{}".format(directory, network_num)
 		else:
-			network_dir = "{}network".format(directory)
+			network_dir = "{}/network".format(directory)
 		print("Loading networks from {}".format(network_dir))
 
 		# def get_tensors_in_checkpoint_file(file_name):
@@ -288,7 +288,7 @@ class TrackingController:
 		self.restore(network_dir)
 
 		self._isNetworkLoaded = True
-		self._loadedNetwork = "{} - {}".format(directory, network_num)
+		self._loadedNetwork = "{}".format(network_dir)
 
 	def generateTrajectory(self):
 		if self._useOrigin:

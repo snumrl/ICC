@@ -5,6 +5,17 @@ import os
 from IPython import embed
 
 if __name__=="__main__":
+	parser = argparse.ArgumentParser()
+	parser.add_argument('-c', '--config', help='configuration file path')
+	parser.add_argument('-n', '--network', help='network file path')
+	parser.add_argument('-t', '--network_type', help='type of the network, None : final network, rmax : maximum reward, smax : maximum step ', choices={'rmax', 'smax'})
+	args = parser.parse_args()
+
+	if args.config is None:
+		print("Configuration file path required!")
+		exit()
 	tracking_controller = TrackingController()
-	tracking_controller.initialize(configuration_filepath="../configurations/walkrunfall.xml")
+	tracking_controller.initialize(configuration_filepath=args.config)
+	if args.network is not None:
+		tracking_controller.loadNetworks(args.network, args.network_type)
 	tracking_controller.runTraining(10)
