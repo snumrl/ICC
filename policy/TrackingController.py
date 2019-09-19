@@ -726,7 +726,7 @@ class TrackingController:
 		out.close()
 
 		# copy configuration file
-		cmd = "cp {} {}".format(self._configurationFilePath, self._directory)
+		cmd = "cp {} {}/configuration.xml".format(self._configurationFilePath, self._directory)
 		os.system(cmd)
 
 		return
