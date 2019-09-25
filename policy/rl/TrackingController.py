@@ -7,8 +7,6 @@ import datetime
 
 import numpy as np
 import tensorflow as tf
-my_devices = tf.config.experimental.list_physical_devices(device_type='CPU')
-tf.config.experimental.set_visible_devices(devices= my_devices, device_type='CPU')
 from tensorflow.python import pywrap_tensorflow
 
 from rl.AdaptiveSampler import AdaptiveSampler
@@ -258,33 +256,6 @@ class TrackingController:
 			network_dir = "{}/network".format(directory)
 		print("Loading networks from {}".format(network_dir))
 
-		# def get_tensors_in_checkpoint_file(file_name):
-		# 	varlist=[]
-		# 	var_value =[]
-		# 	reader = pywrap_tensorflow.NewCheckpointReader(file_name)
-		# 	var_to_shape_map = reader.get_variable_to_shape_map()
-		# 	for key in sorted(var_to_shape_map):
-		# 		varlist.append(key)
-		# 		var_value.append(reader.get_tensor(key))
-		# 	return (varlist, var_value)
-
-
-		# saved_variables, saved_values = get_tensors_in_checkpoint_file(network_dir)
-		# saved_dict = {n : v for n, v in zip(saved_variables, saved_values)}
-		# restore_op = []
-		# embed()
-		# exit()
-		# for v in tf.trainable_variables():
-		# 	if v.name[:5] != "policy" and v.name[:6] != "valueFunction":
-		# 		continue
-		# 	if v.name[:-2] in saved_dict:
-		# 		saved_v = saved_dict[v.name[:-2]]
-		# 		if v.shape == saved_v.shape:
-		# 			print("   Restoring {}".format(v.name[:-2]))
-		# 			restore_op.append(v.assign(saved_v))
-
-		# restore_op = tf.group(*restore_op)
-		# self._sess.run(restore_op)
 
 		self.restore(network_dir)
 
@@ -300,17 +271,17 @@ class TrackingController:
 			if os.path.exists(traj_filename) and os.path.exists(goal_filename):
 				print("Loading trajectories from {}".format(traj_filename))
 				traj = np.load(traj_filename)
-				goal_traj = np.load(goal_filename)
+				target_traj = np.load(goal_filename)
 				if traj.shape[1] < self._trajectoryLength:
 					print("motion is too short, required : {}, maximum : {}".format(self._trajectoryLength, traj.shape[1]))
 					# exit()
 					self._trajectoryLength = traj.shape[1]
 				self._trajectory = traj[0][:self._trajectoryLength]
-				self._targetTrajectory = goal_traj[0][:self._trajectoryLength]
+				self._targetTrajectory = target_traj[0][:self._trajectoryLength]
 			else:
-				traj, goal_traj = self._motionGenerator.getTrajectory(self._trajectoryLength)
+				traj, target_traj = self._motionGenerator.getTrajectory(self._trajectoryLength)
 				self._trajectory = traj[0]
-				self._targetTrajectory = goal_traj[0]
+				self._targetTrajectory = target_traj[0]
 
 	def computeTDAndGAE(self):
 		self._collectedStates = [None] * self._summary_num_transitions_per_iteration
@@ -410,6 +381,10 @@ class TrackingController:
 			os.mkdir("../output/")
 		self._directory = '../output/'+self._sessionName+'/'
 
+		directory = self._directory + "trajectory/"
+		if not os.path.exists(directory):
+			os.mkdir(directory)
+
 		self.printParameters()
 
 
@@ -450,9 +425,15 @@ class TrackingController:
 
 		if not os.path.exists(self._directory):
 			os.mkdir(self._directory)
+
+		directory = self._directory + "trajectory/"
+		if not os.path.exists(directory):
+			os.mkdir(directory)
+
 		directory = self._directory + "rms/"
 		if not os.path.exists(directory):
 			os.mkdir(directory)
+
 		directory = directory + "cur/"
 		if not os.path.exists(directory):
 			os.mkdir(directory)
@@ -614,6 +595,10 @@ class TrackingController:
 		if not os.path.exists(self._directory):
 			os.mkdir(self._directory)
 
+		directory = self._directory + "trajectory/"
+		if not os.path.exists(directory):
+			os.mkdir(directory)
+
 		directory = self._directory + "rms/"
 		if not os.path.exists(directory):
 			os.mkdir(directory)
@@ -685,6 +670,9 @@ class TrackingController:
 
 
 	def printParameters(self):
+		np.save(self._directory+"trajectory/traj.npy", self._trajectory)
+		np.save(self._directory+"trajectory/goal.npy", self._targetTrajectory)
+		
 		# print on shell
 		print("===============================================================")
 		print(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"))

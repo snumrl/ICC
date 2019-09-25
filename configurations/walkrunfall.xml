@@ -21,7 +21,7 @@
 		<JointDamping>0.05</JointDamping>
 		<RootHeightOffset>0.0</RootHeightOffset>
 		<RewardType>Mul</RewardType>
-		<EarlyTermination>False</EarlyTermination>
+		<EarlyTermination>True</EarlyTermination>
 		<TerminalCondition>
 			<RootDiff>1.0</RootDiff>
 			<RootAngleDiff>2.2</RootAngleDiff>
