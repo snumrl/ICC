@@ -7,7 +7,7 @@ from IPython import embed
 import time
 import math
 
-class RNNManager(object):
+class MotionGenerator(object):
 	def __init__(self, num_slaves, motion="walk"):
 		np.random.seed(int(time.time()))
 		self.num_slaves = num_slaves

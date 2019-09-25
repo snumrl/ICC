@@ -21,7 +21,7 @@ from environment_wrapper import environment
 from rl.Configurations import Configurations
 from util.Util import Plot
 
-from rnn.RNNManager import RNNManager
+from rnn.MotionGenerator import MotionGenerator
 
 from IPython import embed
 
@@ -178,7 +178,7 @@ class TrackingController:
 		self._valueFunctionOptimizer = tf.keras.optimizers.Adam(learning_rate=self._learningRateValueFunction)
 
 		# initialize motion generator
-		self._motionGenerator = RNNManager(1, self._motion)
+		self._motionGenerator = MotionGenerator(1, self._motion)
 		self._timeIndices = [None]*self._numSlaves
 
 		# generate trajectories
