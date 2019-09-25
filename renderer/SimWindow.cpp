@@ -154,7 +154,6 @@ void
 SimWindow::
 NextFrameRealTime()
 {
-	// int count = this->mDisplayTimeout/(this->mTimeStep*1000.);
 	int count = 1;
 	this->mCurFrame += count;
 	this->mCurFrame %= this->mTotalFrame;
