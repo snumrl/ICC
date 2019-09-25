@@ -27,6 +27,7 @@ protected:
 	/// Draw all the skeletons in mWorld. Lights and Camera are operated here.
 	void DrawSkeletons();
 	void DrawGround();
+	void DrawFlag();
 	void Display() override;
 
 	/// The user interactions with keyboard.
@@ -80,11 +81,8 @@ protected:
 	bool mIsModExist;
 	bool mIsGoalExist;
 	bool mIsFootExist;
-	std::vector<Eigen::VectorXd> mRecords, mRefRecords, mModRecords;
-	std::vector<Eigen::Vector3d> mVelRecords, mGoalRecords;
-	std::vector<Eigen::Vector3d> mRootTrajectories, mRootTrajectoriesRef;
-	std::vector<Eigen::Vector2d> mFootRecords, mRefFootRecords;
-    std::vector<Eigen::Vector3d> mBasketBallRecords;
+	std::vector<Eigen::VectorXd> mRecords, mRefRecords;
+	std::vector<Eigen::Vector3d> mTargetRecords;
 
 	ICC::Character* mCharacter;
 

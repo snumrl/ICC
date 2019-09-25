@@ -53,6 +53,21 @@ setReferenceTrajectory(Eigen::MatrixXd& trajectory)
 	}
 }
 
+void 
+ReferenceManager::
+setReferenceTargetTrajectory(Eigen::MatrixXd& trajectory)
+{
+	this->mReferenceTargetTrajectory.clear();
+	this->mReferenceTargetTrajectory.resize(this->mTotalFrame);
+
+	for(int i = 0; i < this->mTotalFrame; i++){
+		Eigen::Vector3d goal;
+		goal << trajectory.row(i)[1]*0.01, 0, trajectory.row(i)[0]*0.01;
+		this->mReferenceTargetTrajectory[i] = goal;
+	}
+}
+
+
 Eigen::VectorXd 
 ReferenceManager::
 convertFromMG(const Eigen::VectorXd& input)

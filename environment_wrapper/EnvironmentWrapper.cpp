@@ -186,6 +186,26 @@ setReferenceTrajectories(int frame, np::ndarray ref_trajectory)
 
 void
 EnvironmentWrapper::
+setReferenceTargetTrajectory(int id, int frame, np::ndarray ref_trajectory)
+{
+	Eigen::MatrixXd mat = ICC::Utils::toEigenMatrix(ref_trajectory, frame, 2);
+	this->mSlaves[id]->setReferenceTargetTrajectory(mat);
+}
+
+void
+EnvironmentWrapper::
+setReferenceTargetTrajectories(int frame, np::ndarray ref_trajectory)
+{
+	Eigen::MatrixXd mat = ICC::Utils::toEigenMatrix(ref_trajectory, frame, 2);
+#pragma omp parallel for
+	for(int id = 0; id < this->mNumSlaves; id++){
+		this->mSlaves[id]->setReferenceTargetTrajectory(mat);
+	}
+}
+
+
+void
+EnvironmentWrapper::
 followReference(int id)
 {
 	this->mSlaves[id]->followReference();
@@ -234,6 +254,8 @@ BOOST_PYTHON_MODULE(environment_wrapper)
 		.def("getRewards",&EnvironmentWrapper::getRewards)
 		.def("setReferenceTrajectory",&EnvironmentWrapper::setReferenceTrajectory)
 		.def("setReferenceTrajectories",&EnvironmentWrapper::setReferenceTrajectories)
+		.def("setReferenceTargetTrajectory",&EnvironmentWrapper::setReferenceTargetTrajectory)
+		.def("setReferenceTargetTrajectories",&EnvironmentWrapper::setReferenceTargetTrajectories)
 		.def("followReference",&EnvironmentWrapper::followReference)
 		.def("followReferences",&EnvironmentWrapper::followReferences)
 		.def("writeRecords",&EnvironmentWrapper::writeRecords);

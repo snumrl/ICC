@@ -22,8 +22,18 @@ public:
 	/// Get positions and velocities at time
 	Eigen::VectorXd getPositionsAndVelocities(int time=0);
 
+	/// Get current target
+	Eigen::Vector3d getTarget(int time=0){
+		if(this->mTotalFrame == 0) return Eigen::Vector3d::Zero();
+		return this->mReferenceTargetTrajectory[time];
+	}
+
 	/// Set reference motion from motion generator
 	void setReferenceTrajectory(Eigen::MatrixXd& trajectory);
+
+	/// Set reference motion from motion generator
+	void setReferenceTargetTrajectory(Eigen::MatrixXd& trajectory);
+
 
 	/// Convert motion format from motion generator
 	Eigen::VectorXd convertFromMG(const Eigen::VectorXd& input);
@@ -56,6 +66,7 @@ protected:
 	Character* mCharacter;
 
 	std::vector<Eigen::VectorXd> mReferenceTrajectory;
+	std::vector<Eigen::Vector3d> mReferenceTargetTrajectory;
 };
 
 

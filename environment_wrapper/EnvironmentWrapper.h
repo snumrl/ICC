@@ -44,6 +44,9 @@ public:
 	void setReferenceTrajectory(int id, int frame, np::ndarray ref_trajectory);
     void setReferenceTrajectories(int frame, np::ndarray ref_trajectory);
 
+	void setReferenceTargetTrajectory(int id, int frame, np::ndarray ref_trajectory);
+    void setReferenceTargetTrajectories(int frame, np::ndarray ref_trajectory);
+
 	void writeRecords(std::string path);
 
 private:

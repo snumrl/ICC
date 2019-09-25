@@ -106,6 +106,7 @@ reset(double reset_time)
 	pv = this->mReferenceManager->getPositionsAndVelocities();
 	this->mTargetPositions = pv.head(dof);
 	this->mTargetVelocities = pv.tail(dof);
+	this->mTarget = this->mReferenceManager->getTarget();
 
 	// reset terminal signal
 	this->mIsTerminal = false;
@@ -173,6 +174,7 @@ step(bool record)
 	int dof = this->mActor->getNumDofs();
 	this->mTargetPositions = pv.head(dof);
 	this->mTargetVelocities = pv.tail(dof);
+	this->mTarget = this->mReferenceManager->getTarget();
 
 }
 
@@ -207,6 +209,7 @@ followReference()
 	int dof = this->mActor->getNumDofs();
 	this->mTargetPositions = pv.head(dof);
 	this->mTargetVelocities = pv.tail(dof);
+	this->mTarget = this->mReferenceManager->getTarget();
 }
 
 void
@@ -215,6 +218,7 @@ record()
 {
 	this->mRecords.emplace_back(this->mActor->getSkeleton()->getPositions());
 	this->mReferenceRecords.emplace_back(this->mTargetPositions);
+	this->mTargetRecords.emplace_back(this->mTarget);
 }
 
 void
@@ -242,6 +246,10 @@ writeRecords(std::string filename)
 	// write ref joint angles
 	for(int i = 1; i <= this->mRecords.size()/per; i++)
 		ofs << this->mReferenceRecords[per*i-1].transpose() << std::endl;
+
+	// write targets
+	for(int i = 1; i <= this->mRecords.size()/per; i++)
+		ofs << this->mTargetRecords[per*i-1].transpose() << std::endl;
 
 }
 
@@ -566,6 +574,13 @@ Environment::
 setReferenceTrajectory(Eigen::MatrixXd trajectory)
 {
 	this->mReferenceManager->setReferenceTrajectory(trajectory);
+}
+
+void 
+Environment::
+setReferenceTargetTrajectory(Eigen::MatrixXd trajectory)
+{
+	this->mReferenceManager->setReferenceTargetTrajectory(trajectory);
 }
 
 }

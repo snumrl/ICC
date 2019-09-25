@@ -82,6 +82,9 @@ public:
 
 	/// Set reference trajectory
 	void setReferenceTrajectory(Eigen::MatrixXd trajectory);
+ 
+	/// Set reference target trajectory
+	void setReferenceTargetTrajectory(Eigen::MatrixXd trajectory);
 
 	std::vector<Eigen::VectorXd> getPositionsForMG();
 protected:
@@ -109,8 +112,10 @@ protected:
 
 	Eigen::VectorXd mTargetPositions, mTargetVelocities;
 	Eigen::VectorXd mModifiedTargetPositions, mModifiedTargetVelocities;
+	Eigen::Vector3d mTarget;
 
 	std::vector<Eigen::VectorXd> mRecords, mReferenceRecords;
+	std::vector<Eigen::Vector3d> mTargetRecords;
 
 };
 

@@ -186,6 +186,7 @@ class TrackingController:
 		# generate trajectories
 		self.generateTrajectory()
 		self._env.setReferenceTrajectories(self._trajectoryLength, self._trajectory)
+		self._env.setReferenceTargetTrajectories(self._trajectoryLength, self._targetTrajectory)
 
 		# initialize adaptive sampler
 		self._adaptiveSampler = AdaptiveSampler(self._adaptiveSamplingSize)
@@ -292,7 +293,7 @@ class TrackingController:
 
 	def generateTrajectory(self):
 		if self._useOrigin:
-			self._trajectory, self._goalTrajectory = self._motionGenerator.getOriginalTrajectory(self._trajectoryLength, self._originOffset)
+			self._trajectory, self._targetTrajectory = self._motionGenerator.getOriginalTrajectory(self._trajectoryLength, self._originOffset)
 		else:
 			traj_filename = "../trajectories/{}/traj.npy".format(self._motion)
 			goal_filename = "../trajectories/{}/goal.npy".format(self._motion)
@@ -305,11 +306,11 @@ class TrackingController:
 					# exit()
 					self._trajectoryLength = traj.shape[1]
 				self._trajectory = traj[0][:self._trajectoryLength]
-				self._goalTrajectory = goal_traj[0][:self._trajectoryLength]
+				self._targetTrajectory = goal_traj[0][:self._trajectoryLength]
 			else:
 				traj, goal_traj = self._motionGenerator.getTrajectory(self._trajectoryLength)
 				self._trajectory = traj[0]
-				self._goalTrajectory = goal_traj[0]
+				self._targetTrajectory = goal_traj[0]
 
 	def computeTDAndGAE(self):
 		self._collectedStates = [None] * self._summary_num_transitions_per_iteration

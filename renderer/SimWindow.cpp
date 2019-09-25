@@ -78,6 +78,12 @@ SimWindow(std::string filename)
 		this->mRefRecords.push_back(ref);
 	}
 
+	for(int i = 0; i < this->mTotalFrame; i++){
+		std::getline(ifs, line);
+		Eigen::VectorXd ref = ICC::Utils::stringToVectorXd(line, 3);
+		this->mTargetRecords.push_back(ref);
+	}
+
 
 	mDisplayTimeout = 33;
 	mCurFrame = 0;
@@ -188,6 +194,89 @@ DrawGround()
 	double ground_height = 0.0;//this->mWorld->getSkeleton("Ground")->getRootBodyNode()->getCOM()[1]+0.5;
 	GUI::DrawGround((int)com_root[0], (int)com_root[2], ground_height);
 }
+
+void 
+SimWindow::
+DrawFlag(){
+    Eigen::Vector2d goal;
+    goal[0] = this->mTargetRecords[mCurFrame][0];
+    goal[1] = this->mTargetRecords[mCurFrame][2];
+
+    // glDisable(GL_LIGHTING);
+    glLineWidth(10.0);
+
+    Eigen::Vector3d orange= dart::Color::Orange();
+    glColor3f(orange[0],orange[1],orange[2]);
+    Eigen::Vector3d A, B, C;
+    A = Eigen::Vector3d(0, 1.6, 0);
+    B = Eigen::Vector3d(0, 1.97, 0);
+    C = Eigen::Vector3d(0.3, 1.85, 0.3);
+//            glVertex3f(this->mGoalRecords[this->mCurFrame][0], 1.6, this->mGoalRecords[this->mCurFrame][2]);
+//            glVertex3f(this->mGoalRecords[this->mCurFrame][0], 1.97, this->mGoalRecords[this->mCurFrame][2]);
+//            glVertex3f(this->mGoalRecords[this->mCurFrame][0]+0.3, 1.85, this->mGoalRecords[this->mCurFrame][2]+0.3);
+//
+//
+
+    {
+        glPushMatrix();
+        glTranslatef(goal[0], 0.05, goal[1]);
+        glRotatef(90, 1, 0, 0);
+//            std::cout<<orange.transpose()<<std::endl; 1, 0.63, 0
+        glColor3f(0.9, 0.53, 0.1);
+        GUI::DrawCylinder(0.04, 0.1);
+        glPopMatrix();
+
+        glPushMatrix();
+        glTranslatef(goal[0], 1.0, goal[1]);
+        glRotatef(90, 1, 0, 0);
+//            std::cout<<orange.transpose()<<std::endl; 1, 0.63, 0
+        glColor3f(0.9, 0.53, 0.1);
+        GUI::DrawCylinder(0.02, 2);
+        glPopMatrix();
+
+        glPushMatrix();
+        glTranslatef(goal[0], 2.039, goal[1]);
+        glColor3f(0.9, 0.53, 0.1);
+        GUI::DrawSphere(0.04);
+        glPopMatrix();
+    }
+    {
+        glPushMatrix();
+        glTranslatef(goal[0], 0.0, goal[1]);
+
+
+        double initTheta = 40.0*std::cos(240/120.0);
+        glRotated(initTheta, 0, 1, 0);
+
+        int slice = 100;
+        for (int i = 0; i < slice; i++) {
+            Eigen::Vector3d p[5];
+            p[1] = A + (C - A) * i / slice;
+            p[2] = A + (C - A) * (i + 1) / slice;
+            p[3] = B + (C - B) * (i + 1) / slice;
+            p[4] = B + (C - B) * i / slice;
+
+            for (int j = 4; j >= 1; j--) p[j][0] -= p[1][0], p[j][2] -= p[1][2];
+
+            glPushMatrix();
+            glRotated(1.0*std::cos(initTheta + (double)i/slice*2*M_PI) * std::exp(-(double)(slice-i)/slice), 0, 1, 0);
+
+            glBegin(GL_QUADS);
+            for (int j = 1; j <= 4; j++) glVertex3d(p[j][0], p[j][1], p[j][2]);
+            glEnd();
+
+            glTranslatef(p[2][0], 0, p[2][2]);
+
+        }
+        for (int i = 0; i < slice; i++) {
+            glPopMatrix();
+        }
+
+        glPopMatrix();
+    }
+
+}
+
 void
 SimWindow::
 Display() 
@@ -209,11 +298,13 @@ Display()
     glScalef(1.0, -1.0, 1.0);
 	initLights(com_root[0], com_root[2], com_front[0], com_front[2]);
 	DrawSkeletons();
+	DrawFlag();
 	glPopMatrix();
 	initLights(com_root[0], com_root[2], com_front[0], com_front[2]);
 	// glColor4f(0.7, 0.0, 0.0, 0.40);  /* 40% dark red floor color */
 	DrawGround();
 	DrawSkeletons();
+	DrawFlag();
 	glDisable(GL_BLEND);
 
 
