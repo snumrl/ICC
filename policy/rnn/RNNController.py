@@ -9,7 +9,7 @@ from util.Pose2d import Pose2d
 from IPython import embed
 from copy import deepcopy
 
-from Configurations import Configurations
+from rl.Configurations import Configurations
 from rnn.RNNModel import RNNModel
 from rnn.RNNConfig import RNNConfig
 
@@ -81,12 +81,12 @@ class RNNController(object):
 			t = self.pose[j].relativePose(t)
 			t = t.p
 			t_len = math.sqrt(t[0]*t[0] + t[1]*t[1])
-			clip_len = 150
+			clip_len = 250
 			if (t_len > clip_len):
 				ratio = clip_len/t_len
 				t[0] *= ratio
 				t[1] *= ratio
-
+			controls[j][:2] = t
 			controls[j] = RNNConfig.instance().xNormal.normalize_l(controls[j])
 		controls = np.array(controls, dtype=np.float32)
 		# run rnn model

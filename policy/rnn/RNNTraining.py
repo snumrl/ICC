@@ -6,10 +6,10 @@ from Utils import Plot
 
 from util.Pose2d import Pose2d
 from util.dataLoader import loadData
-from RNNConfig import RNNConfig
+from rnn.RNNConfig import RNNConfig
+from rnn.RNNModel import RNNModel
 from IPython import embed
 
-motion_name = "walkrunfall"
 
 class MotionData(object):
 	def __init__(self):
@@ -27,7 +27,6 @@ class MotionData(object):
 	 		batch_y.append(self.y_data[idx:idx+RNNConfig.instance().stepSize+1])
 	 	batch_x = np.array(batch_x, dtype=np.float32)
 	 	batch_y = np.array(batch_y, dtype=np.float32)
-
 	 	return batch_x, batch_y
 
 
@@ -76,7 +75,7 @@ class MotionData(object):
 		# root, root height, Head_End, LeftHand
 		foot_indices = [2, 3, 5, 6]
 		dist_list = []
-		for i in range(STEP_SIZE):
+		for i in range(RNNConfig.instance().stepSize):
 			if (i == 0):
 				prev_pose = prev_motion[:,r_idx:]
 			else:
@@ -138,18 +137,17 @@ class MotionData(object):
 
 
 
-if __name__ == "__main__":
+def train(motion_name):
 	RNNConfig.instance().loadData(motion_name)
 	data = MotionData()
 	model = RNNModel()
 	optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
 
-	# TODO
 	loss_name = ["total", "root", "pose", "foot"]
 	loss_list = np.array([[]]*4)
 	loss_list_smoothed = np.array([[]]*4)
 	st = time.time()
-	for c in range(10000000):
+	for c in range(100000000):
 		batch_x, batch_y = data.getBatch()
 		with tf.GradientTape() as tape:
 			generated = model.forwardMultiple(batch_x, batch_y[:,0])
@@ -165,7 +163,7 @@ if __name__ == "__main__":
 			Plot([*zip(loss_list_smoothed, loss_name)], "loss_s", 1)
 			print("Elapsed : {:8.2f}s, Total : {:.6f}, [ root : {:.6f}, pose : {:.6f}, foot : {:.6f} ]".format(time.time()-st,*loss_detail))
 
-			model.save("../motions/train/{}/network".format(motion_name))
+			model.save("../motions/{}/train/network".format(motion_name))
 
 
 

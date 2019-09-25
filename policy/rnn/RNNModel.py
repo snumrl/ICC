@@ -36,7 +36,7 @@ class RNNModel(object):
 		return outputs
 
 	def forwardMultiple(self, controls, initial_pose):
-		self.state = self.resetState(controls.shape[0])
+		self.resetState(controls.shape[0])
 		controls = tf.transpose(controls, perm=[1,0,2])
 		outputList = []
 		pose = initial_pose

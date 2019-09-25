@@ -15,10 +15,10 @@ class RNNManager(object):
 		print("Loading RNN : {}".format(self.motion))
 		self.controller = RNNController(self.motion, self.num_slaves)
 
-		self.target_dist_lower = 300.0
-		self.target_dist_upper = 350.0
-		self.target_angle_upper = math.pi*0.1
-		self.target_angle_lower = math.pi*(-0.1)
+		self.target_dist_lower = 600.0
+		self.target_dist_upper = 650.0
+		self.target_angle_upper = math.pi*0.5
+		self.target_angle_lower = math.pi*(-0.5)
 		self.targets = []
 		self.target_of_target = []
 		self.target_height = 88.
@@ -62,7 +62,6 @@ class RNNManager(object):
 				dy = cur_pose[1] - target[1]
 				if(dx*dx+dy*dy<100*100):
 					self.targets[i] = self.randomTarget(i)
-					print(self.targets)
 		return self.controller.step(self.targets)
 
 

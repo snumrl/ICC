@@ -856,8 +856,8 @@ DrawGround(int com_x, int com_z, double ground_height){
         glLineWidth(3.0);
         glBegin(GL_LINE_STRIP);
         glNormal3f(0.0, 1.0, 0.0);
-        glVertex3f(x+com_x, 0, -radius_b);
-        glVertex3f(x+com_x, 0, +radius_b);
+        glVertex3f(x+com_x, 0, -radius_b+com_z);
+        glVertex3f(x+com_x, 0, +radius_b+com_z);
         glEnd();
 
 
@@ -865,8 +865,8 @@ DrawGround(int com_x, int com_z, double ground_height){
 
         glBegin(GL_LINE_STRIP);
         glNormal3f(0.0, 1.0, 0.0);
-        glVertex3f(-radius_b,0,x+com_x);
-        glVertex3f(+radius_b,0,x+com_x);
+        glVertex3f(-radius_b+com_x,0,x+com_z);
+        glVertex3f(+radius_b+com_x,0,x+com_z);
         glEnd();
     }
     double wall_height = 150;

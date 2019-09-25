@@ -7,21 +7,21 @@ import datetime
 
 import numpy as np
 import tensorflow as tf
-my_devices = tf.config.experimental.list_physical_devices(device_type='GPU')
-tf.config.experimental.set_visible_devices(devices= my_devices, device_type='GPU')
+my_devices = tf.config.experimental.list_physical_devices(device_type='CPU')
+tf.config.experimental.set_visible_devices(devices= my_devices, device_type='CPU')
 from tensorflow.python import pywrap_tensorflow
 
-from AdaptiveSampler import AdaptiveSampler
-import Utils
+from rl.AdaptiveSampler import AdaptiveSampler
+import util.Util
 
-from ReplayBuffer import ReplayBuffer
-from ReplayBuffer import Transition
-from ReplayBuffer import Episode
+from rl.ReplayBuffer import ReplayBuffer
+from rl.ReplayBuffer import Transition
+from rl.ReplayBuffer import Episode
 
-from RunningMeanStd import RunningMeanStd
+from rl.RunningMeanStd import RunningMeanStd
 from environment_wrapper import environment
-from Configurations import Configurations
-from Utils import Plot
+from rl.Configurations import Configurations
+from util.Util import Plot
 
 from rnn.RNNManager import RNNManager
 
@@ -125,7 +125,7 @@ class TrackingController:
 		self._summary_sim_time = 0
 		self._summary_train_time = 0
 
-		self._timeChecker = Utils.TimeChecker()
+		self._timeChecker = util.Util.TimeChecker()
 
 	def initialize(self, configuration_filepath=""):
 		self._configurationFilePath = configuration_filepath
