@@ -25,7 +25,7 @@ public:
 	/// Get current target
 	Eigen::Vector3d getTarget(int time=0){
 		if(this->mTotalFrame == 0) return Eigen::Vector3d::Zero();
-		return this->mReferenceTargetTrajectory[time];
+		return this->mReferenceTargetTrajectory[this->mCurFrame + time];
 	}
 
 	/// Set reference motion from motion generator

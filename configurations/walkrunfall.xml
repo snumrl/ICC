@@ -10,7 +10,7 @@
 		<LearningRate policy="2e-4" value="1e-3" decay="0.9993"/>
 		<BatchSize>1024</BatchSize>
 		<TransitionsPerIteration>20000</TransitionsPerIteration>
-		<Trajectory length="2000" origin="False" offset="0"/>
+		<Trajectory length="1000" origin="True" offset="0"/>
 		<Evaluation>False</Evaluation>
 	</Learning>
 	<Simulation>
