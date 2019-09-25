@@ -79,7 +79,12 @@ class Configurations:
 				print("Configurations.py : loadData : Unavailable evaluation type")
 				exit()
 
-		self._adaptiveSamplingSize = min(self._trajectoryLength/10, 1000)
+			sim = config.getElementsByTagName("Simulation")[0]
+
+			self._TCMotionSize = int(sim.getElementsByTagName("TCMotionSize")[0].firstChild.nodeValue)
+			self._MGMotionSize = int(sim.getElementsByTagName("MGMotionSize")[0].firstChild.nodeValue)
+
+		self._adaptiveSamplingSize = int(min(self._trajectoryLength/10, 1000))
 
 	@property
 	def policyLayerSize(self):
@@ -162,7 +167,6 @@ class Configurations:
 	def adaptiveSamplingSize(self):
 		return self._adaptiveSamplingSize
 	
-
 	@property
 	def useEvaluation(self):
 		return self._useEvaluation
@@ -171,6 +175,13 @@ class Configurations:
 	def sessionName(self):
 		return self._sessionName
 		
+	@property
+	def TCMotionSize(self):
+		return self._TCMotionSize
+		
+	@property
+	def MGMotionSize(self):
+		return self._MGMotionSize
 	
 	
 	

@@ -65,7 +65,6 @@ convertFromMG(const Eigen::VectorXd& input)
 	converted_motion[4] = input[1]*0.01 + Configurations::instance().getRootHeightOffset();
 	converted_motion[5] = input[0]*0.01;
 	// root orientation
-	// std::cout << input[3] << std::endl;
 	Eigen::Quaterniond root_y_ori(Eigen::AngleAxisd(input[3], Eigen::Vector3d::UnitY()));
 	Eigen::Quaterniond hip_ori = Utils::dartToQuat(input.segment<3>(4));
 	root_y_ori = root_y_ori * hip_ori;

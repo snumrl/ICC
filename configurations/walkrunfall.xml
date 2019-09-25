@@ -10,12 +10,10 @@
 		<LearningRate policy="2e-4" value="1e-3" decay="0.9993"/>
 		<BatchSize>1024</BatchSize>
 		<TransitionsPerIteration>20000</TransitionsPerIteration>
-		<Trajectory length="20000" origin="True" offset="0"/>
+		<Trajectory length="2000" origin="False" offset="0"/>
 		<Evaluation>False</Evaluation>
 	</Learning>
 	<Simulation>
-		<ReferenceType>Fixed</ReferenceType>
-		<EarlyTermination>True</EarlyTermination>
 		<Predictions>0</Predictions>
 		<SimulationHz>600</SimulationHz>
 		<ControlHz>30</ControlHz>
@@ -23,12 +21,13 @@
 		<JointDamping>0.05</JointDamping>
 		<RootHeightOffset>0.0</RootHeightOffset>
 		<RewardType>Mul</RewardType>
+		<EarlyTermination>False</EarlyTermination>
 		<TerminalCondition>
 			<RootDiff>1.0</RootDiff>
 			<RootAngleDiff>2.2</RootAngleDiff>
 			<RootHeight lower="0.0" upper="2.0"/>
 		</TerminalCondition>
-		<TCMotionSize>54</TCMotionSize>
+		<TCMotionSize>52</TCMotionSize>
 		<MGMotionSize>111</MGMotionSize>
 	</Simulation>
 </Configuration>
