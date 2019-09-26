@@ -125,7 +125,7 @@ class TrackingController:
 
 		self._timeChecker = util.Util.TimeChecker()
 
-	def initialize(self, configuration_filepath=""):
+	def initialize(self, configuration_filepath="", trajectory_length=None, origin=None, origin_offset=None):
 		self._configurationFilePath = configuration_filepath
 		Configurations.instance().loadData(configuration_filepath)
 
@@ -143,10 +143,20 @@ class TrackingController:
 
 		self._batchSize 				= Configurations.instance().batchSize
 		self._transitionsPerIteration 	= Configurations.instance().transitionsPerIteration
+ 
 
 		self._trajectoryLength          = Configurations.instance().trajectoryLength
+		if trajectory_length is not None:
+			self._trajectoryLength = trajectory_length
+
 		self._useOrigin					= Configurations.instance().useOrigin
+		if origin is not None:
+			self._useOrigin = origin
+
 		self._originOffset				= Configurations.instance().originOffset
+		if origin_offset is not None:
+			self._originOffset = origin_offset
+
 
 		self._adaptiveSamplingSize		= Configurations.instance().adaptiveSamplingSize
 
@@ -375,8 +385,6 @@ class TrackingController:
 
 	def followReference(self):
 		# create logging directory
-		self._directory = self._sessionName
-
 		if not os.path.exists("../output/"):
 			os.mkdir("../output/")
 		self._directory = '../output/'+self._sessionName+'/'
@@ -417,8 +425,6 @@ class TrackingController:
 
 	def runTraining(self, num_iteration=1):
 		# create logging directory
-		self._directory = self._sessionName
-
 		if not os.path.exists("../output/"):
 			os.mkdir("../output/")
 		self._directory = '../output/'+self._sessionName+'/'
@@ -591,7 +597,10 @@ class TrackingController:
 
 		if not os.path.exists("../output/"):
 			os.mkdir("../output/")
-		self._directory = '../output/_play/'
+		self._directory = '../output/'+self._sessionName+'/'
+		if not os.path.exists(self._directory):
+			os.mkdir(self._directory)
+		self._directory = '../output/'+self._sessionName+'/play/'
 		if not os.path.exists(self._directory):
 			os.mkdir(self._directory)
 
@@ -689,6 +698,8 @@ class TrackingController:
 		print("Transitions per iter : {}".format(self._transitionsPerIteration))
 		print("PPO clip range       : {}".format(self._clipRange))
 		print("Trajectory length    : {}".format(self._trajectoryLength))
+		print("Use original         : {}".format(self._useOrigin))
+		print("Origin offset        : {}".format(self._originOffset))
 		print("Loaded netowrks      : {}".format(self._loadedNetwork))
 		print("===============================================================")
 
@@ -707,6 +718,8 @@ class TrackingController:
 		out.write("Transitions per iter : {}\n".format(self._transitionsPerIteration))
 		out.write("PPO clip range       : {}\n".format(self._clipRange))
 		out.write("Trajectory length    : {}\n".format(self._trajectoryLength))
+		out.write("Use original         : {}\n".format(self._useOrigin))
+		out.write("Origin offset        : {}\n".format(self._originOffset))
 		out.write("Loaded netowrks      : {}\n".format(self._loadedNetwork))
 		out.close()
 

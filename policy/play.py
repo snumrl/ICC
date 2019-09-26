@@ -12,7 +12,12 @@ if __name__=="__main__":
 	args = parser.parse_args()
 
 	tracking_controller = TrackingController()
-	tracking_controller.initialize(configuration_filepath='{}/configuration.xml'.format(args.network))
+	tracking_controller.initialize(
+		configuration_filepath='{}/configuration.xml'.format(args.network),
+		trajectory_length=2000,
+		origin=False,
+		origin_offset=0
+	)
 	if args.network is not None:
 		tracking_controller.loadNetworks(args.network, args.network_type)
 	tracking_controller.play()

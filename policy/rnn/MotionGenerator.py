@@ -1,8 +1,13 @@
-from rnn.RNNController import RNNController
+import tensorflow as tf
+import numpy as np
+
+from rnn.RNNModel import RNNModel
+from rnn.RNNConfig import RNNConfig
+from rl.Configurations import Configurations
+from util.dataLoader import loadData
 from util.Pose2d import Pose2d
 from copy import deepcopy
 
-import numpy as np
 from IPython import embed
 import time
 import math
@@ -12,17 +17,33 @@ class MotionGenerator(object):
 		np.random.seed(int(time.time()))
 		self.num_slaves = num_slaves
 		self.motion = motion
-		print("Loading RNN : {}".format(self.motion))
-		self.controller = RNNController(self.motion, self.num_slaves)
 
+		RNNConfig.instance().loadData(motion)
+
+
+		# initialize kinematic poses(root and character poses)
+		self.rootPose = []
+		self.characterPose = []
+		self.initialCharacterPose = np.zeros(RNNConfig.instance().yDimension, dtype=np.float32)
+		for _ in range(self.num_slaves):
+			self.rootPose.append(Pose2d())
+			self.characterPose.append(self.initialCharacterPose)
+
+		self.model = None
+		self.isModelLoaded = False
+
+
+		# parameter for root height
+		self.target_height = 88.
+
+		# random target parameters
 		self.target_dist_lower = 600.0
 		self.target_dist_upper = 650.0
 		self.target_angle_upper = math.pi*0.5
 		self.target_angle_lower = math.pi*(-0.5)
-		self.targets = []
-		self.target_of_target = []
-		self.target_height = 88.
 
+		# initialize targets
+		self.targets = []
 		for i in range(self.num_slaves):
 			self.targets.append(self.randomTarget(i));
 
@@ -30,19 +51,39 @@ class MotionGenerator(object):
 		
 
 	def resetAll(self, targets=None):
-		self.controller.resetAll()
+		# reset root and character poses
+		self.characterPose = np.array(self.characterPose)
+		for i in range(self.num_slaves):
+			self.rootPose[i] = Pose2d()
+			self.characterPose[i] = self.initialCharacterPose
+
+		# reset state
+		if self.model is not None:
+			self.model.resetState(self.num_slaves)
+
 		if targets is not None:
 			self.targets = targets
 		for _ in range(100):
 			self.getReferences(targets)
 
 
+	def loadNetworks(self):
+		# initialize rnn model
+		self.model = RNNModel()
+
+		# load network
+		self.model.restore("../motions/{}/train/network".format(self.motion))
+		self.isModelLoaded = True
+
+
+		self.resetAll()
+
 	def randomTarget(self, index):
 		target_dist = np.random.uniform(self.target_dist_lower, self.target_dist_upper)
 		target_angle = np.random.uniform(self.target_angle_lower, self.target_angle_upper)
 		local_target = [target_dist*math.cos(target_angle), target_dist*math.sin(target_angle)]
 		local_pose = Pose2d(local_target)
-		target = self.controller.pose[index].localToGlobal(local_pose).p
+		target = self.rootPose[index].localToGlobal(local_pose).p
 		if self.motion == "walkrunfall":
 			target = target + [self.target_height]
 		else:
@@ -50,19 +91,80 @@ class MotionGenerator(object):
 	
 		return np.array(target, dtype=np.float32)
 
+	def convertAndClipTarget(self, targets):
+		# clip target and change to local coordinate
+		targets = deepcopy(targets)
+		for j in range(self.num_slaves):
+			t = targets[j][:2]
+			t = Pose2d(t)
+			t = self.rootPose[j].relativePose(t)
+			t = t.p
+			t_len = math.sqrt(t[0]*t[0] + t[1]*t[1])
+			clip_len = 250
+			if (t_len > clip_len):
+				ratio = clip_len/t_len
+				t[0] *= ratio
+				t[1] *= ratio
+			targets[j][:2] = t
+			targets[j] = RNNConfig.instance().xNormal.normalize_l(targets[j])
+		return np.array(targets, dtype=np.float32)
+
+
+
+
+	# convert local to global
+	def getGlobalPositions(self, output, index):
+		output = output[2:] # first two elements is about foot contact
+		# move root
+		self.rootPose[index] = self.rootPose[index].transform(output)
+
+		points = [[0, output[3], 0]]
+
+		positions = np.zeros(Configurations.instance().TCMotionSize)
+
+		# root 
+		positions[0:3] = self.rootPose[index].global_point_3d(points[0])
+		positions[3:4] = self.rootPose[index].rotatedAngle()
+
+		# other joints
+		output = output[4:] # 4 : root
+		output = output[57:] # 57 : 3d positions
+		positions[4:52] = output[0:48] # only use joint angles
+
+		return positions
+
 
 	def getReferences(self, targets=None):
+		# if target is given, set target
 		if targets is not None:
 			self.targets = targets
+		# else use random generated targets which are generated when the charater is close enough
 		else:
 			for i in range(self.num_slaves):
-				cur_pose = self.controller.pose[i].p
+				cur_pose = self.rootPose[i].p
 				target = self.targets[i]
 				dx = cur_pose[0] - target[0]
 				dy = cur_pose[1] - target[1]
 				if(dx*dx+dy*dy<100*100):
 					self.targets[i] = self.randomTarget(i)
-		return self.controller.step(self.targets)
+
+		convertedTargets = self.convertAndClipTarget(self.targets)
+
+		# run rnn model
+		if self.isModelLoaded is False:
+			self.loadNetworks()
+		self.characterPose = self.model.forwardOneStep(tf.convert_to_tensor(convertedTargets), tf.convert_to_tensor(self.characterPose), training=False)
+		
+		# convert outputs to global coordinate
+		output = self.characterPose.numpy()
+		pose_list = []
+		for j in range(self.num_slaves):
+			pose = RNNConfig.instance().yNormal.de_normalize_l(output[j])
+			pose = RNNConfig.instance().yNormal.get_data_with_zeros(pose)
+			pose = self.getGlobalPositions(pose, j)
+			pose_list.append(pose)
+
+		return pose_list
 
 
 	def getTrajectory(self, frame=2000, targets=None):
@@ -83,7 +185,29 @@ class MotionGenerator(object):
 		return trajectories, target_trajectories
 
 	def getOriginalTrajectory(self, frame, origin_offset=0):
-		return self.controller.getOriginalTrajectory(frame, origin_offset)
+		x_dat = loadData("../motions/{}/data/xData.dat".format(self.motion))
+		y_dat = loadData("../motions/{}/data/yData.dat".format(self.motion))
+
+		x_dat = x_dat[1+origin_offset:frame+1+origin_offset]
+		y_dat = y_dat[1+origin_offset:frame+1+origin_offset]
+
+		x_dat = np.array([RNNConfig.instance().xNormal.get_data_with_zeros(RNNConfig.instance().xNormal.de_normalize_l(x)) for x in x_dat])
+		y_dat = np.array([RNNConfig.instance().yNormal.get_data_with_zeros(RNNConfig.instance().yNormal.de_normalize_l(y)) for y in y_dat])
+
+
+		self.resetAll()
+
+		trajectories = []
+		targets = []
+
+		for x, y in zip(x_dat, y_dat):
+			localPose = Pose2d(x[:2])
+			targets.append(self.rootPose[0].localToGlobal(localPose).p)
+			trajectories.append(self.getGlobalPositions(y, 0))
+
+		trajectories = np.asarray(trajectories, dtype=np.float32)
+		targets = np.asarray(targets, dtype=np.float32)
+		return trajectories, targets
 
 	def getTargets(self):
 		return np.asarray(self.targets, dtype=np.float32)
