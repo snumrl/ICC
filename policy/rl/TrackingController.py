@@ -125,12 +125,21 @@ class TrackingController:
 
 		self._timeChecker = util.Util.TimeChecker()
 
-	def initialize(self, configuration_filepath="", trajectory_length=None, origin=None, origin_offset=None):
+	def initialize(self, 
+		configuration_filepath="", 
+		session_name="default_session",
+		num_slaves=8,
+		trajectory_length=2000, 
+		origin=True, 
+		origin_offset=0,
+		use_evaluation=False
+	):
+
 		self._configurationFilePath = configuration_filepath
 		Configurations.instance().loadData(configuration_filepath)
 
 		# get parameters from config
-		self._numSlaves 				= Configurations.instance().numSlaves
+		self._numSlaves 				= num_slaves
 		self._motion 					= Configurations.instance().motion
 
 		self._gamma 					= Configurations.instance().gamma
@@ -144,29 +153,19 @@ class TrackingController:
 		self._batchSize 				= Configurations.instance().batchSize
 		self._transitionsPerIteration 	= Configurations.instance().transitionsPerIteration
  
+		self._trajectoryLength 			= trajectory_length
+		self._useOrigin 				= origin
+		self._originOffset 				= origin_offset
 
-		self._trajectoryLength          = Configurations.instance().trajectoryLength
-		if trajectory_length is not None:
-			self._trajectoryLength = trajectory_length
-
-		self._useOrigin					= Configurations.instance().useOrigin
-		if origin is not None:
-			self._useOrigin = origin
-
-		self._originOffset				= Configurations.instance().originOffset
-		if origin_offset is not None:
-			self._originOffset = origin_offset
-
-
-		self._adaptiveSamplingSize		= Configurations.instance().adaptiveSamplingSize
+		self._adaptiveSamplingSize		= int(min(self._trajectoryLength/10, 1000))
 
 		# if useEvaluation is true, evaluation of training progress is performed by evaluation function, else it is done by transitions collected in training session.
-		self._useEvaluation 			= Configurations.instance().useEvaluation
+		self._useEvaluation 			= use_evaluation
 
-		self._sessionName				= Configurations.instance().sessionName
+		self._sessionName				= session_name
 
 		# initialize environment
-		self._env = environment(configuration_filepath)
+		self._env = environment(configuration_filepath, self._numSlaves)
 		self._stateSize = self._env.getStateSize()
 		self._actionSize = self._env.getActionSize()
 		self._rms = RunningMeanStd(shape=(self._stateSize))
@@ -238,17 +237,55 @@ class TrackingController:
 		self._isNetworkLoaded = False
 		self._loadedNetwork = ""
 
+	def initializeForInteractiveControl(self, num_slaves, motion, state_size, action_size):		
+		self._configurationFilePath = '{}/configuration.xml'.format(args.network)
+		Configurations.instance().loadData(configuration_filepath)
+		# get parameters from config
+		self._numSlaves 				= Configurations.instance().numSlaves
+		self._motion 					= Configurations.instance().motion
+
+		# initialize environment
+		self._stateSize = self._env.getStateSize()
+		self._actionSize = self._env.getActionSize()
+		self._rms = RunningMeanStd(shape=(self._stateSize))
+
+		# initialize networks
+		self._policy = Policy(self._actionSize)
+		self._policy.build(self._stateSize)
+		self._valueFunction = ValueFunction()
+		self._valueFunction.build(self._stateSize)
+
+		# initialize RunningMeanStd
+		self._rms = RunningMeanStd(shape=(self._stateSize))
+
+		# initialize motion generator
+		self._motionGenerator = MotionGenerator(1, self._motion)
+
+
+		# initialize checkpoint 
+		self._ckpt = tf.train.Checkpoint(
+			policy_mean=self._policy.mean,
+			policy_logstd=self._policy.logstd,
+			valueFunction=self._valueFunction.value
+			# policyOptimizer=self._policyOptimizer,
+			# valueFunctionOptimizer=self._valueFunctionOptimizer
+		)
+
+		self._isNetworkLoaded = False
+		self._loadedNetwork = ""
+
+
 	def decayedLearningRatePolicy(self):
 		return self._learningRatePolicy
 
 
 	# load trained networks & rms
-	def loadNetworks(self, directory, network_num=None):
+	def loadNetworks(self, directory, network_type=None):
 		# load rms
 		rms_dir = "{}/rms/".format(directory)
-		if network_num is not None:
-			mean_dir = rms_dir+"mean_{}.npy".format(network_num)
-			var_dir = rms_dir+"var_{}.npy".format(network_num)
+		if network_type is not None:
+			mean_dir = rms_dir+"mean_{}.npy".format(network_type)
+			var_dir = rms_dir+"var_{}.npy".format(network_type)
 		else:
 			mean_dir = rms_dir+"mean.npy"
 			var_dir = rms_dir+"var.npy"
@@ -260,8 +297,8 @@ class TrackingController:
 			self._rms.count = 200000000
 
 		# load netowrk
-		if network_num is not None:
-			network_dir = "{}/network-{}".format(directory, network_num)
+		if network_type is not None:
+			network_dir = "{}/network-{}".format(directory, network_type)
 		else:
 			network_dir = "{}/network".format(directory)
 		print("Loading networks from {}".format(network_dir))
@@ -388,6 +425,8 @@ class TrackingController:
 		if not os.path.exists("../output/"):
 			os.mkdir("../output/")
 		self._directory = '../output/'+self._sessionName+'/'
+		if not os.path.exists(self._directory):
+			os.mkdir(self._directory)
 
 		directory = self._directory + "trajectory/"
 		if not os.path.exists(directory):
@@ -420,7 +459,7 @@ class TrackingController:
 			if all(t is True for t in terminated):
 				break
 
-		self._env.writeRecords(self._directory+"ref_")
+		self._env.writeRecords(self._directory)
 
 
 	def runTraining(self, num_iteration=1):
@@ -598,9 +637,6 @@ class TrackingController:
 		if not os.path.exists("../output/"):
 			os.mkdir("../output/")
 		self._directory = '../output/'+self._sessionName+'/'
-		if not os.path.exists(self._directory):
-			os.mkdir(self._directory)
-		self._directory = '../output/'+self._sessionName+'/play/'
 		if not os.path.exists(self._directory):
 			os.mkdir(self._directory)
 

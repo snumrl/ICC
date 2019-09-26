@@ -66,6 +66,7 @@ class MotionGenerator(object):
 		else:
 			for i in range(self.num_slaves):
 				self.targets[i] = self.randomTarget(i)
+				
 		for _ in range(100):
 			self.getReferences(targets)
 

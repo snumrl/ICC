@@ -8,11 +8,11 @@
 #include "Configurations.h"
 
 EnvironmentWrapper::
-EnvironmentWrapper(std::string configuration_filepath)
+EnvironmentWrapper(std::string configuration_filepath, int num_slaves)
 {
 	ICC::Configurations::instance().LoadConfigurations(configuration_filepath);
 
-	this->mNumSlaves = ICC::Configurations::instance().getNumSlaves();
+	this->mNumSlaves = num_slaves;
 	dart::math::seedRand();
 	omp_set_num_threads(this->mNumSlaves);
 	for(int id = 0; id < this->mNumSlaves; id++){
@@ -236,7 +236,7 @@ BOOST_PYTHON_MODULE(environment_wrapper)
 	Py_Initialize();
 	np::initialize();
 
-	class_<EnvironmentWrapper>("environment",init<std::string>())
+	class_<EnvironmentWrapper>("environment",init<std::string, int>())
 		.def("getStateSize",&EnvironmentWrapper::getStateSize)
 		.def("getActionSize",&EnvironmentWrapper::getActionSize)
 		.def("step",&EnvironmentWrapper::step)

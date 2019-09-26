@@ -16,7 +16,14 @@ if __name__=="__main__":
 	if args.config is None:
 		print("Configuration file path required!")
 		exit()
+		
 	with tf.device("/cpu:0"):
 		tracking_controller = TrackingController()
-		tracking_controller.initialize(configuration_filepath=args.config)
+		tracking_controller.initialize(
+			configuration_filepath=args.config,
+			session_name="follow",
+			trajectory_length=2000,
+			origin=False,
+			origin_offset=0
+		)
 		tracking_controller.followReference()

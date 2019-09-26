@@ -25,10 +25,6 @@ class Configurations:
 		print("Loading {} ...".format(filename))
 		with parse(filename) as doc:
 			config = doc.getElementsByTagName("Configuration")[0]
-
-			self._numSlaves = int(config.getAttribute("numSlaves"))
-			self._sessionName = config.getAttribute("name")
-
 			learn = config.getElementsByTagName("Learning")[0]
 
 			self._motion = learn.getElementsByTagName("Motion")[0].firstChild.nodeValue
@@ -55,35 +51,10 @@ class Configurations:
 			self._batchSize = int(learn.getElementsByTagName("BatchSize")[0].firstChild.nodeValue)
 			self._transitionsPerIteration = int(learn.getElementsByTagName("TransitionsPerIteration")[0].firstChild.nodeValue)
 
-			trajectory = learn.getElementsByTagName("Trajectory")[0]
-			self._trajectoryLength = int(trajectory.getAttribute("length"))
-
-			origin = trajectory.getAttribute("origin")
-			if origin == "True":
-				self._useOrigin = True
-			elif origin == "False":
-				self._useOrigin = False
-			else:
-				print("Configurations.py : loadData : Unavailable origin type")
-				exit()
-
-			self._originOffset = int(trajectory.getAttribute("offset"))
-
-			evaluation = learn.getElementsByTagName("Evaluation")[0].firstChild.nodeValue
-			if evaluation == "True":
-				self._useEvaluation = True
-			elif evaluation == "False":
-				self._useEvaluation = False
-			else:
-				print("Configurations.py : loadData : Unavailable evaluation type")
-				exit()
-
 			sim = config.getElementsByTagName("Simulation")[0]
 
 			self._TCMotionSize = int(sim.getElementsByTagName("TCMotionSize")[0].firstChild.nodeValue)
 			self._MGMotionSize = int(sim.getElementsByTagName("MGMotionSize")[0].firstChild.nodeValue)
-
-		self._adaptiveSamplingSize = int(min(self._trajectoryLength/10, 1000))
 
 	@property
 	def policyLayerSize(self):

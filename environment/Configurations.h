@@ -90,10 +90,6 @@ public:
 		return this->mRootAngleDiffThreshold;
 	}
 
-	int getNumSlaves(){
-		return this->mNumSlaves;
-	}
-
 	int getTCMotionSize(){
 		return this->mTCMotionSize;
 	}
@@ -110,9 +106,6 @@ public:
 		}
 
 		TiXmlElement *config = doc.FirstChildElement("Configuration");
-
-		// slave num for multi threading
-		this->mNumSlaves = atoi(config->Attribute("numSlaves"));
 
 		TiXmlElement *sim = config->FirstChildElement("Simulation");
 
@@ -199,8 +192,6 @@ private:
 
 	double mRootHeightLowerLimit, mRootHeightUpperLimit;
 	double mRootDiffThreshold, mRootAngleDiffThreshold;
-
-	int mNumSlaves;
 
 	int mMGMotionSize, mTCMotionSize;
 };
