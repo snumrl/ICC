@@ -45,7 +45,7 @@ class MotionGenerator(object):
 		# initialize targets
 		self.targets = []
 		for i in range(self.num_slaves):
-			self.targets.append(self.randomTarget(i));
+			self.targets.append(self.randomTarget(i))
 
 		self.resetAll()
 		
@@ -63,6 +63,9 @@ class MotionGenerator(object):
 
 		if targets is not None:
 			self.targets = targets
+		else:
+			for i in range(self.num_slaves):
+				self.targets[i] = self.randomTarget(i)
 		for _ in range(100):
 			self.getReferences(targets)
 

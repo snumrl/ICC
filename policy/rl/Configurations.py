@@ -22,6 +22,7 @@ class Configurations:
 		self._sessionName = "test_session"
 
 	def loadData(self, filename):
+		print("Loading {} ...".format(filename))
 		with parse(filename) as doc:
 			config = doc.getElementsByTagName("Configuration")[0]
 
