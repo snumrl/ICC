@@ -653,6 +653,43 @@ Eigen::Vector4d rootDecomposition(dart::dynamics::SkeletonPtr skel, Eigen::Vecto
 	return ret;
 }
 
+Eigen::VectorXd convertMGToTC(const Eigen::VectorXd& input, dart::dynamics::SkeletonPtr skel){
+	Eigen::VectorXd converted_motion = skel->getPositions();
+	converted_motion.setZero();
+
+	// root position
+	converted_motion[3] = -input[2]*0.01;
+	converted_motion[4] = input[1]*0.01 + Configurations::instance().getRootHeightOffset();
+	converted_motion[5] = input[0]*0.01;
+	// root orientation
+	Eigen::Quaterniond root_y_ori(Eigen::AngleAxisd(input[3], Eigen::Vector3d::UnitY()));
+	Eigen::Quaterniond hip_ori = Utils::dartToQuat(input.segment<3>(4));
+	root_y_ori = root_y_ori * hip_ori;
+	converted_motion.segment<3>(0) = Utils::quatToDart(root_y_ori);
+
+	converted_motion.segment<3>(skel->getBodyNode("Spine"   )->getParentJoint()->getIndexInSkeleton(0)) = input.segment<3>(7);
+	converted_motion.segment<3>(skel->getBodyNode("Neck"    )->getParentJoint()->getIndexInSkeleton(0)) = input.segment<3>(10);
+	converted_motion.segment<3>(skel->getBodyNode("Head"    )->getParentJoint()->getIndexInSkeleton(0)) = input.segment<3>(13);
+
+	converted_motion.segment<3>(skel->getBodyNode("ArmL"    )->getParentJoint()->getIndexInSkeleton(0)) = input.segment<3>(16);
+	converted_motion.segment<3>(skel->getBodyNode("ForeArmL")->getParentJoint()->getIndexInSkeleton(0)) = input.segment<3>(19);
+	converted_motion.segment<3>(skel->getBodyNode("HandL"   )->getParentJoint()->getIndexInSkeleton(0)) = input.segment<3>(22);
+
+	converted_motion.segment<3>(skel->getBodyNode("ArmR"    )->getParentJoint()->getIndexInSkeleton(0)) = input.segment<3>(25);
+	converted_motion.segment<3>(skel->getBodyNode("ForeArmR")->getParentJoint()->getIndexInSkeleton(0)) = input.segment<3>(28);
+	converted_motion.segment<3>(skel->getBodyNode("HandR"   )->getParentJoint()->getIndexInSkeleton(0)) = input.segment<3>(31);
+
+	converted_motion.segment<3>(skel->getBodyNode("FemurL"  )->getParentJoint()->getIndexInSkeleton(0)) = input.segment<3>(34);
+	converted_motion.segment<3>(skel->getBodyNode("TibiaL"  )->getParentJoint()->getIndexInSkeleton(0)) = input.segment<3>(37);
+	converted_motion.segment<3>(skel->getBodyNode("FootL"   )->getParentJoint()->getIndexInSkeleton(0)) = input.segment<3>(40);
+
+	converted_motion.segment<3>(skel->getBodyNode("FemurR"  )->getParentJoint()->getIndexInSkeleton(0)) = input.segment<3>(43);
+	converted_motion.segment<3>(skel->getBodyNode("TibiaR"  )->getParentJoint()->getIndexInSkeleton(0)) = input.segment<3>(46);
+	converted_motion.segment<3>(skel->getBodyNode("FootR"   )->getParentJoint()->getIndexInSkeleton(0)) = input.segment<3>(49);
+
+	return converted_motion;
+}
+
 }
 
 }

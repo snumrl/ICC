@@ -12,7 +12,7 @@ if __name__=="__main__":
 	parser.add_argument('-n', '--network', help='network file path')
 	parser.add_argument('-t', '--network_type', help='type of the network, None : final network, rmax : maximum reward, smax : maximum step ', choices={'rmax', 'smax'})
 	args = parser.parse_args()
-	
+
 	if args.session_name is None:
 		print("Session name required!")
 		exit()
@@ -25,7 +25,7 @@ if __name__=="__main__":
 		configuration_filepath=args.config,
 		session_name=args.session_name,
 		num_slaves=args.num_slaves,
-		trajectory_length=2000, 
+		trajectory_length=20000, 
 		origin=True, 
 		origin_offset=0,
 		use_evaluation=False

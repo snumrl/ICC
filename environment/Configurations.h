@@ -98,6 +98,15 @@ public:
 		return this->mMGMotionSize;
 	}
 
+	void setReferenceType(ReferenceType rt){
+		this->mReferenceType = rt;
+	}
+
+	void setEarlyTermination(bool et){
+		this->mUseEarlyTermination = et;
+	}
+
+
 	void LoadConfigurations(std::string filename){
 		TiXmlDocument doc;
 		if(!doc.LoadFile(filename)){
@@ -163,8 +172,6 @@ public:
 		this->mRootAngleDiffThreshold = atof(terminal->FirstChildElement("RootAngleDiff")->GetText());
 		this->mRootHeightLowerLimit = atof(terminal->FirstChildElement("RootHeight")->Attribute("lower"));
 		this->mRootHeightUpperLimit = atof(terminal->FirstChildElement("RootHeight")->Attribute("upper"));
-
-
 	}
 private:
 	Configurations(){

@@ -1,5 +1,6 @@
 import tensorflow as tf
 import numpy as np
+from copy import deepcopy
 
 from rnn.RNNConfig import RNNConfig
 
@@ -27,6 +28,11 @@ class RNNModel(object):
 	def resetState(self, batch_size):
 		self.state = self.stacked_cells.get_initial_state(batch_size=batch_size, dtype=tf.float32)
 
+	def saveState(self):
+		self.savedState = self.state
+
+	def loadState(self):
+		self.state = self.savedState
 
 	def forwardOneStep(self, controls, pose, training=True):
 		inputs = tf.concat([controls, pose], 1)

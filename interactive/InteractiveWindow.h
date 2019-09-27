@@ -1,28 +1,31 @@
-#ifndef __VMCON_SIM_WINDOW_H__
-#define __VMCON_SIM_WINDOW_H__
+#pragma once
+
 #include "Camera.h"
 #include "GLUTWindow.h"
 #include "GLfunctions.h"
 #include "DART_interface.h"
 #include "Character.h"
+#include "SimWindow.h"
+#include "Environment.h"
 #include <string>
+
+#include <boost/python.hpp>
+#include <boost/python/numpy.hpp>
+
+namespace p = boost::python;
+namespace np = boost::python::numpy;
+/**
 /**
 *
-* @brief Modified SimWindow class in dart.
-* @details Renders on window with the recorded data generated in sim.
+* @brief Modified InteractiveWindow class in dart.
+* @details Interactive Window
 *
 */
-class SimWindow : public GUI::GLUTWindow
+class InteractiveWindow : public GUI::GLUTWindow
 {
 public:
 	/// Constructor.
-	SimWindow();
-
-	/// Constructor.
-	SimWindow(std::string filename);
- 
-	/// World object pointer
-	dart::simulation::WorldPtr mWorld;
+	InteractiveWindow(std::string network_path="", std::string network_type="");
 protected:
 	/// Draw all the skeletons in mWorld. Lights and Camera are operated here.
 	void drawSkeletons();
@@ -39,9 +42,9 @@ protected:
 	/// ESC : exit
 	void keyboard(unsigned char key,int x,int y) override;
 
-	/// Stores the data for SimWindow::Motion.
+	/// Stores the data for InteractiveWindow::Motion.
 	void mouse(int button, int state, int x, int y) override;
-
+ 
 	/// The user interactions with mouse. Camera view is set here.
 	void motion(int x, int y) override;
 
@@ -54,31 +57,47 @@ protected:
 	/// Screenshot. The png file will be stored as ./frames/Capture/[number].png
 	void screenshot();
 
+
+
+	// TODO
 	/// Set the skeleton positions in mWorld to the positions at n frame.
 	void setFrame(int n);
 
 	/// Set the skeleton positions in mWorld to the postions at the next frame.
 	void nextFrame();
 
-	/// set the skeleton positions in mWorld to the postions at 1/30 sec later.
-	void nextFrameRealTime();
-
 	/// Set the skeleton positions in mWorld to the postions at the previous frame.
 	void prevFrame();
 
-	
+	void getPredictions();
+	void step();
+
+
+	/// Environment
+	ICC::Environment *mEnvironment;
+
+	int mStateSize, mActionSize;
+
+	int mCurFrame;
+	int mTotalFrame;
+
+	Eigen::Vector3d mTarget;
+
+	std::vector<Eigen::VectorXd> mRecords, mPredictionRecords;
+	std::vector<Eigen::Vector3d> mTargetRecords;
+
+
+	/// TrackingController
+	p::object mTrackingController, mMotionGenerator;
+
+	/// parameters for render
+	bool mIsRotate;
 	bool mIsAuto;
 	bool mIsCapture;
 	bool mShowCharacter;
-	bool mShowRef;
+	bool mShowPrediction;
 	bool mTrackCamera;
-	int mCurFrame;
-	int mTotalFrame;
-	bool mIsRefExist;
-	std::vector<Eigen::VectorXd> mRecords, mRefRecords;
-	std::vector<Eigen::Vector3d> mTargetRecords;
 
 	int mSkeletonDrawType;
 };
 
-#endif

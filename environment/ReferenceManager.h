@@ -29,14 +29,24 @@ public:
 	}
 
 	/// Set reference motion from motion generator
-	void setReferenceTrajectory(Eigen::MatrixXd& trajectory);
+	void setReferenceTrajectory(const std::vector<Eigen::VectorXd>& trajectory);
 
 	/// Set reference motion from motion generator
-	void setReferenceTargetTrajectory(Eigen::MatrixXd& trajectory);
+	void setReferenceTargetTrajectory(const std::vector<Eigen::Vector3d>& target_traj);
 
 
-	/// Convert motion format from motion generator
-	Eigen::VectorXd convertFromMG(const Eigen::VectorXd& input);
+	/// clear reference manger
+	void clear(){
+		this->mCurFrame = 0;
+		this->mTotalFrame = 0;
+		this->mReferenceTrajectory.clear();
+		this->mReferenceTargetTrajectory.clear();
+	}
+	/// add reference
+	void addReference(Eigen::VectorXd ref);
+
+	/// add target
+	void addTarget(Eigen::Vector3d target);
 
 	/// Set current frame
 	void setCurrentFrame(int frame){

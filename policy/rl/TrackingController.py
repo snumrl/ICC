@@ -237,43 +237,6 @@ class TrackingController:
 		self._isNetworkLoaded = False
 		self._loadedNetwork = ""
 
-	def initializeForInteractiveControl(self, num_slaves, motion, state_size, action_size):		
-		self._configurationFilePath = '{}/configuration.xml'.format(args.network)
-		Configurations.instance().loadData(configuration_filepath)
-		# get parameters from config
-		self._numSlaves 				= Configurations.instance().numSlaves
-		self._motion 					= Configurations.instance().motion
-
-		# initialize environment
-		self._stateSize = self._env.getStateSize()
-		self._actionSize = self._env.getActionSize()
-		self._rms = RunningMeanStd(shape=(self._stateSize))
-
-		# initialize networks
-		self._policy = Policy(self._actionSize)
-		self._policy.build(self._stateSize)
-		self._valueFunction = ValueFunction()
-		self._valueFunction.build(self._stateSize)
-
-		# initialize RunningMeanStd
-		self._rms = RunningMeanStd(shape=(self._stateSize))
-
-		# initialize motion generator
-		self._motionGenerator = MotionGenerator(1, self._motion)
-
-
-		# initialize checkpoint 
-		self._ckpt = tf.train.Checkpoint(
-			policy_mean=self._policy.mean,
-			policy_logstd=self._policy.logstd,
-			valueFunction=self._valueFunction.value
-			# policyOptimizer=self._policyOptimizer,
-			# valueFunctionOptimizer=self._valueFunctionOptimizer
-		)
-
-		self._isNetworkLoaded = False
-		self._loadedNetwork = ""
-
 
 	def decayedLearningRatePolicy(self):
 		return self._learningRatePolicy
@@ -283,12 +246,12 @@ class TrackingController:
 	def loadNetworks(self, directory, network_type=None):
 		# load rms
 		rms_dir = "{}/rms/".format(directory)
-		if network_type is not None:
-			mean_dir = rms_dir+"mean_{}.npy".format(network_type)
-			var_dir = rms_dir+"var_{}.npy".format(network_type)
-		else:
+		if (network_type is None) or ( network_type == ""):
 			mean_dir = rms_dir+"mean.npy"
 			var_dir = rms_dir+"var.npy"
+		else:
+			mean_dir = rms_dir+"mean_{}.npy".format(network_type)
+			var_dir = rms_dir+"var_{}.npy".format(network_type)
 
 		if os.path.exists(mean_dir):
 			print("Loading RMS parameters")
@@ -505,11 +468,6 @@ class TrackingController:
 					self._timeIndices[i] = index
 					self._env.reset(i, timet)
 
-				# get new states
-				states = self._env.getStates()
-				states = self._rms.apply(states)
-
-
 				actions = [None]*self._numSlaves
 				rewards = [None]*self._numSlaves
 				episodes = [None]*self._numSlaves
@@ -522,6 +480,12 @@ class TrackingController:
 				self._summary_num_transitions_per_iteration = 0
 				last_print = 0
 				while True:
+					# get states				
+					states = self._env.getStates()
+					states_for_update = states[~np.array(terminated)]  
+					states_for_update = self._rms.apply(states_for_update)
+					states[~np.array(terminated)] = states_for_update
+
 					# set action
 					actions, logprobs = self._policy.getActionAndNeglogprob(states)
 					values = self._valueFunction.getValue(states)			
@@ -577,11 +541,6 @@ class TrackingController:
 						print('{}/{} : {}/{}'.format(it+1, num_iteration, self._summary_num_transitions_per_iteration, self._transitionsPerIteration),end='\r')
 						last_print = self._summary_num_transitions_per_iteration
 
-					# update states				
-					states = self._env.getStates()
-					states_for_update = states[~np.array(terminated)]  
-					states_for_update = self._rms.apply(states_for_update)
-					states[~np.array(terminated)] = states_for_update
 
 				self._summary_sim_time += time.time()
 				self._summary_train_time -= time.time()
@@ -656,10 +615,6 @@ class TrackingController:
 		for i in range(self._numSlaves):
 			self._env.reset(i, i*1.0/self._numSlaves)
 
-		# get new states
-		states = self._env.getStates()
-		states = self._rms.apply(states)
-
 		actions = [None]*self._numSlaves
 		terminated = [False]*self._numSlaves
 
@@ -667,6 +622,12 @@ class TrackingController:
 		local_step = 0
 		last_print = 0
 		while True:
+			# update states				
+			states = self._env.getStates()
+			states_for_update = states[~np.array(terminated)]  
+			states_for_update = self._rms.apply(states_for_update)
+			states[~np.array(terminated)] = states_for_update
+			
 			# set action
 			actions, logprobs = self._policy.getActionAndNeglogprob(states)
 			values = self._valueFunction.getValue(states)
@@ -700,11 +661,6 @@ class TrackingController:
 				print('{}'.format(local_step),end='\r')
 				last_print = local_step
 
-			# update states				
-			states = self._env.getStates()
-			states_for_update = states[~np.array(terminated)]  
-			states_for_update = self._rms.apply(states_for_update)
-			states[~np.array(terminated)] = states_for_update
 
 		print('')
 		self._env.writeRecords(self._directory)
@@ -910,3 +866,41 @@ class TrackingController:
 
 	def restore(self, path):
 		self._ckpt.restore(path)
+
+
+	def initializeForInteractiveControl(self, num_slaves, configuration_filepath, state_size, action_size):		
+		self._configurationFilePath = configuration_filepath
+		Configurations.instance().loadData(configuration_filepath)
+		# get parameters from config
+		self._numSlaves 				= num_slaves
+		self._motion 					= Configurations.instance().motion
+
+		# initialize environment
+		self._stateSize = state_size
+		self._actionSize = action_size
+		self._rms = RunningMeanStd(shape=(self._stateSize))
+
+		# initialize networks
+		self._policy = Policy(self._actionSize)
+		self._policy.build(self._stateSize)
+		self._valueFunction = ValueFunction()
+		self._valueFunction.build(self._stateSize)
+
+		# initialize RunningMeanStd
+		self._rms = RunningMeanStd(shape=(self._stateSize))
+
+		# initialize motion generator
+		self._motionGenerator = MotionGenerator(num_slaves, self._motion)
+
+
+		# initialize checkpoint 
+		self._ckpt = tf.train.Checkpoint(
+			policy_mean=self._policy.mean,
+			policy_logstd=self._policy.logstd,
+			valueFunction=self._valueFunction.value
+			# policyOptimizer=self._policyOptimizer,
+			# valueFunctionOptimizer=self._valueFunctionOptimizer
+		)
+
+		self._isNetworkLoaded = False
+		self._loadedNetwork = ""

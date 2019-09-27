@@ -143,27 +143,27 @@ public:
 	GLUTWindow();
 	~GLUTWindow();
 
-	virtual void InitWindow(int _w,int _h,const char* _name);
+	virtual void initWindow(int _w,int _h,const char* _name);
 	
 	static GLUTWindow* current();
-	static void DisplayEvent();
-	static void KeyboardEvent(unsigned char key,int x,int y);
-	static void MouseEvent(int button, int state, int x, int y);
-	static void MotionEvent(int x, int y);
-	static void ReshapeEvent(int w, int h);
-	static void TimerEvent(int value);
+	static void displayEvent();
+	static void keyboardEvent(unsigned char key,int x,int y);
+	static void mouseEvent(int button, int state, int x, int y);
+	static void motionEvent(int x, int y);
+	static void reshapeEvent(int w, int h);
+	static void timerEvent(int value);
 
 	static std::vector<GLUTWindow*> mWindows;
 	static std::vector<int> mWinIDs;
 	
 protected:
 	virtual void initLights(double x = 0.0, double z = 0.0, double fx = 0.0, double fz = 0.0);
-	virtual void Display() = 0;
-	virtual void Keyboard(unsigned char key,int x,int y) = 0;
-	virtual void Mouse(int button, int state, int x, int y) = 0;
-	virtual void Motion(int x, int y) = 0;
-	virtual void Reshape(int w, int h) = 0;
-	virtual void Timer(int value) = 0;
+	virtual void display() = 0;
+	virtual void keyboard(unsigned char key,int x,int y) = 0;
+	virtual void mouse(int button, int state, int x, int y) = 0;
+	virtual void motion(int x, int y) = 0;
+	virtual void reshape(int w, int h) = 0;
+	virtual void timer(int value) = 0;
 protected:
 	std::unique_ptr<Camera> 		mCamera;
 	bool 							mIsDrag;

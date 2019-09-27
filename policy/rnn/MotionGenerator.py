@@ -47,9 +47,6 @@ class MotionGenerator(object):
 		for i in range(self.num_slaves):
 			self.targets.append(self.randomTarget(i))
 
-		self.resetAll()
-		
-
 	def resetAll(self, targets=None):
 		# reset root and character poses
 		self.characterPose = np.array(self.characterPose)
@@ -76,9 +73,9 @@ class MotionGenerator(object):
 		self.model = RNNModel()
 
 		# load network
+		print("Loading rnn network from ../motions/{}/train/network".format(self.motion))
 		self.model.restore("../motions/{}/train/network".format(self.motion))
 		self.isModelLoaded = True
-
 
 		self.resetAll()
 
@@ -139,9 +136,11 @@ class MotionGenerator(object):
 
 
 	def getReferences(self, targets=None):
+		if self.isModelLoaded is False:
+			self.loadNetworks()
 		# if target is given, set target
 		if targets is not None:
-			self.targets = targets
+			self.targets = np.array(targets, dtype=np.float32)
 		# else use random generated targets which are generated when the charater is close enough
 		else:
 			for i in range(self.num_slaves):
@@ -153,10 +152,7 @@ class MotionGenerator(object):
 					self.targets[i] = self.randomTarget(i)
 
 		convertedTargets = self.convertAndClipTarget(self.targets)
-
 		# run rnn model
-		if self.isModelLoaded is False:
-			self.loadNetworks()
 		self.characterPose = self.model.forwardOneStep(tf.convert_to_tensor(convertedTargets), tf.convert_to_tensor(self.characterPose), training=False)
 		
 		# convert outputs to global coordinate
@@ -167,8 +163,7 @@ class MotionGenerator(object):
 			pose = RNNConfig.instance().yNormal.get_data_with_zeros(pose)
 			pose = self.getGlobalPositions(pose, j)
 			pose_list.append(pose)
-
-		return pose_list
+		return np.array(pose_list, dtype=np.float32)
 
 
 	def getTrajectory(self, frame=2000, targets=None):
@@ -215,6 +210,17 @@ class MotionGenerator(object):
 
 	def getTargets(self):
 		return np.asarray(self.targets, dtype=np.float32)
+
+
+	def saveState(self):
+		self.model.saveState()
+		self.savedCharacterPose = deepcopy(self.characterPose)
+		self.savedRootPose = deepcopy(self.rootPose)
+
+	def loadState(self):
+		self.model.loadState()
+		self.characterPose = deepcopy(self.savedCharacterPose)
+		self.rootPose = deepcopy(self.savedRootPose)
 
 
 

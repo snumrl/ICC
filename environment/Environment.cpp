@@ -97,17 +97,6 @@ reset(double reset_time)
 	this->mActor->getSkeleton()->setPositions(pv.head(dof));
 	this->mActor->getSkeleton()->setVelocities(pv.tail(dof));
 
-	// time stepping
-	if(Configurations::instance().getReferenceType() == ReferenceType::FIXED){
-		this->mReferenceManager->increaseCurrentFrame();		
-	}
-
-	// get target positions and velocities
-	pv = this->mReferenceManager->getPositionsAndVelocities();
-	this->mTargetPositions = pv.head(dof);
-	this->mTargetVelocities = pv.tail(dof);
-	this->mTarget = this->mReferenceManager->getTarget();
-
 	// reset terminal signal
 	this->mIsTerminal = false;
 	this->mIsNanAtTerminal = false;
@@ -158,24 +147,6 @@ step(bool record)
 			this->mWorld->step();
 		}
 	}
-
-	// time stepping
-	if(Configurations::instance().getReferenceType() == ReferenceType::FIXED){
-		this->mReferenceManager->increaseCurrentFrame();		
-	}
-	
-	// check terminal
-	if(this->isTerminal()){
-		return;
-	}
-
-	// get target positions and velocities
-	Eigen::VectorXd pv = this->mReferenceManager->getPositionsAndVelocities();
-	int dof = this->mActor->getNumDofs();
-	this->mTargetPositions = pv.head(dof);
-	this->mTargetVelocities = pv.tail(dof);
-	this->mTarget = this->mReferenceManager->getTarget();
-
 }
 
 void
@@ -186,6 +157,16 @@ followReference()
 	if(this->isTerminal()){
 		return;
 	}
+	// time stepping
+	if(Configurations::instance().getReferenceType() == ReferenceType::FIXED){
+		this->mReferenceManager->increaseCurrentFrame();		
+	}
+	// get target positions and velocities
+	Eigen::VectorXd pv = this->mReferenceManager->getPositionsAndVelocities();
+	int dof = this->mActor->getNumDofs();
+	this->mTargetPositions = pv.head(dof);
+	this->mTargetVelocities = pv.tail(dof);
+	this->mTarget = this->mReferenceManager->getTarget();
 
 	int per = Configurations::instance().getSimulationHz()/Configurations::instance().getControlHz();
 	for(int i=0;i<per;i+=1){
@@ -194,22 +175,6 @@ followReference()
 		this->mActor->getSkeleton()->setVelocities(this->mTargetVelocities);
 	}
 
-	// time stepping
-	if(Configurations::instance().getReferenceType() == ReferenceType::FIXED){
-		this->mReferenceManager->increaseCurrentFrame();		
-	}
-	
-	// check terminal
-	if(this->isTerminal()){
-		return;
-	}
-
-	// get target positions and velocities
-	Eigen::VectorXd pv = this->mReferenceManager->getPositionsAndVelocities();
-	int dof = this->mActor->getNumDofs();
-	this->mTargetPositions = pv.head(dof);
-	this->mTargetVelocities = pv.tail(dof);
-	this->mTarget = this->mReferenceManager->getTarget();
 }
 
 void
@@ -300,12 +265,31 @@ getEndEffectorStatePV(const dart::dynamics::SkeletonPtr skel, const Eigen::Vecto
 	return ret;
 }
 
+void
+Environment::
+updateReference(){
+	// time stepping
+	if(Configurations::instance().getReferenceType() == ReferenceType::FIXED){
+		this->mReferenceManager->increaseCurrentFrame();		
+	}
+
+	// get target positions and velocities
+	Eigen::VectorXd pv = this->mReferenceManager->getPositionsAndVelocities();
+	int dof = this->mActor->getNumDofs();
+	this->mTargetPositions = pv.head(dof);
+	this->mTargetVelocities = pv.tail(dof);
+	this->mTarget = this->mReferenceManager->getTarget();
+}
+
 Eigen::VectorXd
 Environment::
 getState()
 {
 	if(this->mIsTerminal)
 		return Eigen::VectorXd::Zero(this->mStateSize);
+
+	// update reference before get state
+	this->updateReference();
 
 	auto& skel = this->mActor->getSkeleton();
 	dart::dynamics::BodyNode* root = skel->getRootBodyNode();
@@ -349,7 +333,7 @@ getState()
 	Eigen::Vector3d up_vec = root->getTransform().linear()*Eigen::Vector3d::UnitY();
 	double up_vec_angle = atan2(std::sqrt(up_vec[0]*up_vec[0]+up_vec[2]*up_vec[2]),up_vec[1]);
 
-/*
+
 	// foot corner height
 	const dart::dynamics::BodyNode *bnL, *bnEL, *bnR, *bnER;
 	bnL = skel->getBodyNode("FootL");
@@ -382,10 +366,10 @@ getState()
 
 	// root height
 	double root_height = skel->getRootBodyNode()->getCOM()[1];
-*/
+
 	Eigen::VectorXd state;
-	state.resize(p_cur.rows()+v_cur.rows()+ee_cur.rows()+predictions_concatenated.rows()+1);
-	state<<p_cur, v_cur, ee_cur, predictions_concatenated, up_vec_angle;
+	state.resize(p_cur.rows()+v_cur.rows()+ee_cur.rows()+predictions_concatenated.rows()+1+9);
+	state<<p_cur, v_cur, ee_cur, predictions_concatenated, up_vec_angle, root_height, foot_corner_heights;
 
 	return state;
 
@@ -571,14 +555,14 @@ isTerminal()
 
 void 
 Environment::
-setReferenceTrajectory(Eigen::MatrixXd trajectory)
+setReferenceTrajectory(const std::vector<Eigen::VectorXd>& trajectory)
 {
 	this->mReferenceManager->setReferenceTrajectory(trajectory);
 }
 
 void 
 Environment::
-setReferenceTargetTrajectory(Eigen::MatrixXd trajectory)
+setReferenceTargetTrajectory(const std::vector<Eigen::Vector3d>& trajectory)
 {
 	this->mReferenceManager->setReferenceTargetTrajectory(trajectory);
 }

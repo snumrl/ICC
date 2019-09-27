@@ -21,5 +21,6 @@ find_package(PythonInterp 3.5 REQUIRED)
 find_package(TinyXML REQUIRED)
 
 add_subdirectory(environment)
-add_subdirectory(renderer)
 add_subdirectory(environment_wrapper)
+add_subdirectory(renderer)
+add_subdirectory(interactive)

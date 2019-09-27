@@ -26,18 +26,18 @@ void Camera::loadSetting(){
     fscanf(in,"up : %lf %lf %lf\n", &up[0], &up[1], &up[2]);
     fclose(in);
 
-    Apply();
+    this->apply();
 }
 	
 void
 Camera::
-SetCamera(const Eigen::Vector3d& lookAt,const Eigen::Vector3d& eye,const Eigen::Vector3d& up)
+setCamera(const Eigen::Vector3d& lookAt,const Eigen::Vector3d& eye,const Eigen::Vector3d& up)
 {
 	this->lookAt = lookAt, this->eye = eye, this->up = up;
 }
 void
 Camera::
-Apply()
+apply()
 {
 	GLint w = glutGet(GLUT_WINDOW_WIDTH);
 	GLint h = glutGet(GLUT_WINDOW_HEIGHT);
@@ -53,7 +53,7 @@ Apply()
 
 void
 Camera::
-Pan(int x,int y,int prev_x,int prev_y)
+pan(int x,int y,int prev_x,int prev_y)
 {
 	double delta = ((double)prev_y - (double)y)/15.0;
 	Eigen::Vector3d vec = (lookAt - eye);
@@ -67,7 +67,7 @@ Pan(int x,int y,int prev_x,int prev_y)
 }
 void
 Camera::
-Zoom(int x,int y,int prev_x,int prev_y)
+zoom(int x,int y,int prev_x,int prev_y)
 {
 	double delta = (double)prev_y - (double)y;
 	fovy += delta/20.0;
@@ -75,7 +75,7 @@ Zoom(int x,int y,int prev_x,int prev_y)
 
 void
 Camera::
-Rotate(int x,int y,int prev_x,int prev_y)
+rotate(int x,int y,int prev_x,int prev_y)
 {
 	GLint w = glutGet(GLUT_WINDOW_WIDTH);
 	GLint h = glutGet(GLUT_WINDOW_HEIGHT);
@@ -108,13 +108,13 @@ Rotate(int x,int y,int prev_x,int prev_y)
 }
 void 
 Camera::
-SetCenter(Eigen::Vector3d c){
+setCenter(Eigen::Vector3d c){
 	Eigen::Vector3d delta = c - lookAt;
 	lookAt += delta; eye += delta;
 }
 void
 Camera::
-Translate(int x,int y,int prev_x,int prev_y)
+translate(int x,int y,int prev_x,int prev_y)
 {
 	Eigen::Vector3d delta((double)x - (double)prev_x, (double)y - (double)prev_y, 0);
 	// delta = UnProject(delta) / 200.0;
@@ -130,13 +130,15 @@ Translate(int x,int y,int prev_x,int prev_y)
 
 	lookAt += delta; eye += delta;
 }
-void Camera::UpDown(double v){
+void
+Camera::
+upDown(double v){
     lookAt[1] += v;
     eye[1] += v;
 }
 void
 Camera::
-SetLookAt(const Eigen::Vector3d& lookAt)
+setLookAt(const Eigen::Vector3d& lookAt)
 {
 	this->lookAt = lookAt;
 	this->eye = lookAt;
@@ -144,7 +146,7 @@ SetLookAt(const Eigen::Vector3d& lookAt)
 }
 Eigen::Vector3d
 Camera::
-Rotateq(const Eigen::Vector3d& target, const Eigen::Vector3d& rotateVector,double angle)
+rotateq(const Eigen::Vector3d& target, const Eigen::Vector3d& rotateVector,double angle)
 {
 	Eigen::Vector3d rv = rotateVector.normalized();
 
@@ -159,7 +161,7 @@ Rotateq(const Eigen::Vector3d& target, const Eigen::Vector3d& rotateVector,doubl
 }
 Eigen::Vector3d
 Camera::
-GetTrackballPoint(int mouseX, int mouseY,int w,int h)
+getTrackballPoint(int mouseX, int mouseY,int w,int h)
 {
 	// double rad = sqrt((double)(w*w+h*h)) / 2.0;
 	double rad = std::min(w, h) / 2.0;
@@ -174,7 +176,7 @@ GetTrackballPoint(int mouseX, int mouseY,int w,int h)
 }
 Eigen::Vector3d
 Camera::
-UnProject(const Eigen::Vector3d& vec)
+unProject(const Eigen::Vector3d& vec)
 {
 	Eigen::Vector3d n = lookAt - eye;
 	n.normalize();

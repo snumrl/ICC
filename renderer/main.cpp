@@ -19,6 +19,6 @@ int main(int argc,char** argv)
 	SimWindow* simwindow = new SimWindow(std::string(argv[1]));
 
 	glutInit(&argc, argv);
-	simwindow->InitWindow(1920,1080,"Renderer");
+	simwindow->initWindow(1920,1080,"Renderer");
 	glutMainLoop();
 }

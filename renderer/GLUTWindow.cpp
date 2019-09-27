@@ -21,19 +21,19 @@ GLUTWindow::
 
 void
 GLUTWindow::
-InitWindow(int _w,int _h,const char* _name)
+initWindow(int _w,int _h,const char* _name)
 {
 	mWindows.push_back(this);
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA | GLUT_MULTISAMPLE | GLUT_ACCUM);
 	glutInitWindowPosition(150, 100);
 	glutInitWindowSize(_w, _h);
 	mWinIDs.push_back(glutCreateWindow(_name));
-	glutDisplayFunc(DisplayEvent);
-	glutReshapeFunc(ReshapeEvent);
-	glutKeyboardFunc(KeyboardEvent);
-	glutMouseFunc(MouseEvent);
-	glutMotionFunc(MotionEvent);
-	glutTimerFunc(mDisplayTimeout, TimerEvent, 0);
+	glutDisplayFunc(displayEvent);
+	glutReshapeFunc(reshapeEvent);
+	glutKeyboardFunc(keyboardEvent);
+	glutMouseFunc(mouseEvent);
+	glutMotionFunc(motionEvent);
+	glutTimerFunc(mDisplayTimeout, timerEvent, 0);
 	mScreenshotTemp.resize(4*_w*_h);
 	mScreenshotTemp2.resize(4*_w*_h);
   initGL();
@@ -54,39 +54,39 @@ current()
 }
 void
 GLUTWindow::
-DisplayEvent()
+displayEvent()
 {
-	current()->Display();
+	current()->display();
 }
 void
 GLUTWindow::
-KeyboardEvent(unsigned char key,int x,int y)
+keyboardEvent(unsigned char key,int x,int y)
 {
-	current()->Keyboard(key,x,y);
+	current()->keyboard(key,x,y);
 }
 void
 GLUTWindow::
-MouseEvent(int button, int state, int x, int y)
+mouseEvent(int button, int state, int x, int y)
 {
-	current()->Mouse(button,state,x,y);
+	current()->mouse(button,state,x,y);
 }
 void
 GLUTWindow::
-MotionEvent(int x, int y)
+motionEvent(int x, int y)
 {
-	current()->Motion(x,y);
+	current()->motion(x,y);
 }
 void
 GLUTWindow::
-ReshapeEvent(int w, int h)
+reshapeEvent(int w, int h)
 {
-	current()->Reshape(w,h);
+	current()->reshape(w,h);
 }
 void
 GLUTWindow::
-TimerEvent(int value)
+timerEvent(int value)
 {
-	current()->Timer(value);
+	current()->timer(value);
 }
 
 void

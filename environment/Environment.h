@@ -47,6 +47,9 @@ public:
 	/// Reset environment
 	void reset(double reset_time = 0);
 
+	/// Update reference
+	void updateReference();	
+
 	/// Get state
 	Eigen::VectorXd getState();
 
@@ -81,12 +84,25 @@ public:
 	const dart::simulation::WorldPtr& getWorld(){ return this->mWorld; }
 
 	/// Set reference trajectory
-	void setReferenceTrajectory(Eigen::MatrixXd trajectory);
+	void setReferenceTrajectory(const std::vector<Eigen::VectorXd>& trajectory);
  
 	/// Set reference target trajectory
-	void setReferenceTargetTrajectory(Eigen::MatrixXd trajectory);
+	void setReferenceTargetTrajectory(const std::vector<Eigen::Vector3d>& traj);
+
+	/// clear reference manager
+	void clearReferenceManager(){ this->mReferenceManager->clear(); }
+
+	/// add reference to reference manager
+	void addReference(Eigen::VectorXd ref){ this->mReferenceManager->addReference(ref); }
+
+	/// add reference target to manager
+	void addReferenceTarget(Eigen::Vector3d ref_target){ this->mReferenceManager->addTarget(ref_target); }
 
 	std::vector<Eigen::VectorXd> getPositionsForMG();
+
+	Character* getActor(){
+		return this->mActor;
+	}
 protected:
 	dart::simulation::WorldPtr mWorld;
 

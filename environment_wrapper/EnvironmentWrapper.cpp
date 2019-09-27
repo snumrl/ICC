@@ -170,7 +170,12 @@ EnvironmentWrapper::
 setReferenceTrajectory(int id, int frame, np::ndarray ref_trajectory)
 {
 	Eigen::MatrixXd mat = ICC::Utils::toEigenMatrix(ref_trajectory, frame, ICC::Configurations::instance().getTCMotionSize());
-	this->mSlaves[id]->setReferenceTrajectory(mat);
+	std::vector<Eigen::VectorXd> converted_traj;
+	converted_traj.resize(mat.rows());
+	for(int i = 0; i < mat.rows(); i++){
+		converted_traj[i] = ICC::Utils::convertMGToTC(mat.row(i), this->mSlaves[id]->getActor()->getSkeleton());
+	}
+	this->mSlaves[id]->setReferenceTrajectory(converted_traj);
 }
 
 void
@@ -178,18 +183,28 @@ EnvironmentWrapper::
 setReferenceTrajectories(int frame, np::ndarray ref_trajectory)
 {
 	Eigen::MatrixXd mat = ICC::Utils::toEigenMatrix(ref_trajectory, frame, ICC::Configurations::instance().getTCMotionSize());
+	std::vector<Eigen::VectorXd> converted_traj;
+	converted_traj.resize(mat.rows());
+	for(int i = 0; i < mat.rows(); i++){
+		converted_traj[i] = ICC::Utils::convertMGToTC(mat.row(i), this->mSlaves[0]->getActor()->getSkeleton());
+	}
 #pragma omp parallel for
 	for(int id = 0; id < this->mNumSlaves; id++){
-		this->mSlaves[id]->setReferenceTrajectory(mat);
+		this->mSlaves[id]->setReferenceTrajectory(converted_traj);
 	}
 }
 
 void
 EnvironmentWrapper::
-setReferenceTargetTrajectory(int id, int frame, np::ndarray ref_trajectory)
+setReferenceTargetTrajectory(int id, int frame, np::ndarray target_trajectory)
 {
-	Eigen::MatrixXd mat = ICC::Utils::toEigenMatrix(ref_trajectory, frame, 2);
-	this->mSlaves[id]->setReferenceTargetTrajectory(mat);
+	Eigen::MatrixXd mat = ICC::Utils::toEigenMatrix(target_trajectory, frame, 2);
+	std::vector<Eigen::Vector3d> converted_traj;
+	converted_traj.resize(mat.rows());
+	for(int i = 0; i < mat.rows(); i++){
+		converted_traj[i] << mat(i,1)*0.01, 0, mat(i,0)*0.01;
+	}
+	this->mSlaves[id]->setReferenceTargetTrajectory(converted_traj);
 }
 
 void
@@ -197,9 +212,14 @@ EnvironmentWrapper::
 setReferenceTargetTrajectories(int frame, np::ndarray ref_trajectory)
 {
 	Eigen::MatrixXd mat = ICC::Utils::toEigenMatrix(ref_trajectory, frame, 2);
+	std::vector<Eigen::Vector3d> converted_traj;
+	converted_traj.resize(mat.rows());
+	for(int i = 0; i < mat.rows(); i++){
+		converted_traj[i] << mat(i,1)*0.01, 0, mat(i,0)*0.01;
+	}
 #pragma omp parallel for
 	for(int id = 0; id < this->mNumSlaves; id++){
-		this->mSlaves[id]->setReferenceTargetTrajectory(mat);
+		this->mSlaves[id]->setReferenceTargetTrajectory(converted_traj);
 	}
 }
 

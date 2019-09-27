@@ -56,6 +56,7 @@ class Configurations:
 			self._TCMotionSize = int(sim.getElementsByTagName("TCMotionSize")[0].firstChild.nodeValue)
 			self._MGMotionSize = int(sim.getElementsByTagName("MGMotionSize")[0].firstChild.nodeValue)
 
+
 	@property
 	def policyLayerSize(self):
 		return self._policyLayerSize

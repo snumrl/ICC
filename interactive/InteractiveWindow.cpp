@@ -1,100 +1,133 @@
 #include <GL/glew.h>
-#include "SimWindow.h"
+#include "InteractiveWindow.h"
 #include "dart/external/lodepng/lodepng.h"
-#include "SkeletonBuilder.h"
 #include "Utils.h"
+#include "Configurations.h"
 #include "Character.h"
 #include <algorithm>
 #include <fstream>
 #include <boost/filesystem.hpp>
 #include <GL/glut.h>
+
+#include <boost/python.hpp>
+#include <boost/python/numpy.hpp>
+
 using namespace GUI;
 using namespace dart::simulation;
 using namespace dart::dynamics;
 
 
-SimWindow::
-SimWindow()
+InteractiveWindow::
+InteractiveWindow(std::string network_path, std::string network_type)
 	:GLUTWindow(),mTrackCamera(false),mIsAuto(false),mIsCapture(false)
-	,mShowRef(true),mShowCharacter(true)
+	,mShowPrediction(true),mShowCharacter(true),mSkeletonDrawType(0)
 {
-	mWorld = std::make_shared<dart::simulation::World>();
-	mCurFrame = 0;
-	mDisplayTimeout = 33;
+	// load configurations
+	std::string configuration_filepath = network_path + std::string("/configuration.xml");
+	ICC::Configurations::instance().LoadConfigurations(configuration_filepath);
+	// set configurations for interactive mode
+	ICC::Configurations::instance().setEarlyTermination(false);
+	ICC::Configurations::instance().setReferenceType(ICC::ReferenceType::INTERACTIVE);
+
+	this->mEnvironment = new ICC::Environment();
+	ICC::Utils::setSkeletonColor(this->mEnvironment->getActor()->getSkeleton(), Eigen::Vector4d(0.73, 0.73, 0.78, 1.0));
+
+	this->mStateSize = this->mEnvironment->getStateSize();
+	this->mActionSize = this->mEnvironment->getActionSize();
+
+	this->mDisplayTimeout = 33;
+	this->mCurFrame = 0;
+	this->mTotalFrame = 0;
+
+	// initial target
+	this->mTarget << 0.0, 0.88, 30.0;
+
+	// initialize python objects
+	try{
+	    Py_Initialize();
+		np::initialize();
+
+		this->mTrackingController = p::import("rl.TrackingController").attr("TrackingController")();
+		this->mTrackingController.attr("initializeForInteractiveControl")(
+			1, // num_slaves
+			configuration_filepath, // configurations file path
+			this->mStateSize,
+			this->mActionSize
+		);
+
+		// create motion generator
+
+		this->mMotionGenerator = this->mTrackingController.attr("_motionGenerator");
+
+		// load network
+		this->mTrackingController.attr("loadNetworks")(network_path, network_type);
+		this->mMotionGenerator.attr("loadNetworks")();
+	}
+	catch(const  p::error_already_set&)
+	{
+		PyErr_Print();
+	}
+
+	// get initial pose(joint angles and vels)
+	this->getPredictions();
+	this->mEnvironment->reset();
+
+	this->mRecords.emplace_back(this->mEnvironment->getActor()->getSkeleton()->getPositions());
+	this->mTargetRecords.emplace_back(this->mTarget);
 }
 
-SimWindow::
-SimWindow(std::string filename)
-	:GLUTWindow(),mTrackCamera(false),mIsAuto(false),mIsCapture(false)
-	,mShowRef(true),mShowCharacter(true),mSkeletonDrawType(0)
+void 
+InteractiveWindow::
+getPredictions()
 {
-	this->mWorld = std::make_shared<dart::simulation::World>();
+	try{
+		// clear predictions
+		this->mEnvironment->clearReferenceManager();
+		// convert target
+		p::list target;
+		target.append(this->mTarget[2]*100);
+		target.append(this->mTarget[0]*100);
+		target.append(this->mTarget[1]*100);
 
-	std::ifstream ifs(filename);
-	if(!ifs.is_open()){
-		std::cout << "File doesn't exist" << std::endl;
-		exit(0);
+		p::list target_wrapper;
+		target_wrapper.append(target);
+
+		Eigen::VectorXd pos;
+		// get prediction
+		pos = ICC::Utils::toEigenVector(np::from_object(this->mMotionGenerator.attr("getReferences")(target_wrapper)), ICC::Configurations::instance().getTCMotionSize());
+		this->mEnvironment->addReference(ICC::Utils::convertMGToTC(pos, this->mEnvironment->getActor()->getSkeleton()));
+		this->mEnvironment->addReferenceTarget(this->mTarget);
+
+
+		this->mMotionGenerator.attr("saveState")();
+
+
+		pos = ICC::Utils::toEigenVector(np::from_object(this->mMotionGenerator.attr("getReferences")(target_wrapper)), ICC::Configurations::instance().getTCMotionSize());
+		this->mEnvironment->addReference(ICC::Utils::convertMGToTC(pos, this->mEnvironment->getActor()->getSkeleton()));
+		this->mEnvironment->addReferenceTarget(this->mTarget);
+
+
+		this->mMotionGenerator.attr("loadState")();
 	}
-
-	// read a number of characters
-	std::string line;
-
-	// read skeleton file
-	ICC::Character* character;
-	std::string skelfilename;
-
-	std::getline(ifs, skelfilename);
-	SkeletonPtr skel = ICC::SkeletonBuilder::buildFromFile(skelfilename);
-	int nDof = skel->getNumDofs();
-	this->mWorld->addSkeleton(skel);
-
-	// for reference motion
-	SkeletonPtr refSkel = skel->cloneSkeleton("Ref");
-	this->mWorld->addSkeleton(refSkel);
-	// character = new ICC::Humanoid(skelfilename);
-
-	// SkeletonPtr modSkel = skel->clone("Mod");
-	// mWorld->addSkeleton(modSkel);
-
-	ICC::Utils::setSkeletonColor(skel, Eigen::Vector4d(0.73, 0.73, 0.78, 1.0));
-	ICC::Utils::setSkeletonColor(refSkel, Eigen::Vector4d(235./255., 87./255., 87./255., 0.9));
-	// ICC::SetSkeletonColor(modSkel, Eigen::Vector4d(93./255., 176./255., 89./255., 0.9));
-
-	// read frame number
-	std::getline(ifs, line);
-	this->mTotalFrame = atoi(line.c_str());
-	std::cout << "total frame : " << this->mTotalFrame << std::endl;
-
-	// read joint angles per frame
-	for(int i = 0; i < this->mTotalFrame; i++){
-		std::getline(ifs, line);
-		Eigen::VectorXd record = ICC::Utils::stringToVectorXd(line, nDof);
-		this->mRecords.push_back(record);
+	catch(const  p::error_already_set&)
+	{
+		PyErr_Print();
 	}
-
-	for(int i = 0; i < this->mTotalFrame; i++){
-		std::getline(ifs, line);
-		Eigen::VectorXd ref = ICC::Utils::stringToVectorXd(line, nDof);
-		this->mRefRecords.push_back(ref);
-	}
-
-	for(int i = 0; i < this->mTotalFrame; i++){
-		std::getline(ifs, line);
-		Eigen::VectorXd ref = ICC::Utils::stringToVectorXd(line, 3);
-		this->mTargetRecords.push_back(ref);
-	}
-
-
-	mDisplayTimeout = 33;
-	mCurFrame = 0;
-
-	this->setFrame(this->mCurFrame);
-
-	ifs.close();
 }
 
 void
-SimWindow::
+InteractiveWindow::
+step()
+{
+	this->getPredictions();
+	// Eigen::VectorXd state = this->mEnvironment->getState();
+	// np::array converted_state = ICC::Utils::toNumpyArray()
+	// Eigen::VectorXd action = ICC::Utils::toEigenVector(np::from_object(this->mTrackingController.attr("_policy").attr("getMeanAction")(converted_state)), this->mActionSize);
+	// this->mEnvironment->setAction(action);
+}
+
+void
+InteractiveWindow::
 setFrame(int n)
 {
 	if( n < 0 || n >= this->mTotalFrame )
@@ -104,88 +137,65 @@ setFrame(int n)
 	}
 
 
-	SkeletonPtr skel = this->mWorld->getSkeleton("Humanoid");
+	SkeletonPtr skel = this->mEnvironment->getActor()->getSkeleton();
 	Eigen::VectorXd pos = this->mRecords[n];
-	// pos.setZero();
-	// pos[4] = 1.0;
 	skel->setPositions(pos);
-
-
-	skel = this->mWorld->getSkeleton("Ref");
-	pos = this->mRefRecords[n];
-	skel->setPositions(pos);
-
 
 
 	if(this->mTrackCamera){
-		Eigen::Vector3d com = this->mWorld->getSkeleton("Humanoid")->getRootBodyNode()->getCOM();
-		Eigen::Isometry3d transform = this->mWorld->getSkeleton("Humanoid")->getRootBodyNode()->getTransform();
+		Eigen::Vector3d com = this->mEnvironment->getActor()->getSkeleton()->getRootBodyNode()->getCOM();
+		Eigen::Isometry3d transform = this->mEnvironment->getActor()->getSkeleton()->getRootBodyNode()->getTransform();
 		com[1] = 0.8;
 
 		Eigen::Vector3d camera_pos;
-		// Eigen::Quaterniond t(Eigen::AngleAxisd(transform.linear()));
-		// transform.linear() = ICC::GetYRotation(t).toRotationMatrix();
 		camera_pos << -3, 1, 1.5;
-		// camera_pos = transform * camera_pos;
 		camera_pos = camera_pos + com;
 		camera_pos[1] = 2;
 
-		// mCamera->SetCamera(com, camera_pos, Eigen::Vector3d::UnitY());
 		mCamera->setCenter(com);
 	}
 
 
 }
 void
-SimWindow::
+InteractiveWindow::
 nextFrame()
 { 
 	this->mCurFrame+=1;
 	this->mCurFrame %= this->mTotalFrame;
 	this->setFrame(this->mCurFrame);
 }
+
 void
-SimWindow::
-nextFrameRealTime()
-{
-	int count = 1;
-	this->mCurFrame += count;
-	this->mCurFrame %= this->mTotalFrame;
-	this->setFrame(this->mCurFrame);
-}
-void
-SimWindow::
+InteractiveWindow::
 prevFrame()
 {
 	this->mCurFrame-=1;
 	if( this->mCurFrame < 0 ) this->mCurFrame = this->mTotalFrame -1;
 	this->setFrame(this->mCurFrame);
 }
+
 void
-SimWindow::
+InteractiveWindow::
 drawSkeletons()
 {
-	auto skel = this->mWorld->getSkeleton("Ref");
-	if(mShowRef){
-		GUI::DrawSkeleton(skel, this->mSkeletonDrawType);
-	}
-	skel = this->mWorld->getSkeleton("Humanoid");
+	SkeletonPtr skel = this->mEnvironment->getActor()->getSkeleton();
 	if(mShowCharacter){
 		GUI::DrawSkeleton(skel, this->mSkeletonDrawType);
 	}
 }
 
 void
-SimWindow::
+InteractiveWindow::
 drawGround()
 {
-	Eigen::Vector3d com_root = this->mWorld->getSkeleton("Humanoid")->getRootBodyNode()->getCOM();
-	double ground_height = 0.0;//this->mWorld->getSkeleton("Ground")->getRootBodyNode()->getCOM()[1]+0.5;
+	Eigen::Vector3d com_root = this->mEnvironment->getActor()->getSkeleton()->getRootBodyNode()->getCOM();
+	double ground_height = 0.0;
 	GUI::DrawGround((int)com_root[0], (int)com_root[2], ground_height);
 }
 
 void 
-SimWindow::
+InteractiveWindow::
 drawFlag(){
     Eigen::Vector2d goal;
     goal[0] = this->mTargetRecords[mCurFrame][0];
@@ -200,17 +210,11 @@ drawFlag(){
     A = Eigen::Vector3d(0, 1.6, 0);
     B = Eigen::Vector3d(0, 1.97, 0);
     C = Eigen::Vector3d(0.3, 1.85, 0.3);
-//            glVertex3f(this->mGoalRecords[this->mCurFrame][0], 1.6, this->mGoalRecords[this->mCurFrame][2]);
-//            glVertex3f(this->mGoalRecords[this->mCurFrame][0], 1.97, this->mGoalRecords[this->mCurFrame][2]);
-//            glVertex3f(this->mGoalRecords[this->mCurFrame][0]+0.3, 1.85, this->mGoalRecords[this->mCurFrame][2]+0.3);
-//
-//
 
     {
         glPushMatrix();
         glTranslatef(goal[0], 0.05, goal[1]);
         glRotatef(90, 1, 0, 0);
-//            std::cout<<orange.transpose()<<std::endl; 1, 0.63, 0
         glColor3f(0.9, 0.53, 0.1);
         GUI::DrawCylinder(0.04, 0.1);
         glPopMatrix();
@@ -218,7 +222,6 @@ drawFlag(){
         glPushMatrix();
         glTranslatef(goal[0], 1.0, goal[1]);
         glRotatef(90, 1, 0, 0);
-//            std::cout<<orange.transpose()<<std::endl; 1, 0.63, 0
         glColor3f(0.9, 0.53, 0.1);
         GUI::DrawCylinder(0.02, 2);
         glPopMatrix();
@@ -267,17 +270,16 @@ drawFlag(){
 }
 
 void
-SimWindow::
+InteractiveWindow::
 display() 
 {
 
 	glClearColor(0.9, 0.9, 0.9, 1);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glEnable(GL_DEPTH_TEST);
-	Eigen::Vector3d com_root = this->mWorld->getSkeleton("Humanoid")->getRootBodyNode()->getCOM();
-	Eigen::Vector3d com_front = this->mWorld->getSkeleton("Humanoid")->getRootBodyNode()->getTransform()*Eigen::Vector3d(0.0, 0.0, 2.0);
+	Eigen::Vector3d com_root = this->mEnvironment->getActor()->getSkeleton()->getRootBodyNode()->getCOM();
+	Eigen::Vector3d com_front = this->mEnvironment->getActor()->getSkeleton()->getRootBodyNode()->getTransform()*Eigen::Vector3d(0.0, 0.0, 2.0);
 	mCamera->apply();
-	// initLights(com_root[0], com_root[2]);
 	
 	glUseProgram(program);
 
@@ -290,27 +292,27 @@ display()
 	drawFlag();
 	glPopMatrix();
 	initLights(com_root[0], com_root[2], com_front[0], com_front[2]);
-	// glColor4f(0.7, 0.0, 0.0, 0.40);  /* 40% dark red floor color */
 	drawGround();
 	drawSkeletons();
 	drawFlag();
 	glDisable(GL_BLEND);
 
 
+
+
 	glUseProgram(0);
 	glutSwapBuffers();
 	if(mIsCapture)
 		this->screenshot();
-	// glutPostRedisplay();
 }
 void
-SimWindow::
+InteractiveWindow::
 keyboard(unsigned char key,int x,int y) 
 {
 	switch(key)
 	{
 		case '1' :mShowCharacter= !mShowCharacter;break;
-		case '2' :mShowRef= !mShowRef;break;
+		case '2' :mShowPrediction= !mShowPrediction;break;
 		case '[': this->prevFrame();break;
 		case ']': this->nextFrame();break;
 		case 'o': this->mCurFrame-=99; this->prevFrame();break;
@@ -326,12 +328,9 @@ keyboard(unsigned char key,int x,int y)
 		case 27: exit(0);break;
 		default : break;
 	}
-	// this->SetFrame(this->mCurFrame);
-
-	// glutPostRedisplay();
 }
 void
-SimWindow::
+InteractiveWindow::
 mouse(int button, int state, int x, int y) 
 {
 	if(button == 3 || button == 4){
@@ -362,7 +361,7 @@ mouse(int button, int state, int x, int y)
 	// glutPostRedisplay();
 }
 void
-SimWindow::
+InteractiveWindow::
 motion(int x, int y) 
 {
 	if (!mIsDrag)
@@ -371,7 +370,10 @@ motion(int x, int y)
 	int mod = glutGetModifiers();
 	if (mMouseType == GLUT_LEFT_BUTTON)
 	{
+		// if(!mIsRotate)
 		mCamera->translate(x,y,mPrevX,mPrevY);
+		// else
+		// 	mCamera->Rotate(x,y,mPrevX,mPrevY);
 	}
 	else if (mMouseType == GLUT_RIGHT_BUTTON)
 	{
@@ -390,25 +392,27 @@ motion(int x, int y)
 	// glutPostRedisplay();
 }
 void
-SimWindow::
+InteractiveWindow::
 reshape(int w, int h) 
 {
 	glViewport(0, 0, w, h);
 	mCamera->apply();
 }
+
+
 void
-SimWindow::
+InteractiveWindow::
 timer(int value) 
 {
 	if( mIsAuto )
-		this->nextFrameRealTime();
+		this->nextFrame();
 	
 	glutTimerFunc(mDisplayTimeout, timerEvent,1);
 	glutPostRedisplay();
 }
 
 
-void SimWindow::
+void InteractiveWindow::
 screenshot() {
   static int count = 0;
   const char directory[8] = "frames";
