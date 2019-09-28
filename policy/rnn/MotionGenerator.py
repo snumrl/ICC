@@ -68,7 +68,7 @@ class MotionGenerator(object):
 			self.getReferences(targets)
 
 
-	def loadNetworks(self):
+	def loadNetworks(self, targets=None):
 		# initialize rnn model
 		self.model = RNNModel()
 
@@ -77,7 +77,7 @@ class MotionGenerator(object):
 		self.model.restore("../motions/{}/train/network".format(self.motion))
 		self.isModelLoaded = True
 
-		self.resetAll()
+		self.resetAll(targets)
 
 	def randomTarget(self, index):
 		target_dist = np.random.uniform(self.target_dist_lower, self.target_dist_upper)

@@ -67,6 +67,10 @@ public:
 		return (this->mCurFrame >= (this->mTotalFrame - 1));
 	}
 
+	Eigen::VectorXd getReference(int time=0){
+		return this->mReferenceTrajectory[this->mCurFrame+time];
+	}
+
 
 
 protected:

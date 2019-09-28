@@ -71,10 +71,13 @@ protected:
 
 	void getPredictions();
 	void step();
+	void reset();
 
+	p::list getPythonTarget();
 
 	/// Environment
 	ICC::Environment *mEnvironment;
+	dart::dynamics::SkeletonPtr mRefSkel;
 
 	int mStateSize, mActionSize;
 

@@ -98,6 +98,9 @@ public:
 	/// add reference target to manager
 	void addReferenceTarget(Eigen::Vector3d ref_target){ this->mReferenceManager->addTarget(ref_target); }
 
+	/// get reference
+	Eigen::VectorXd getReference(int time=0){ return this->mReferenceManager->getReference(time); }
+
 	std::vector<Eigen::VectorXd> getPositionsForMG();
 
 	Character* getActor(){

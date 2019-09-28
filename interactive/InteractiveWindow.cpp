@@ -35,6 +35,13 @@ InteractiveWindow(std::string network_path, std::string network_type)
 	this->mStateSize = this->mEnvironment->getStateSize();
 	this->mActionSize = this->mEnvironment->getActionSize();
 
+	this->mRefSkel = this->mEnvironment->getActor()->getSkeleton()->cloneSkeleton("Ref");
+	for(int i = 0; i < this->mRefSkel->getNumBodyNodes(); i++){
+		auto bn = this->mRefSkel->getBodyNode(i);
+		bn->setCollidable(false);
+	}
+	ICC::Utils::setSkeletonColor(this->mRefSkel, Eigen::Vector4d(92/255.,145/255.,236/255., 1.0));
+
 	this->mDisplayTimeout = 33;
 	this->mCurFrame = 0;
 	this->mTotalFrame = 0;
@@ -61,7 +68,7 @@ InteractiveWindow(std::string network_path, std::string network_type)
 
 		// load network
 		this->mTrackingController.attr("loadNetworks")(network_path, network_type);
-		this->mMotionGenerator.attr("loadNetworks")();
+		this->mMotionGenerator.attr("loadNetworks")(this->getPythonTarget());
 	}
 	catch(const  p::error_already_set&)
 	{
@@ -74,6 +81,26 @@ InteractiveWindow(std::string network_path, std::string network_type)
 
 	this->mRecords.emplace_back(this->mEnvironment->getActor()->getSkeleton()->getPositions());
 	this->mTargetRecords.emplace_back(this->mTarget);
+	this->mPredictionRecords.emplace_back(this->mEnvironment->getReference(0));
+	this->mTotalFrame = 1;
+
+	this->setFrame(0);
+}
+
+p::list
+InteractiveWindow::
+getPythonTarget()
+{
+	// convert target
+	p::list target;
+	target.append(this->mTarget[2]*100);
+	target.append(this->mTarget[0]*100);
+	target.append(this->mTarget[1]*100);
+
+	p::list target_wrapper;
+	target_wrapper.append(target);
+
+	return target_wrapper;
 }
 
 void 
@@ -83,18 +110,12 @@ getPredictions()
 	try{
 		// clear predictions
 		this->mEnvironment->clearReferenceManager();
-		// convert target
-		p::list target;
-		target.append(this->mTarget[2]*100);
-		target.append(this->mTarget[0]*100);
-		target.append(this->mTarget[1]*100);
 
-		p::list target_wrapper;
-		target_wrapper.append(target);
+		p::list target = this->getPythonTarget();
 
 		Eigen::VectorXd pos;
 		// get prediction
-		pos = ICC::Utils::toEigenVector(np::from_object(this->mMotionGenerator.attr("getReferences")(target_wrapper)), ICC::Configurations::instance().getTCMotionSize());
+		pos = ICC::Utils::toEigenVector(np::from_object(this->mMotionGenerator.attr("getReferences")(target)), ICC::Configurations::instance().getTCMotionSize());
 		this->mEnvironment->addReference(ICC::Utils::convertMGToTC(pos, this->mEnvironment->getActor()->getSkeleton()));
 		this->mEnvironment->addReferenceTarget(this->mTarget);
 
@@ -102,7 +123,7 @@ getPredictions()
 		this->mMotionGenerator.attr("saveState")();
 
 
-		pos = ICC::Utils::toEigenVector(np::from_object(this->mMotionGenerator.attr("getReferences")(target_wrapper)), ICC::Configurations::instance().getTCMotionSize());
+		pos = ICC::Utils::toEigenVector(np::from_object(this->mMotionGenerator.attr("getReferences")(target)), ICC::Configurations::instance().getTCMotionSize());
 		this->mEnvironment->addReference(ICC::Utils::convertMGToTC(pos, this->mEnvironment->getActor()->getSkeleton()));
 		this->mEnvironment->addReferenceTarget(this->mTarget);
 
@@ -120,10 +141,49 @@ InteractiveWindow::
 step()
 {
 	this->getPredictions();
-	// Eigen::VectorXd state = this->mEnvironment->getState();
-	// np::array converted_state = ICC::Utils::toNumpyArray()
-	// Eigen::VectorXd action = ICC::Utils::toEigenVector(np::from_object(this->mTrackingController.attr("_policy").attr("getMeanAction")(converted_state)), this->mActionSize);
-	// this->mEnvironment->setAction(action);
+	Eigen::VectorXd state = this->mEnvironment->getState();
+	np::ndarray converted_state = ICC::Utils::toNumPyArray(state);
+	converted_state = converted_state.reshape(p::make_tuple(1, converted_state.shape(0)));
+	Eigen::VectorXd action = ICC::Utils::toEigenVector(np::from_object(this->mTrackingController.attr("_policy").attr("getMeanAction")(converted_state)), this->mActionSize);
+	this->mEnvironment->setAction(action);
+	this->mEnvironment->step(false);
+
+	this->mRecords.emplace_back(this->mEnvironment->getActor()->getSkeleton()->getPositions());
+	this->mTargetRecords.emplace_back(this->mTarget);
+	this->mPredictionRecords.emplace_back(this->mEnvironment->getReference(0));
+	this->mTotalFrame++;
+}
+
+void
+InteractiveWindow::
+reset()
+{
+	// clear records
+	this->mTotalFrame = 0;
+	this->mRecords.clear();
+	this->mTargetRecords.clear();
+	this->mPredictionRecords.clear();
+
+	// clear reference manager
+	this->mEnvironment->clearReferenceManager();
+
+	// clear motion generator
+	this->mMotionGenerator.attr("resetAll")(this->getPythonTarget());
+
+	// get first predictions
+	this->getPredictions();
+
+	// reset environment
+	this->mEnvironment->reset();
+
+	// get first frame
+	this->mRecords.emplace_back(this->mEnvironment->getActor()->getSkeleton()->getPositions());
+	this->mTargetRecords.emplace_back(this->mTarget);
+	this->mPredictionRecords.emplace_back(this->mEnvironment->getReference(0));
+	this->mTotalFrame = 1;
+	this->mCurFrame = 0;
+
+	this->setFrame(0);
 }
 
 void
@@ -137,9 +197,8 @@ setFrame(int n)
 	}
 
 
-	SkeletonPtr skel = this->mEnvironment->getActor()->getSkeleton();
-	Eigen::VectorXd pos = this->mRecords[n];
-	skel->setPositions(pos);
+	this->mEnvironment->getActor()->getSkeleton()->setPositions(this->mRecords[n]);
+	this->mRefSkel->setPositions(this->mPredictionRecords[n]);
 
 
 	if(this->mTrackCamera){
@@ -160,7 +219,10 @@ setFrame(int n)
 void
 InteractiveWindow::
 nextFrame()
-{ 
+{
+	if( this->mCurFrame == this->mTotalFrame - 1){
+		this->step();
+	}
 	this->mCurFrame+=1;
 	this->mCurFrame %= this->mTotalFrame;
 	this->setFrame(this->mCurFrame);
@@ -179,9 +241,11 @@ void
 InteractiveWindow::
 drawSkeletons()
 {
-	SkeletonPtr skel = this->mEnvironment->getActor()->getSkeleton();
 	if(mShowCharacter){
-		GUI::DrawSkeleton(skel, this->mSkeletonDrawType);
+		GUI::DrawSkeleton(this->mEnvironment->getActor()->getSkeleton(), this->mSkeletonDrawType);
+	}
+	if(mShowPrediction){
+		GUI::DrawSkeleton(this->mRefSkel, this->mSkeletonDrawType);
 	}
 }
 
@@ -318,7 +382,7 @@ keyboard(unsigned char key,int x,int y)
 		case 'o': this->mCurFrame-=99; this->prevFrame();break;
 		case 'p': this->mCurFrame+=99; this->nextFrame();break;
 		case 's': std::cout << this->mCurFrame << std::endl;break;
-		case 'r': this->mCurFrame=0;this->setFrame(this->mCurFrame);break;
+		case 'r': this->reset();break;
 		case 'C': mIsCapture = true; break;
 		case 't': mTrackCamera = !mTrackCamera; this->setFrame(this->mCurFrame); break;
 		case 'T': this->mSkeletonDrawType++; this->mSkeletonDrawType %= 2; break;
