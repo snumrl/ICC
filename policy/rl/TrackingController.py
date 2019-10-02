@@ -614,6 +614,7 @@ class TrackingController:
 
 		for i in range(self._numSlaves):
 			self._env.reset(i, i*1.0/self._numSlaves)
+			# self._env.reset(i, 0.773)
 
 		actions = [None]*self._numSlaves
 		terminated = [False]*self._numSlaves
@@ -627,7 +628,7 @@ class TrackingController:
 			states_for_update = states[~np.array(terminated)]  
 			states_for_update = self._rms.apply(states_for_update)
 			states[~np.array(terminated)] = states_for_update
-			
+
 			# set action
 			actions, logprobs = self._policy.getActionAndNeglogprob(states)
 			values = self._valueFunction.getValue(states)

@@ -20,7 +20,7 @@ class AdaptiveSampler:
 		self._rewardWeights[index] += delta * (1.0/(self._counts[index]+1))
 
 	def selectTime(self):
-		e = (self._rewardWeights-self._counts.min())
+		e = (self._rewardWeights-self._rewardWeights.min())
 		e = np.clip(e, a_min=None, a_max=50)
 		e = np.exp(-e*0.2)
 

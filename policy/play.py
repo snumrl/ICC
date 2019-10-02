@@ -3,6 +3,8 @@ from rl.TrackingController import TrackingController
 import argparse
 from argparse import RawTextHelpFormatter
 import os
+import tensorflow as tf
+
 from IPython import embed
 
 if __name__=="__main__":
@@ -15,15 +17,15 @@ if __name__=="__main__":
 	if args.network is None:
 		print("Network path required!")
 		exit()
-
-	tracking_controller = TrackingController()
-	tracking_controller.initialize(
-		configuration_filepath='{}/configuration.xml'.format(args.network),
-		session_name="play",
-		num_slaves=args.num_slaves,
-		trajectory_length=2000,
-		origin=False,
-		origin_offset=0
-	)
-	tracking_controller.loadNetworks(args.network, args.network_type)
-	tracking_controller.play()
+	with tf.device("/cpu:0"):
+		tracking_controller = TrackingController()
+		tracking_controller.initialize(
+			configuration_filepath='{}/configuration.xml'.format(args.network),
+			session_name="play",
+			num_slaves=args.num_slaves,
+			trajectory_length=20000,
+			origin=True,
+			origin_offset=0
+		)
+		tracking_controller.loadNetworks(args.network, args.network_type)
+		tracking_controller.play()

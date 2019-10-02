@@ -64,7 +64,7 @@ public:
 	}
 
 	bool isEndOfTrajectory(){
-		return (this->mCurFrame >= (this->mTotalFrame - 1));
+		return (this->mCurFrame >= (this->mTotalFrame - 2));
 	}
 
 	Eigen::VectorXd getReference(int time=0){

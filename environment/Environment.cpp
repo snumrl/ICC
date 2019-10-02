@@ -75,6 +75,8 @@ Environment()
 	Eigen::VectorXd p_gain, v_gain;
 	// default 500
 	p_gain = Eigen::VectorXd::Constant(this->mActor->getNumDofs(), 500);
+	p_gain[this->mActor->getSkeleton()->getJoint("FootEndR")->getIndexInSkeleton(0)] = 300;
+	p_gain[this->mActor->getSkeleton()->getJoint("FootEndL")->getIndexInSkeleton(0)] = 300;
 	// root 0
 	p_gain.head<6>().setZero();
 	v_gain = p_gain*0.1;
@@ -112,7 +114,7 @@ Environment::
 step(bool record)
 {
 	// check terminal
-	if(this->isTerminal()){
+	if(this->mIsTerminal){
 		return;
 	}
 
@@ -134,6 +136,9 @@ step(bool record)
 	int per = Configurations::instance().getSimulationHz()/Configurations::instance().getControlHz();
 	for(int i=0;i<per;i+=2){
 		Eigen::VectorXd torques = this->mActor->getSPDForces(this->mModifiedTargetPositions, this->mModifiedTargetVelocities);
+		for(int j=0; j< torques.size(); j++){
+			torques[j] = dart::math::clip(torques[j], -500., 500.);
+		}
 
 		for(int j=0;j<2;j++)
 		{
@@ -146,6 +151,11 @@ step(bool record)
 			// forward dynamics simulation
 			this->mWorld->step();
 		}
+	}
+
+	// check terminal
+	if(this->isTerminal()){
+		return;
 	}
 }
 
