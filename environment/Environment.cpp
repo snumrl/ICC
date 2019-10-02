@@ -136,9 +136,9 @@ step(bool record)
 	int per = Configurations::instance().getSimulationHz()/Configurations::instance().getControlHz();
 	for(int i=0;i<per;i+=2){
 		Eigen::VectorXd torques = this->mActor->getSPDForces(this->mModifiedTargetPositions, this->mModifiedTargetVelocities);
-		for(int j=0; j< torques.size(); j++){
-			torques[j] = dart::math::clip(torques[j], -500., 500.);
-		}
+		// for(int j=0; j< torques.size(); j++){
+		// 	torques[j] = dart::math::clip(torques[j], -500., 500.);
+		// }
 
 		for(int j=0;j<2;j++)
 		{
