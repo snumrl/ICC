@@ -614,7 +614,7 @@ class TrackingController:
 
 		for i in range(self._numSlaves):
 			self._env.reset(i, i*1.0/self._numSlaves)
-			# self._env.reset(i, 0.773)
+			# self._env.reset(i, 0.974)
 
 		actions = [None]*self._numSlaves
 		terminated = [False]*self._numSlaves
