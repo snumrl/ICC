@@ -5,9 +5,6 @@ import os
 from IPython import embed
 
 import tensorflow as tf
-os.environ['CUDA_VISIBLE_DEVICES'] = ''
-my_devices = tf.config.experimental.list_physical_devices(device_type='CPU')
-tf.config.experimental.set_visible_devices(devices= my_devices, device_type='CPU')
 if __name__=="__main__":
 	parser = argparse.ArgumentParser()
 	parser.add_argument('-c', '--config', help='configuration file path')
@@ -22,7 +19,7 @@ if __name__=="__main__":
 		tracking_controller.initialize(
 			configuration_filepath=args.config,
 			session_name="follow",
-			trajectory_length=2000,
+			trajectory_length=200,
 			origin=False,
 			origin_offset=0
 		)

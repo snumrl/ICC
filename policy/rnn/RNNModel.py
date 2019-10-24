@@ -9,7 +9,11 @@ from IPython import embed
 class RNNModel(object):
 	def __init__(self):
 		input_size = RNNConfig.instance().xDimension + RNNConfig.instance().yDimension
-		output_size = RNNConfig.instance().yDimension
+		if RNNConfig.instance().useControlPrediction:
+			output_size = RNNConfig.instance().yDimension + RNNConfig.instance().xDimension
+		else:
+			output_size = RNNConfig.instance().yDimension
+
 
 		cells = [tf.keras.layers.LSTMCell(units=RNNConfig.instance().lstmLayerSize, dropout=0.1) for _ in range(RNNConfig.instance().lstmLayerNumber)]
 		self.stacked_cells = tf.keras.layers.StackedRNNCells(cells, input_shape=(None, input_size), dtype=tf.float32)
@@ -46,9 +50,19 @@ class RNNModel(object):
 		controls = tf.transpose(controls, perm=[1,0,2])
 		outputList = []
 		pose = initial_pose
+		control = controls[0]
 		for i in range(len(controls)):
-			pose = self.forwardOneStep(controls[i], pose, True)
-			outputList.append(pose)
+			# if not RNNConfig.instance().useControlPrediction:
+			control = controls[i]
+
+			output = self.forwardOneStep(control, pose, True)
+			outputList.append(output)
+
+			if RNNConfig.instance().useControlPrediction:
+				pose = output[:,:RNNConfig.instance().yDimension]
+				# control = output[:,RNNConfig.instance().yDimension:]
+			else:
+				pose = output
 
 		outputList = tf.convert_to_tensor(outputList)
 		outputList = tf.transpose(outputList, perm=[1,0,2])

@@ -36,6 +36,9 @@ class RNNConfig:
 
 		self._footSlideWeight = 6
 
+		# User control prediction
+		self._useControlPrediction = True
+
 	# load motion related parameters
 	def loadData(self, motion):
 		self._motion = motion
@@ -52,6 +55,11 @@ class RNNConfig:
 			exit()
 
 
+
+	@property
+	def useControlPrediction(self):
+		return self._useControlPrediction
+	
 
 	@property
 	def motion(self):

@@ -24,10 +24,13 @@ class MotionGenerator(object):
 		# initialize kinematic poses(root and character poses)
 		self.rootPose = []
 		self.characterPose = []
+		self.controlPrediction = []
 		self.initialCharacterPose = np.zeros(RNNConfig.instance().yDimension, dtype=np.float32)
+		self.initialControlPrediction = np.zeros(RNNConfig.instance().xDimension, dtype=np.float32)
 		for _ in range(self.num_slaves):
 			self.rootPose.append(Pose2d())
 			self.characterPose.append(self.initialCharacterPose)
+			self.controlPrediction.append(self.initialControlPrediction)
 
 		self.model = None
 		self.isModelLoaded = False
@@ -53,6 +56,7 @@ class MotionGenerator(object):
 		for i in range(self.num_slaves):
 			self.rootPose[i] = Pose2d()
 			self.characterPose[i] = self.initialCharacterPose
+			self.controlPrediction[i] = self.initialControlPrediction
 
 		# reset state
 		if self.model is not None:
@@ -153,8 +157,14 @@ class MotionGenerator(object):
 
 		convertedTargets = self.convertAndClipTarget(self.targets)
 		# run rnn model
-		self.characterPose = self.model.forwardOneStep(tf.convert_to_tensor(convertedTargets), tf.convert_to_tensor(self.characterPose), training=False)
+		output = self.model.forwardOneStep(tf.convert_to_tensor(convertedTargets), tf.convert_to_tensor(self.characterPose), training=False)
 		
+		if RNNConfig.instance().useControlPrediction:
+			self.characterPose = tf.slice(output, [0, 0], [-1, RNNConfig.instance().yDimension])
+			self.controlPrediction = tf.slice(output, [0, RNNConfig.instance().yDimension], [-1, -1])
+		else:
+			self.characterPose = output
+
 		# convert outputs to global coordinate
 		output = self.characterPose.numpy()
 		pose_list = []

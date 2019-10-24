@@ -164,9 +164,10 @@ Environment::
 followReference()
 {
 	// check terminal
-	if(this->isTerminal()){
+	if(this->mIsTerminal){
 		return;
 	}
+
 	// time stepping
 	if(Configurations::instance().getReferenceType() == ReferenceType::FIXED){
 		this->mReferenceManager->increaseCurrentFrame();		
@@ -177,6 +178,11 @@ followReference()
 	this->mTargetPositions = pv.head(dof);
 	this->mTargetVelocities = pv.tail(dof);
 	this->mTarget = this->mReferenceManager->getTarget();
+
+	// check terminal
+	if(this->isTerminal()){
+		return;
+	}
 
 	int per = Configurations::instance().getSimulationHz()/Configurations::instance().getControlHz();
 	for(int i=0;i<per;i+=1){
@@ -213,7 +219,7 @@ writeRecords(std::string filename)
 
 	// write total frame
 	ofs << this->mRecords.size()/per << std::endl;
-
+	std::cout << "Total frame : " << (int)(this->mRecords.size()/per) << ", TerminationReason : " << (int)this->mTerminationReason << std::endl;
 	// write joint angles
 	for(int i = 1; i <= this->mRecords.size()/per; i++)
 		ofs << this->mRecords[per*i-1].transpose() << std::endl;

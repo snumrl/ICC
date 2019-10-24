@@ -2,7 +2,7 @@ import tensorflow as tf
 import numpy as np
 import time
 
-from Utils import Plot
+from util.Util import Plot
 
 from util.Pose2d import Pose2d
 from util.dataLoader import loadData
@@ -31,9 +31,14 @@ class MotionData(object):
 
 
 
-	def loss(self, y, generated):
+	def loss(self, y, x, generated):
 		motion_y = y
-		motion_g = generated
+
+		if RNNConfig.instance().useControlPrediction:
+			motion_g = generated[:,:,:-(RNNConfig.instance().xDimension)]
+		else:
+			motion_g = generated
+
 		
 		loss_root, loss_pose = self.motion_mse_loss(motion_y[:,1:], motion_g)
 		loss_root = loss_root
@@ -45,11 +50,19 @@ class MotionData(object):
 		
 		loss_foot = self.foot_loss(motion_g, motion_y_0)*RNNConfig.instance().footSlideWeight
 		
+
 		# loss_joint = self.joint_len_loss(motion_g) * self.joint_len_weight
-			
+		loss_predict = tf.constant(0.0)
+		if RNNConfig.instance().useControlPrediction:
+			loss_predict = self.predict_loss(x, generated[:,:,-(RNNConfig.instance().xDimension):])
 		
-		loss = loss_root + loss_pose + loss_foot# + loss_joint
-		return loss, [loss, loss_root, loss_pose, loss_foot]#, loss_joint]
+		loss = loss_root + loss_pose + loss_foot + loss_predict	
+		
+		return loss, [loss, loss_root, loss_pose, loss_foot, loss_predict]
+
+	def predict_loss(self, x, output_x):
+		loss_predict = tf.reduce_mean(tf.square(output_x - x))
+		return loss_predict
 
 	def motion_mse_loss(self, y, output):
 		rootStart = 0
@@ -143,15 +156,15 @@ def train(motion_name):
 	model = RNNModel()
 	optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
 
-	loss_name = ["total", "root", "pose", "foot"]
-	loss_list = np.array([[]]*4)
-	loss_list_smoothed = np.array([[]]*4)
+	loss_name = ["total", "root", "pose", "foot", "pred"]
+	loss_list = np.array([[]]*5)
+	loss_list_smoothed = np.array([[]]*5)
 	st = time.time()
 	for c in range(100000000):
 		batch_x, batch_y = data.getBatch()
 		with tf.GradientTape() as tape:
 			generated = model.forwardMultiple(batch_x, batch_y[:,0])
-			loss = data.loss(batch_y, generated)
+			loss = data.loss(batch_y, batch_x, generated)
 		gradients = tape.gradient(loss, model.trainable_variables)
 		gradients, _grad_norm = tf.clip_by_global_norm(gradients, 0.5)
 		optimizer.apply_gradients(zip(gradients, model.trainable_variables))
@@ -161,7 +174,7 @@ def train(motion_name):
 			loss_list = np.insert(loss_list, loss_list.shape[1], loss_detail, axis=1)
 			loss_list_smoothed = np.insert(loss_list_smoothed, loss_list_smoothed.shape[1], np.array([np.mean(loss_list[-10:], axis=1)]), axis=1)
 			Plot([*zip(loss_list_smoothed, loss_name)], "loss_s", 1)
-			print("Elapsed : {:8.2f}s, Total : {:.6f}, [ root : {:.6f}, pose : {:.6f}, foot : {:.6f} ]".format(time.time()-st,*loss_detail))
+			print("Elapsed : {:8.2f}s, Total : {:.6f}, [ root : {:.6f}, pose : {:.6f}, foot : {:.6f}, pred : {:.6f} ]".format(time.time()-st,*loss_detail))
 
 			model.save("../motions/{}/train/network".format(motion_name))
 
