@@ -23,12 +23,15 @@ class MotionGenerator(object):
 
 		# initialize kinematic poses(root and character poses)
 		self.rootPose = []
+		self.rootPosePrev = []
+
 		self.characterPose = []
 		self.controlPrediction = []
 		self.initialCharacterPose = np.zeros(RNNConfig.instance().yDimension, dtype=np.float32)
 		self.initialControlPrediction = np.zeros(RNNConfig.instance().xDimension, dtype=np.float32)
 		for _ in range(self.num_slaves):
 			self.rootPose.append(Pose2d())
+			self.rootPosePrev.append(Pose2d())
 			self.characterPose.append(self.initialCharacterPose)
 			self.controlPrediction.append(self.initialControlPrediction)
 
@@ -38,6 +41,13 @@ class MotionGenerator(object):
 
 		# parameter for root height
 		self.target_height = 88.
+
+		# parameter for fall over and stand up
+		self.fallOverState = [0]*self.num_slaves
+		self.fallOverCount = [0]*self.num_slaves
+		self.standUpCount = [40]*self.num_slaves
+
+		self.isWalk = True
 
 		# random target parameters
 		self.target_dist_lower = 600.0
@@ -55,8 +65,13 @@ class MotionGenerator(object):
 		self.characterPose = np.array(self.characterPose)
 		for i in range(self.num_slaves):
 			self.rootPose[i] = Pose2d()
+			self.rootPosePrev[i] = Pose2d()
 			self.characterPose[i] = self.initialCharacterPose
 			self.controlPrediction[i] = self.initialControlPrediction
+
+		self.fallOverState = [0]*self.num_slaves
+		self.fallOverCount = [0]*self.num_slaves
+		self.standUpCount = [40]*self.num_slaves
 
 		# reset state
 		if self.model is not None:
@@ -100,18 +115,61 @@ class MotionGenerator(object):
 		# clip target and change to local coordinate
 		targets = deepcopy(targets)
 		for j in range(self.num_slaves):
+			# self.updateCharacterFallState(j)
+
 			t = targets[j][:2]
 			t = Pose2d(t)
 			t = self.rootPose[j].relativePose(t)
 			t = t.p
 			t_len = math.sqrt(t[0]*t[0] + t[1]*t[1])
-			clip_len = 250
-			if (t_len > clip_len):
-				ratio = clip_len/t_len
+
+			t_angle = math.atan2(t[1], t[0]);
+			t_angle = np.clip(t_angle, -0.4*np.pi, 0.4*np.pi)
+
+			if(self.isWalk):
+				clip_len = 60
+			else:
+				clip_len = 250
+
+			# t_len = np.clip(t_len, 0.0, clip_len)
+			if (t_len > 250):
+				ratio = 250/t_len
 				t[0] *= ratio
 				t[1] *= ratio
-			targets[j][:2] = t
+			targets[j][0] = t[0]
+			targets[j][1] = t[1]
+			
+			# t[0] = np.cos(t_angle)*t_len;
+			# t[1] = np.sin(t_angle)*t_len;
+
+			# if(self.fallOverState[j] == 0):
+			# 	if(self.standUpCount[j] < 40):
+			# 		targets[j][0] = 60
+			# 		targets[j][1] = 0
+			# 		targets[j][2] = self.target_height
+			# 	else:
+			# 		targets[j][0] = t[0]
+			# 		targets[j][1] = t[1]
+			# 		targets[j][2] = self.target_height
+			# else:
+			# 	if(self.fallOverCount[j] < 100):
+			# 		targets[j][0] = 0#pred[0]
+			# 		targets[j][1] = 0#pred[1]
+			# 		targets[j][2] = 0#0#self.target_height
+			# 	else:
+			# 		if(RNNConfig.instance().useControlPrediction):
+			# 			pred = RNNConfig.instance().xNormal.de_normalize_l(self.characterPose[j][-3:])
+			# 			targets[j][0] = pred[0]# self.config.x_normal.mean[0]
+			# 			targets[j][1] = pred[1]# self.config.x_normal.mean[1]
+			# 			targets[j][2] = pred[2]#self.target_height #min(88, self.config.y_normal.de_normalize_l(self.current_y[j])[5]+20)
+			# 		else:
+			# 			targets[j][0] = 0# self.config.x_normal.mean[0]
+			# 			targets[j][1] = 0# self.config.x_normal.mean[1]
+			# 			targets[j][2] = self.target_height#min(88, self.config.y_normal.de_normalize_l(self.current_y[j])[5]+20)
+			# 	# print(targets[j])
 			targets[j] = RNNConfig.instance().xNormal.normalize_l(targets[j])
+			print(targets[j])
+
 		return np.array(targets, dtype=np.float32)
 
 
@@ -121,6 +179,7 @@ class MotionGenerator(object):
 	def getGlobalPositions(self, output, index):
 		output = output[2:] # first two elements is about foot contact
 		# move root
+		self.rootPosePrev[index] = deepcopy(self.rootPose[index])
 		self.rootPose[index] = self.rootPose[index].transform(output)
 
 		points = [[0, output[3], 0]]
@@ -226,71 +285,67 @@ class MotionGenerator(object):
 		self.model.saveState()
 		self.savedCharacterPose = deepcopy(self.characterPose)
 		self.savedRootPose = deepcopy(self.rootPose)
+		self.savedRootPosePrev = deepcopy(self.rootPosePrev)
+
+		self.savedFallOverState = deepcopy(self.fallOverState)
+		self.savedFallOverCount = deepcopy(self.fallOverCount)
+		self.savedStandUpCount = deepcopy(self.standUpCount)
 
 	def loadState(self):
 		self.model.loadState()
 		self.characterPose = deepcopy(self.savedCharacterPose)
 		self.rootPose = deepcopy(self.savedRootPose)
+		self.rootPosePrev = deepcopy(self.savedRootPosePrev)
 
+		self.fallOverState = deepcopy(self.savedFallOverState)
+		self.fallOverCount = deepcopy(self.savedFallOverCount)
+		self.standUpCount = deepcopy(self.savedStandUpCount)
 
+	def updateCharacterFallState(self, index):
+		root_height = RNNConfig.instance().yNormal.de_normalize_l(self.characterPose[index])[5]
+		if( root_height < 30 ):
+			if(self.fallOverState[index] == 1):
+				self.fallOverState[index] = 2
+				print("standing up")
+			self.fallOverCount[index] %= 200
+		elif( root_height < 70 ):
+			if(self.fallOverState[index] == 0):
+				self.fallOverState[index] = 1
+				self.fallOverCount[index] = 0
+				print("falling over")
+		elif(root_height > 83):
+			if(self.fallOverState[index] == 2):
+				self.fallOverState[index] = 0
+				self.standUpCount[index] = 0
+				print("normal")
 
+		if(self.fallOverState[index] != 0):
+			self.fallOverCount[index] += 1
+		else:
+			self.standUpCount[index] += 1
 
-# output : 
-# [
-# 	foot_contact 	: 2
-# 	root_angle 		: 1
-# 	root_translate 	: 2
-# 	root_height		: 1
-# 	joint_positions : 57 = 19 * 3
-	# "Head_End",			: 6
-	# "LeftHand",			: 9 
-	# "LeftFoot",			: 12
-	# "LeftToeBase",		: 15
-	# "RightHand",			: 18
-	# "RightFoot",			: 21
-	# "RightToeBase",		: 24
+		# print(self.fallOverCount[index])
+		# print(self.standUpCount[index])
 
-	# "LeftArm",			: 27
-	# "RightArm",			: 30
+	def setTargetHeight(self, h):
+		self.target_height = h
 
-	# "LeftForeArm",		: 33
-	# "LeftLeg",			: 36
-	# "RightForeArm",		: 39
-	# "RightLeg",			: 42
+	def setDynamicPose(self, dpose, index=0):
+		return
+		print("a")
+		self.characterPose = self.characterPose.numpy()
+		new_rootPose = Pose2d().transform([dpose[3],dpose[0],-dpose[2]])
+		pose_delta = self.rootPosePrev[index].relativePose(new_rootPose)
+		new_characterPose = deepcopy(RNNConfig.instance().yNormal.de_normalize_l(self.characterPose[index]))
 
-	# "Spine",				: 45
-	# "LeftHandIndex1",		: 48
-	# "RightHandIndex1",	: 51
-	# "Neck1",				: 54
-	# "LeftUpLeg",			: 57
-	# "RightUpLeg",			: 60
-# 	joint_angles 	: 75 = 25 * 3
-	# "Head",				: 63
-	# "Hips",				: 66
-	# "LHipJoint",			: 69
-	# "LeftArm",			: 72
-	# "LeftFoot",			: 75
-	# "LeftForeArm",		: 78
-	# "LeftHand",			: 81
-	# "LeftLeg",			: 84
-	# "LeftShoulder",		: 87
-	# "LeftToeBase",		: 90
-	# "LeftUpLeg",			: 93
-	# "LowerBack",			: 96
-	# "Neck",				: 99
-	# "Neck1",				: 102
-	# "RHipJoint",			: 105
-	# "RightArm",			: 108
-	# "RightFoot",			: 111
-	# "RightForeArm",		: 114
-	# "RightHand",			: 117
-	# "RightLeg",			: 120
-	# "RightShoulder",		: 123
-	# "RightToeBase",		: 126
-	# "RightUpLeg",			: 129
-	# "Spine",				: 132
-	# "Spine1",				: 135
-# 	total			: 138
-# ]
-# embed()
-# exit()
+		new_characterPose[0:2] = dpose[52:54] 			# foot contact
+		new_characterPose[2] = pose_delta.rotatedAngle() 	# root rotate
+		new_characterPose[3:5] = pose_delta.p 				# root translate
+		new_characterPose[5] = dpose[1]					# root height
+		new_characterPose[6:63] = dpose[54:111] 			# positions
+		new_characterPose[63:111] = dpose[4:52] 			# orientations
+
+		self.rootPose[index] = new_rootPose
+		self.rootPosePrev[index] = new_rootPose
+		self.characterPose[index] = RNNConfig.instance().yNormal.normalize_l(new_characterPose)
+		self.characterPose = tf.convert_to_tensor(self.characterPose)
