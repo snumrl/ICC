@@ -3,6 +3,7 @@
 #include "dart/dart.hpp"
 #include "Character.h"
 #include "ReferenceManager.h"
+#include "ThrowingBall.h"
 
 #include <string>
 
@@ -106,6 +107,10 @@ public:
 	Character* getActor(){
 		return this->mActor;
 	}
+
+	ThrowingBall* getThrowingBall(){ return this->mThrowingBall; }
+	void createNewBall(bool randomFlag){ this->mThrowingBall->createNewBall(randomFlag); }
+
 protected:
 	dart::simulation::WorldPtr mWorld;
 
@@ -135,6 +140,10 @@ protected:
 
 	std::vector<Eigen::VectorXd> mRecords, mReferenceRecords;
 	std::vector<Eigen::Vector3d> mTargetRecords;
+
+
+	ThrowingBall* mThrowingBall;
+
 
 };
 

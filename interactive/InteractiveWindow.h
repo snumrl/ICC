@@ -31,6 +31,7 @@ protected:
 	void drawSkeletons();
 	void drawGround();
 	void drawFlag();
+	void drawBalls();
 	void display() override;
 
 	/// The user interactions with keyboard.
@@ -59,7 +60,6 @@ protected:
 
 
 
-	// TODO
 	/// Set the skeleton positions in mWorld to the positions at n frame.
 	void setFrame(int n);
 
@@ -72,6 +72,9 @@ protected:
 	void getPredictions();
 	void step();
 	void reset();
+	void record();
+
+	void toggleHeight();
 
 	p::list getPythonTarget();
 
@@ -88,6 +91,7 @@ protected:
 
 	std::vector<Eigen::VectorXd> mRecords, mPredictionRecords;
 	std::vector<Eigen::Vector3d> mTargetRecords;
+	std::vector<std::vector<Eigen::VectorXd>> mBallRecords;
 
 
 	/// TrackingController

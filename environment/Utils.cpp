@@ -690,6 +690,78 @@ Eigen::VectorXd convertMGToTC(const Eigen::VectorXd& input, dart::dynamics::Skel
 	return converted_motion;
 }
 
-}
+Eigen::VectorXd convertTCToMG(const Eigen::VectorXd& input, dart::dynamics::SkeletonPtr skel){
+
+	Eigen::VectorXd pos = skel->getPositions();
+	Eigen::VectorXd tp = pos;
+	Eigen::Vector4d decomposed_root = rootDecomposition(skel, tp);
+	Eigen::VectorXd decomposed_positions(Configurations::instance().getMGMotionSize());
+
+	skel->setPositions(tp);
+	decomposed_positions.setZero();
+	decomposed_positions[0] = tp[5]*100;
+	decomposed_positions[1] = (tp[4]-Configurations::instance().getRootHeightOffset())*100;
+	decomposed_positions[2] = -tp[3]*100;
+	decomposed_positions.segment<4>(3) = decomposed_root;
+	decomposed_positions.segment<36>(7) = tp.segment<36>(6);
+	decomposed_positions.segment<9>(43) = tp.segment<9>(45);
+
+	double foot_r_contact = 0;
+	double foot_l_contact = 0;
+	// if( this->CheckCollisionWithGround("FootR")){
+	// 	foot_r_contact = 1;
+	// }
+	// if( this->CheckCollisionWithGround("FootEndR")){
+	// 	foot_r_contact = 1;
+	// }
+	// if( this->CheckCollisionWithGround("FootL")){
+	// 	foot_l_contact = 1;
+	// }
+	// if( this->CheckCollisionWithGround("FootEndL")){
+	// 	foot_l_contact = 1;
+	// }
+	decomposed_positions[52] = foot_l_contact;
+	decomposed_positions[53] = foot_r_contact;
+
+	Eigen::Isometry3d cur_root_inv;
+	cur_root_inv.setIdentity();
+	cur_root_inv.linear() = Eigen::AngleAxisd(decomposed_root[0], Eigen::Vector3d::UnitY()).toRotationMatrix();
+	cur_root_inv.translation() = Eigen::Vector3d(tp[3], 0.0, tp[5]);
+	cur_root_inv = cur_root_inv.inverse();
+
+	decomposed_positions.segment<3>(54) = changeToRNNPos(cur_root_inv * skel->getBodyNode("Head")->getTransform()*Eigen::Vector3d(0.0, 0.1, 0.0));
+
+	decomposed_positions.segment<3>(57) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "HandL").translation());
+	decomposed_positions.segment<3>(60) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "FootL").translation());
+
+	decomposed_positions.segment<3>(63) = changeToRNNPos(cur_root_inv * skel->getBodyNode("FootL")->getTransform()*Eigen::Vector3d(0.0, 0.0, 0.15));
+
+	decomposed_positions.segment<3>(66) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "HandR").translation());
+	decomposed_positions.segment<3>(69) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "FootR").translation());
+
+	decomposed_positions.segment<3>(72) = changeToRNNPos(cur_root_inv * skel->getBodyNode("FootR")->getTransform()*Eigen::Vector3d(0.0, 0.0, 0.15));
+
+	decomposed_positions.segment<3>(75) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "ArmL").translation());
+	decomposed_positions.segment<3>(78) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "ArmR").translation());
+
+	decomposed_positions.segment<3>(81) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "ForeArmL").translation());
+	decomposed_positions.segment<3>(84) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "TibiaL").translation());
+
+	decomposed_positions.segment<3>(87) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "ForeArmR").translation());
+	decomposed_positions.segment<3>(90) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "TibiaR").translation());
+
+	decomposed_positions.segment<3>(93) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "Spine").translation());
+	decomposed_positions.segment<3>(96) = changeToRNNPos(cur_root_inv * skel->getBodyNode("HandL")->getTransform()*Eigen::Vector3d(0.1, 0.0, 0.0));
+	decomposed_positions.segment<3>(99) = changeToRNNPos(cur_root_inv * skel->getBodyNode("HandR")->getTransform()*Eigen::Vector3d(-0.15, 0.0, 0.0));
+	decomposed_positions.segment<3>(102) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "Neck").translation());
+	decomposed_positions.segment<3>(105) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "FemurL").translation());
+	decomposed_positions.segment<3>(108) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "FemurR").translation());
+	skel->setPositions(pos);
+	return decomposed_positions;
+
 
 }
+
+} // Utils
+
+} // ICC

@@ -19,8 +19,9 @@ class RunningMeanStd(object):
         self.mean, self.var, self.count = update_mean_var_count_from_moments(
             self.mean, self.var, self.count, batch_mean, batch_var, batch_count)
 
-    def apply(self, x):
-        self.update(x)
+    def apply(self, x, update=True):
+        if update:
+            self.update(x)
         x = np.clip((x - self.mean) / np.sqrt(self.var + self.epsilon), -self.clip, self.clip)
         return x
 

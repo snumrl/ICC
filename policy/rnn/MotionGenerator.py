@@ -115,7 +115,7 @@ class MotionGenerator(object):
 		# clip target and change to local coordinate
 		targets = deepcopy(targets)
 		for j in range(self.num_slaves):
-			# self.updateCharacterFallState(j)
+			self.updateCharacterFallState(j)
 
 			t = targets[j][:2]
 			t = Pose2d(t)
@@ -131,44 +131,37 @@ class MotionGenerator(object):
 			else:
 				clip_len = 250
 
-			# t_len = np.clip(t_len, 0.0, clip_len)
-			if (t_len > 250):
-				ratio = 250/t_len
-				t[0] *= ratio
-				t[1] *= ratio
-			targets[j][0] = t[0]
-			targets[j][1] = t[1]
+			t_len = np.clip(t_len, 0.0, clip_len)
 			
-			# t[0] = np.cos(t_angle)*t_len;
-			# t[1] = np.sin(t_angle)*t_len;
+			t[0] = np.cos(t_angle)*t_len;
+			t[1] = np.sin(t_angle)*t_len;
 
-			# if(self.fallOverState[j] == 0):
-			# 	if(self.standUpCount[j] < 40):
-			# 		targets[j][0] = 60
-			# 		targets[j][1] = 0
-			# 		targets[j][2] = self.target_height
-			# 	else:
-			# 		targets[j][0] = t[0]
-			# 		targets[j][1] = t[1]
-			# 		targets[j][2] = self.target_height
-			# else:
-			# 	if(self.fallOverCount[j] < 100):
-			# 		targets[j][0] = 0#pred[0]
-			# 		targets[j][1] = 0#pred[1]
-			# 		targets[j][2] = 0#0#self.target_height
-			# 	else:
-			# 		if(RNNConfig.instance().useControlPrediction):
-			# 			pred = RNNConfig.instance().xNormal.de_normalize_l(self.characterPose[j][-3:])
-			# 			targets[j][0] = pred[0]# self.config.x_normal.mean[0]
-			# 			targets[j][1] = pred[1]# self.config.x_normal.mean[1]
-			# 			targets[j][2] = pred[2]#self.target_height #min(88, self.config.y_normal.de_normalize_l(self.current_y[j])[5]+20)
-			# 		else:
-			# 			targets[j][0] = 0# self.config.x_normal.mean[0]
-			# 			targets[j][1] = 0# self.config.x_normal.mean[1]
-			# 			targets[j][2] = self.target_height#min(88, self.config.y_normal.de_normalize_l(self.current_y[j])[5]+20)
-			# 	# print(targets[j])
+			if(self.fallOverState[j] == 0):
+				if(self.standUpCount[j] < 40):
+					targets[j][0] = 60
+					targets[j][1] = 0
+					targets[j][2] = self.target_height
+				else:
+					targets[j][0] = t[0]
+					targets[j][1] = t[1]
+					targets[j][2] = self.target_height
+			else:
+				if(self.fallOverCount[j] < 100):
+					targets[j][0] = 0#pred[0]
+					targets[j][1] = 0#pred[1]
+					targets[j][2] = 0#0#self.target_height
+				else:
+					if(RNNConfig.instance().useControlPrediction):
+						pred = RNNConfig.instance().xNormal.de_normalize_l(self.controlPrediction[j])
+						targets[j][0] = pred[0]# self.config.x_normal.mean[0]
+						targets[j][1] = pred[1]# self.config.x_normal.mean[1]
+						targets[j][2] = self.target_height #min(88, self.config.y_normal.de_normalize_l(self.current_y[j])[5]+20)
+					else:
+						targets[j][0] = 0# self.config.x_normal.mean[0]
+						targets[j][1] = 0# self.config.x_normal.mean[1]
+						targets[j][2] = self.target_height#min(88, self.config.y_normal.de_normalize_l(self.current_y[j])[5]+20)
+
 			targets[j] = RNNConfig.instance().xNormal.normalize_l(targets[j])
-			print(targets[j])
 
 		return np.array(targets, dtype=np.float32)
 
@@ -225,10 +218,11 @@ class MotionGenerator(object):
 			self.characterPose = output
 
 		# convert outputs to global coordinate
-		output = self.characterPose.numpy()
+		self.characterPose = self.characterPose.numpy()
+		self.controlPrediction = self.controlPrediction.numpy()
 		pose_list = []
 		for j in range(self.num_slaves):
-			pose = RNNConfig.instance().yNormal.de_normalize_l(output[j])
+			pose = RNNConfig.instance().yNormal.de_normalize_l(self.characterPose[j])
 			pose = RNNConfig.instance().yNormal.get_data_with_zeros(pose)
 			pose = self.getGlobalPositions(pose, j)
 			pose_list.append(pose)
@@ -324,16 +318,13 @@ class MotionGenerator(object):
 		else:
 			self.standUpCount[index] += 1
 
-		# print(self.fallOverCount[index])
-		# print(self.standUpCount[index])
+		print(self.fallOverCount[index])
+		print(self.standUpCount[index])
 
 	def setTargetHeight(self, h):
 		self.target_height = h
 
 	def setDynamicPose(self, dpose, index=0):
-		return
-		print("a")
-		self.characterPose = self.characterPose.numpy()
 		new_rootPose = Pose2d().transform([dpose[3],dpose[0],-dpose[2]])
 		pose_delta = self.rootPosePrev[index].relativePose(new_rootPose)
 		new_characterPose = deepcopy(RNNConfig.instance().yNormal.de_normalize_l(self.characterPose[index]))
@@ -348,4 +339,3 @@ class MotionGenerator(object):
 		self.rootPose[index] = new_rootPose
 		self.rootPosePrev[index] = new_rootPose
 		self.characterPose[index] = RNNConfig.instance().yNormal.normalize_l(new_characterPose)
-		self.characterPose = tf.convert_to_tensor(self.characterPose)

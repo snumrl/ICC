@@ -4,10 +4,12 @@
 #include "Utils.h"
 #include "Configurations.h"
 #include "Character.h"
+#include "ThrowingBall.h"
 #include <algorithm>
 #include <fstream>
 #include <boost/filesystem.hpp>
 #include <GL/glut.h>
+#include <chrono>
 
 #include <boost/python.hpp>
 #include <boost/python/numpy.hpp>
@@ -79,10 +81,9 @@ InteractiveWindow(std::string network_path, std::string network_type)
 	this->getPredictions();
 	this->mEnvironment->reset();
 
-	this->mRecords.emplace_back(this->mEnvironment->getActor()->getSkeleton()->getPositions());
-	this->mTargetRecords.emplace_back(this->mTarget);
-	this->mPredictionRecords.emplace_back(this->mEnvironment->getReference(0));
-	this->mTotalFrame = 1;
+	this->mTotalFrame = 0;
+
+	this->record();
 
 	this->setFrame(0);
 }
@@ -140,18 +141,23 @@ void
 InteractiveWindow::
 step()
 {
+	// set dynamic pose to rnn
+	Eigen::VectorXd dynamic_pose = ICC::Utils::convertTCToMG(this->mEnvironment->getActor()->getSkeleton()->getPositions(), this->mEnvironment->getActor()->getSkeleton());
+	np::ndarray converted_dynamic_pose = ICC::Utils::toNumPyArray(dynamic_pose);
+	this->mMotionGenerator.attr("setDynamicPose")(converted_dynamic_pose);
+
 	this->getPredictions();
+
 	Eigen::VectorXd state = this->mEnvironment->getState();
 	np::ndarray converted_state = ICC::Utils::toNumPyArray(state);
 	converted_state = converted_state.reshape(p::make_tuple(1, converted_state.shape(0)));
-	Eigen::VectorXd action = ICC::Utils::toEigenVector(np::from_object(this->mTrackingController.attr("_policy").attr("getMeanAction")(converted_state)), this->mActionSize);
+	// Eigen::VectorXd action = Eigen::VectorXd::Zero(this->mActionSize);
+	Eigen::VectorXd action = ICC::Utils::toEigenVector(np::from_object(this->mTrackingController.attr("getActionsForInteractiveControl")(converted_state)), this->mActionSize);
 	this->mEnvironment->setAction(action);
 	this->mEnvironment->step(false);
 
-	this->mRecords.emplace_back(this->mEnvironment->getActor()->getSkeleton()->getPositions());
-	this->mTargetRecords.emplace_back(this->mTarget);
-	this->mPredictionRecords.emplace_back(this->mEnvironment->getReference(0));
-	this->mTotalFrame++;
+	this->record();
+	
 }
 
 void
@@ -163,6 +169,7 @@ reset()
 	this->mRecords.clear();
 	this->mTargetRecords.clear();
 	this->mPredictionRecords.clear();
+	this->mBallRecords.clear();
 
 	// clear reference manager
 	this->mEnvironment->clearReferenceManager();
@@ -177,13 +184,31 @@ reset()
 	this->mEnvironment->reset();
 
 	// get first frame
+	this->mTotalFrame = 0;
+	this->mCurFrame = 0;
+
+	this->record();
+
+	this->setFrame(0);
+}
+
+void 
+InteractiveWindow::
+record()
+{
 	this->mRecords.emplace_back(this->mEnvironment->getActor()->getSkeleton()->getPositions());
 	this->mTargetRecords.emplace_back(this->mTarget);
 	this->mPredictionRecords.emplace_back(this->mEnvironment->getReference(0));
-	this->mTotalFrame = 1;
-	this->mCurFrame = 0;
 
-	this->setFrame(0);
+	std::vector<Eigen::VectorXd> ballRecord;
+	ballRecord.clear();
+
+	for(auto& ball : this->mEnvironment->getThrowingBall()->mBalls){
+		ballRecord.emplace_back(ball->getPositions());
+	}
+	this->mBallRecords.emplace_back(ballRecord);
+
+	this->mTotalFrame++;
 }
 
 void
@@ -333,6 +358,17 @@ drawFlag(){
 
 }
 
+void 
+InteractiveWindow::
+drawBalls()
+{
+    dart::dynamics::SkeletonPtr ball = this->mEnvironment->getThrowingBall()->mFirstBall;
+    for (auto &pos:this->mBallRecords[this->mCurFrame]){
+        ball->setPositions(pos);
+        GUI::DrawSkeleton(ball);
+    }
+}
+
 void
 InteractiveWindow::
 display() 
@@ -354,11 +390,13 @@ display()
 	initLights(com_root[0], com_root[2], com_front[0], com_front[2]);
 	drawSkeletons();
 	drawFlag();
+	drawBalls();
 	glPopMatrix();
 	initLights(com_root[0], com_root[2], com_front[0], com_front[2]);
 	drawGround();
 	drawSkeletons();
 	drawFlag();
+	drawBalls();
 	glDisable(GL_BLEND);
 
 
@@ -369,6 +407,19 @@ display()
 	if(mIsCapture)
 		this->screenshot();
 }
+
+void
+InteractiveWindow::
+toggleHeight(){
+	if(this->mTarget[1] > 0.4){
+		this->mTarget[1] = 0.0;
+	}
+	else{
+		this->mTarget[1] = 0.88;
+	}
+	this->mMotionGenerator.attr("setTargetHeight")(this->mTarget[1]*100);
+}
+
 void
 InteractiveWindow::
 keyboard(unsigned char key,int x,int y) 
@@ -386,6 +437,8 @@ keyboard(unsigned char key,int x,int y)
 		case 'C': mIsCapture = true; break;
 		case 't': mTrackCamera = !mTrackCamera; this->setFrame(this->mCurFrame); break;
 		case 'T': this->mSkeletonDrawType++; this->mSkeletonDrawType %= 2; break;
+		case 'b': this->mEnvironment->createNewBall(false); break;
+		case 'h': this->toggleHeight(); break;
 		case ' ':
 			mIsAuto = !mIsAuto;
 			break;
@@ -414,6 +467,25 @@ mouse(int button, int state, int x, int y)
 			mMouseType = button;
 			mPrevX = x;
 			mPrevY = y;
+			if(mMouseType == GLUT_LEFT_BUTTON && glutGetModifiers()==GLUT_ACTIVE_SHIFT){
+				GLdouble modelview[16], projection[16];
+				GLint viewport[4];
+
+				double height = glutGet(GLUT_WINDOW_HEIGHT);
+
+				glGetDoublev(GL_MODELVIEW_MATRIX, modelview);
+				glGetDoublev(GL_PROJECTION_MATRIX, projection);
+				glGetIntegerv(GL_VIEWPORT, viewport);
+
+				double objx1, objy1, objz1;
+				double objx2, objy2, objz2;
+
+				int res1 = gluUnProject(x, height - y, 0, modelview, projection, viewport, &objx1, &objy1, &objz1);
+				int res2 = gluUnProject(x, height - y, 10, modelview, projection, viewport, &objx2, &objy2, &objz2);
+
+				this->mTarget[0] = objx1 + (objx2 - objx1)*(objy1)/(objy1-objy2);
+				this->mTarget[2] = objz1 + (objz2 - objz1)*(objy1)/(objy1-objy2);
+			}
 		}
 		else
 		{
@@ -468,10 +540,13 @@ void
 InteractiveWindow::
 timer(int value) 
 {
+	std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
 	if( mIsAuto )
 		this->nextFrame();
 	
-	glutTimerFunc(mDisplayTimeout, timerEvent,1);
+	std::chrono::steady_clock::time_point end= std::chrono::steady_clock::now();
+	double elasped = std::chrono::duration_cast<std::chrono::microseconds>(end - begin).count()/1000.;
+	glutTimerFunc(std::max(0.0,mDisplayTimeout-elasped), timerEvent,1);
 	glutPostRedisplay();
 }
 

@@ -56,7 +56,7 @@ class MotionData(object):
 		if RNNConfig.instance().useControlPrediction:
 			loss_predict = self.predict_loss(x, generated[:,:,-(RNNConfig.instance().xDimension):])
 		
-		loss = loss_root + loss_pose + loss_foot + loss_predict	
+		loss = loss_root + loss_pose + loss_foot + loss_predict*0.03
 		
 		return loss, [loss, loss_root, loss_pose, loss_foot, loss_predict]
 

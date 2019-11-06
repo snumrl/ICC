@@ -645,8 +645,6 @@ class TrackingController:
 				# push tuples only if nan did not occur
 				if nan_occur is not True:
 					local_step += 1
-				else:
-					nan_count += 1
 
 				# if episode is terminated
 				if is_terminal:
@@ -905,3 +903,9 @@ class TrackingController:
 
 		self._isNetworkLoaded = False
 		self._loadedNetwork = ""
+
+	def getActionsForInteractiveControl(self, states):	
+			states = self._rms.apply(states, update=False)
+
+			return self._policy.getMeanAction(states)
+

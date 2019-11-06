@@ -28,6 +28,9 @@ Environment()
 	this->mWorld->addSkeleton(this->mActor->getSkeleton());
 	this->mReferenceManager = new ReferenceManager(this->mActor);
 
+	// ball throwing
+	this->mThrowingBall = new ThrowingBall(this->mWorld, this->mActor->getSkeleton());
+
 	this->mIsTerminal = false;
 	this->mIsNanAtTerminal = false;
 	this->mTerminationReason = TerminationReason::NOT_TERMINATED;
@@ -142,6 +145,9 @@ step(bool record)
 
 		for(int j=0;j<2;j++)
 		{
+			// check ball removal condition
+			this->mThrowingBall->deleteBallAutomatically();
+
 			// record
 			if(record)
 				this->record();
