@@ -31,13 +31,14 @@ class RNNConfig:
 
 		# training parametres
 		self._stepSize = 48
-		self._batchSize = 30
+		self._numEpoch = 4
+		self._batchSize = 32
 		self._epochNumber = 4
 
 		self._footSlideWeight = 6
 
 		# User control prediction
-		self._useControlPrediction = True
+		self._useControlPrediction = False
 
 	# load motion related parameters
 	def loadData(self, motion):
@@ -89,6 +90,11 @@ class RNNConfig:
 	@property
 	def stepSize(self):
 		return self._stepSize
+
+	@property
+	def numEpoch(self):
+		return self._numEpoch
+	
 
 	@property
 	def batchSize(self):

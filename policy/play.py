@@ -17,13 +17,14 @@ if __name__=="__main__":
 	if args.network is None:
 		print("Network path required!")
 		exit()
+
 	with tf.device("/cpu:0"):
 		tracking_controller = TrackingController()
 		tracking_controller.initialize(
 			configuration_filepath='{}/configuration.xml'.format(args.network),
 			session_name="play",
 			num_slaves=args.num_slaves,
-			trajectory_length=20000,
+			trajectory_length=19000,
 			origin=True,
 			origin_offset=0
 		)

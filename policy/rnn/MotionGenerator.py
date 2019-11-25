@@ -136,6 +136,9 @@ class MotionGenerator(object):
 			t[0] = np.cos(t_angle)*t_len;
 			t[1] = np.sin(t_angle)*t_len;
 
+			# targets[j][0] = t[0]
+			# targets[j][1] = t[1]
+			# targets[j][2] = self.target_height
 			if(self.fallOverState[j] == 0):
 				if(self.standUpCount[j] < 40):
 					targets[j][0] = 60
@@ -146,23 +149,25 @@ class MotionGenerator(object):
 					targets[j][1] = t[1]
 					targets[j][2] = self.target_height
 			else:
-				if(self.fallOverCount[j] < 100):
-					targets[j][0] = 0#pred[0]
-					targets[j][1] = 0#pred[1]
+				if(self.fallOverCount[j] < 70):
+					pred = RNNConfig.instance().xNormal.de_normalize_l(self.controlPrediction[j])
+					targets[j][0] = RNNConfig.instance().xNormal.mean[0]
+					targets[j][1] = RNNConfig.instance().xNormal.mean[1]
 					targets[j][2] = 0#0#self.target_height
 				else:
 					if(RNNConfig.instance().useControlPrediction):
 						pred = RNNConfig.instance().xNormal.de_normalize_l(self.controlPrediction[j])
 						targets[j][0] = pred[0]# self.config.x_normal.mean[0]
 						targets[j][1] = pred[1]# self.config.x_normal.mean[1]
-						targets[j][2] = self.target_height #min(88, self.config.y_normal.de_normalize_l(self.current_y[j])[5]+20)
+						targets[j][2] = pred[2]# min(88, pred[2]+20)
 					else:
 						targets[j][0] = 0# self.config.x_normal.mean[0]
 						targets[j][1] = 0# self.config.x_normal.mean[1]
 						targets[j][2] = self.target_height#min(88, self.config.y_normal.de_normalize_l(self.current_y[j])[5]+20)
 
 			targets[j] = RNNConfig.instance().xNormal.normalize_l(targets[j])
-
+			# print(RNNConfig.instance().yNormal.de_normalize_l(self.characterPose[index])[:6])
+			print(targets)
 		return np.array(targets, dtype=np.float32)
 
 
@@ -218,9 +223,10 @@ class MotionGenerator(object):
 			self.characterPose = output
 
 		# convert outputs to global coordinate
-		self.characterPose = self.characterPose.numpy()
-		self.controlPrediction = self.controlPrediction.numpy()
-		pose_list = []
+		self.characterPose = np.array(self.characterPose, dtype=np.float32)
+		self.controlPrediction = np.array(self.controlPrediction, dtype=np.float32)
+
+		pose_list = [], dtype=np.float32
 		for j in range(self.num_slaves):
 			pose = RNNConfig.instance().yNormal.de_normalize_l(self.characterPose[j])
 			pose = RNNConfig.instance().yNormal.get_data_with_zeros(pose)
@@ -278,6 +284,7 @@ class MotionGenerator(object):
 	def saveState(self):
 		self.model.saveState()
 		self.savedCharacterPose = deepcopy(self.characterPose)
+		self.savedControlPrediction = deepcopy(self.controlPrediction)
 		self.savedRootPose = deepcopy(self.rootPose)
 		self.savedRootPosePrev = deepcopy(self.rootPosePrev)
 
@@ -288,6 +295,7 @@ class MotionGenerator(object):
 	def loadState(self):
 		self.model.loadState()
 		self.characterPose = deepcopy(self.savedCharacterPose)
+		self.controlPrediction = deepcopy(self.savedControlPrediction)
 		self.rootPose = deepcopy(self.savedRootPose)
 		self.rootPosePrev = deepcopy(self.savedRootPosePrev)
 
@@ -325,6 +333,7 @@ class MotionGenerator(object):
 		self.target_height = h
 
 	def setDynamicPose(self, dpose, index=0):
+		return
 		new_rootPose = Pose2d().transform([dpose[3],dpose[0],-dpose[2]])
 		pose_delta = self.rootPosePrev[index].relativePose(new_rootPose)
 		new_characterPose = deepcopy(RNNConfig.instance().yNormal.de_normalize_l(self.characterPose[index]))

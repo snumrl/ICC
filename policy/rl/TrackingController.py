@@ -841,6 +841,7 @@ class TrackingController:
 			np.save(self._directory+"rms/mean_smax.npy",self._rms.mean)
 			np.save(self._directory+"rms/var_smax.npy",self._rms.var)
 
+			os.system("cp {}/network.data-00000-of-00001 {}/network-smax.data-00000-of-00001".format(self._directory, self._directory))
 			os.system("cp {}/network.data-00000-of-00002 {}/network-smax.data-00000-of-00002".format(self._directory, self._directory))
 			os.system("cp {}/network.data-00001-of-00002 {}/network-smax.data-00001-of-00002".format(self._directory, self._directory))
 			os.system("cp {}/network.index {}/network-smax.index".format(self._directory, self._directory))
@@ -852,6 +853,7 @@ class TrackingController:
 			np.save(self._directory+"rms/mean_rmax.npy",self._rms.mean)
 			np.save(self._directory+"rms/var_rmax.npy",self._rms.var)
 
+			os.system("cp {}/network.data-00000-of-00001 {}/network-rmax.data-00000-of-00001".format(self._directory, self._directory))
 			os.system("cp {}/network.data-00000-of-00002 {}/network-rmax.data-00000-of-00002".format(self._directory, self._directory))
 			os.system("cp {}/network.data-00001-of-00002 {}/network-rmax.data-00001-of-00002".format(self._directory, self._directory))
 			os.system("cp {}/network.index {}/network-rmax.index".format(self._directory, self._directory))
@@ -906,6 +908,7 @@ class TrackingController:
 
 	def getActionsForInteractiveControl(self, states):	
 			states = self._rms.apply(states, update=False)
+			states = np.array(states, dtype=np.float32)
 
 			return self._policy.getMeanAction(states)
 

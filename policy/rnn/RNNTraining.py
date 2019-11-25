@@ -15,18 +15,24 @@ class MotionData(object):
 	def __init__(self):
 		motion = RNNConfig.instance().motion
 
-		self.x_data = loadData("../motions/%s/data/xData.dat"%(motion))
-		self.y_data = loadData("../motions/%s/data/yData.dat"%(motion))
+		self.x_data = loadData("../motions/%s/data/xData.dat"%(motion))[:19000]
+		self.y_data = loadData("../motions/%s/data/yData.dat"%(motion))[:19000]
 
-	def getBatch(self):
-	 	idxList = np.random.randint(0, len(self.y_data)-RNNConfig.instance().stepSize, size=RNNConfig.instance().batchSize)
+
+	def resetBatch(self):
+	 	self.idxList = np.random.randint(0, len(self.y_data)-RNNConfig.instance().stepSize*RNNConfig.instance().numEpoch, size=RNNConfig.instance().batchSize)
+	 	self.batchIdx = 0
+
+	def getNextBatch(self):
 	 	batch_x = []
 	 	batch_y = []
-	 	for idx in idxList:
-	 		batch_x.append(self.x_data[idx:idx+RNNConfig.instance().stepSize])
-	 		batch_y.append(self.y_data[idx:idx+RNNConfig.instance().stepSize+1])
+	 	for idx in self.idxList:
+	 		batch_x.append(self.x_data[idx+self.batchIdx*RNNConfig.instance().stepSize:idx+(self.batchIdx+1)*RNNConfig.instance().stepSize+1])
+	 		batch_y.append(self.y_data[idx+self.batchIdx*RNNConfig.instance().stepSize:idx+(self.batchIdx+1)*RNNConfig.instance().stepSize+1])
 	 	batch_x = np.array(batch_x, dtype=np.float32)
 	 	batch_y = np.array(batch_y, dtype=np.float32)
+
+	 	self.batchIdx += 1
 	 	return batch_x, batch_y
 
 
@@ -56,7 +62,7 @@ class MotionData(object):
 		if RNNConfig.instance().useControlPrediction:
 			loss_predict = self.predict_loss(x, generated[:,:,-(RNNConfig.instance().xDimension):])
 		
-		loss = loss_root + loss_pose + loss_foot + loss_predict*0.03
+		loss = loss_root + loss_pose + loss_foot + loss_predict*0.3
 		
 		return loss, [loss, loss_root, loss_pose, loss_foot, loss_predict]
 
@@ -73,7 +79,11 @@ class MotionData(object):
 		y_root = tf.slice(y, [0, 0, rootStart], [-1, -1, RNNConfig.instance().rootDimension])
 		y_pose = tf.slice(y, [0, 0, poseStart], [-1, -1, RNNConfig.instance().yDimension - RNNConfig.instance().rootDimension])
 		loss_root = tf.reduce_mean(tf.square(output_root - y_root)*[6, 6, 1, 1, 1])
-		loss_pose = tf.reduce_mean(tf.square(output_pose - y_pose))
+
+		pose_weights = np.ones(RNNConfig.instance().yDimension - RNNConfig.instance().rootDimension)
+		pose_weights[0] = 2
+
+		loss_pose = tf.reduce_mean(tf.square(output_pose - y_pose)*pose_weights)
 		
 			
 		return loss_root, loss_pose
@@ -161,13 +171,33 @@ def train(motion_name):
 	loss_list_smoothed = np.array([[]]*5)
 	st = time.time()
 	for c in range(100000000):
-		batch_x, batch_y = data.getBatch()
-		with tf.GradientTape() as tape:
-			generated = model.forwardMultiple(batch_x, batch_y[:,0])
-			loss = data.loss(batch_y, batch_x, generated)
-		gradients = tape.gradient(loss, model.trainable_variables)
-		gradients, _grad_norm = tf.clip_by_global_norm(gradients, 0.5)
-		optimizer.apply_gradients(zip(gradients, model.trainable_variables))
+		data.resetBatch()
+		model.resetState(RNNConfig.instance().batchSize)
+		for n in range(RNNConfig.instance().numEpoch):
+			batch_x, batch_y = data.getNextBatch()
+			with tf.GradientTape() as tape:
+				controls = tf.transpose(batch_x[:,:-1], perm=[1,0,2])
+				generated = []
+				pose = batch_y[:,0]
+				for i in range(RNNConfig.instance().stepSize):
+					control = controls[i]
+
+					output = model.forwardOneStep(control, pose, True)
+					generated.append(output)
+
+					if RNNConfig.instance().useControlPrediction:
+						pose = output[:,:RNNConfig.instance().yDimension]
+					else:
+						pose = output
+
+				generated = tf.convert_to_tensor(generated)
+				generated = tf.transpose(generated, perm=[1,0,2])
+
+				loss = data.loss(batch_y, batch_x[:,1:], generated)
+
+			gradients = tape.gradient(loss, model.trainable_variables)
+			gradients, _grad_norm = tf.clip_by_global_norm(gradients, 0.5)
+			optimizer.apply_gradients(zip(gradients, model.trainable_variables))
 
 		if c%100 == 0:
 			loss_detail = tf.convert_to_tensor(loss[1]).numpy()
@@ -177,7 +207,6 @@ def train(motion_name):
 			print("Elapsed : {:8.2f}s, Total : {:.6f}, [ root : {:.6f}, pose : {:.6f}, foot : {:.6f}, pred : {:.6f} ]".format(time.time()-st,*loss_detail))
 
 			model.save("../motions/{}/train/network".format(motion_name))
-
 
 
 

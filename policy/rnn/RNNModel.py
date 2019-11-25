@@ -6,6 +6,22 @@ from rnn.RNNConfig import RNNConfig
 
 from IPython import embed
 
+class ForgetBiasInitializer(tf.keras.initializers.Initializer):
+	def __init__(self, value=0):
+		if not (np.isscalar(value) or isinstance(value, (list, tuple, np.ndarray))):
+			raise TypeError(
+				"Invalid type for initial value: %s (expected Python scalar, list or "
+				"tuple of values, or numpy.ndarray)." % type(value))
+		self.value = value
+
+	def __call__(self, shape, dtype):
+		if dtype is not None:
+			dtype = tf.dtypes.as_dtype(dtype)
+
+		ret = np.zeros(shape)
+		ret[int(shape[0]/4):int(shape[0]/2)].fill(self.value)
+		return tf.convert_to_tensor(ret, dtype=dtype)
+
 class RNNModel(object):
 	def __init__(self):
 		input_size = RNNConfig.instance().xDimension + RNNConfig.instance().yDimension
@@ -14,13 +30,28 @@ class RNNModel(object):
 		else:
 			output_size = RNNConfig.instance().yDimension
 
+		self.regularizer = tf.keras.regularizers.l2(0.00001)
 
-		cells = [tf.keras.layers.LSTMCell(units=RNNConfig.instance().lstmLayerSize, dropout=0.1) for _ in range(RNNConfig.instance().lstmLayerNumber)]
+		cells = [tf.keras.layers.LSTMCell(
+			units=RNNConfig.instance().lstmLayerSize, 
+			unit_forget_bias=False, 
+			bias_initializer=ForgetBiasInitializer(0.8), 
+			dropout=0.1, recurrent_dropout=0.1,
+			kernel_regularizer=self.regularizer,
+			bias_regularizer=self.regularizer,
+			recurrent_regularizer=self.regularizer
+			) for _ in range(RNNConfig.instance().lstmLayerNumber)]
+
 		self.stacked_cells = tf.keras.layers.StackedRNNCells(cells, input_shape=(None, input_size), dtype=tf.float32)
-		self.dense = tf.keras.layers.Dense(output_size, dtype=tf.float32)
+		self.dense = tf.keras.layers.Dense(output_size,
+			kernel_regularizer=self.regularizer,
+			bias_regularizer=self.regularizer,
+			dtype=tf.float32)
 
 		self.stacked_cells.build(input_shape=(None, input_size))
+		self.dropout = tf.keras.layers.Dropout(0.1)
 		self.dense.build(input_shape=(None, RNNConfig.instance().lstmLayerSize))
+
 
 		self._trainable_variables = self.stacked_cells.trainable_variables + self.dense.trainable_variables
 
@@ -41,32 +72,10 @@ class RNNModel(object):
 	def forwardOneStep(self, controls, pose, training=True):
 		inputs = tf.concat([controls, pose], 1)
 		m, self.state = self.stacked_cells(inputs, self.state, training=training)
+		m = self.dropout(m, training=training)
 		outputs = self.dense(m)
 
 		return outputs
-
-	def forwardMultiple(self, controls, initial_pose):
-		self.resetState(controls.shape[0])
-		controls = tf.transpose(controls, perm=[1,0,2])
-		outputList = []
-		pose = initial_pose
-		control = controls[0]
-		for i in range(len(controls)):
-			# if not RNNConfig.instance().useControlPrediction:
-			control = controls[i]
-
-			output = self.forwardOneStep(control, pose, True)
-			outputList.append(output)
-
-			if RNNConfig.instance().useControlPrediction:
-				pose = output[:,:RNNConfig.instance().yDimension]
-				# control = output[:,RNNConfig.instance().yDimension:]
-			else:
-				pose = output
-
-		outputList = tf.convert_to_tensor(outputList)
-		outputList = tf.transpose(outputList, perm=[1,0,2])
-		return outputList
 
 	@property
 	def trainable_variables(self):
