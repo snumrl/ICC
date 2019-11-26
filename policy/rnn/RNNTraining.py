@@ -210,7 +210,7 @@ def train(motion_name):
 
 			model.save("../motions/{}/train/network".format(motion_name))
 		else:
-			print("\r{}/100 : {:.6f}, {:.6f}".format(c-100*(c%100), np.array(loss), np.array(reg_loss)), end="")
+			print("\r{}/100 : {:.6f}, {:.6f}".format(c%100, np.array(loss), np.array(reg_loss)), end="")
 
 
 
