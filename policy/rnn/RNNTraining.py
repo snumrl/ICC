@@ -195,9 +195,9 @@ def train(motion_name):
 
 				loss, loss_detail = data.loss(batch_y, batch_x[:,1:], generated)
 				reg_loss = model.losses
-				loss = loss + reg_loss
+				total_loss = loss + reg_loss
 
-			gradients = tape.gradient(loss, model.trainable_variables)
+			gradients = tape.gradient(total_loss, model.trainable_variables)
 			gradients, _grad_norm = tf.clip_by_global_norm(gradients, 0.5)
 			optimizer.apply_gradients(zip(gradients, model.trainable_variables))
 
@@ -206,9 +206,11 @@ def train(motion_name):
 			loss_list = np.insert(loss_list, loss_list.shape[1], loss_detail, axis=1)
 			loss_list_smoothed = np.insert(loss_list_smoothed, loss_list_smoothed.shape[1], np.array([np.mean(loss_list[-10:], axis=1)]), axis=1)
 			Plot([*zip(loss_list_smoothed, loss_name)], "loss_s", 1)
-			print("Elapsed : {:8.2f}s, Total : {:.6f}, [ root : {:.6f}, pose : {:.6f}, foot : {:.6f}, pred : {:.6f} ]".format(time.time()-st,*loss_detail))
+			print("\rElapsed : {:8.2f}s, Total : {:.6f}, [ root : {:.6f}, pose : {:.6f}, foot : {:.6f}, pred : {:.6f} ]".format(time.time()-st,*loss_detail))
 
 			model.save("../motions/{}/train/network".format(motion_name))
+		else:
+			print("\r{}/100 : {:.6f}, {:.6f}".format(c-100*(c%100), np.array(loss), np.array(reg_loss)), end="")
 
 
 
