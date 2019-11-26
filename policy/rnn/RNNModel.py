@@ -70,12 +70,17 @@ class RNNModel(object):
 	def loadState(self):
 		self.state = self.savedState
 
-	def forwardOneStep(self, controls, pose, training=True):
+	@tf.function
+	def forward(self, controls, pose, state, training=True):
 		inputs = tf.concat([controls, pose], 1)
-		m, self.state = self.stacked_cells(inputs, self.state, training=training)
+		m, new_state = self.stacked_cells(inputs, state, training=training)
 		m = self.dropout(m, training=training)
 		outputs = self.dense(m)
 
+		return outputs, new_state
+
+	def forwardOneStep(self, controls, pose, training=True):
+		outputs, self.state = self.forward(controls, pose, self.state, training)
 		return outputs
 
 	@property
