@@ -226,7 +226,7 @@ class MotionGenerator(object):
 		self.characterPose = np.array(self.characterPose, dtype=np.float32)
 		self.controlPrediction = np.array(self.controlPrediction, dtype=np.float32)
 
-		pose_list = [], dtype=np.float32
+		pose_list = []
 		for j in range(self.num_slaves):
 			pose = RNNConfig.instance().yNormal.de_normalize_l(self.characterPose[j])
 			pose = RNNConfig.instance().yNormal.get_data_with_zeros(pose)

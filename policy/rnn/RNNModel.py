@@ -33,13 +33,13 @@ class RNNModel(object):
 		self.regularizer = tf.keras.regularizers.l2(0.00001)
 
 		cells = [tf.keras.layers.LSTMCell(
-			units=RNNConfig.instance().lstmLayerSize, 
-			unit_forget_bias=False, 
-			bias_initializer=ForgetBiasInitializer(0.8), 
-			dropout=0.1, recurrent_dropout=0.1,
-			kernel_regularizer=self.regularizer,
-			bias_regularizer=self.regularizer,
-			recurrent_regularizer=self.regularizer
+				units=RNNConfig.instance().lstmLayerSize, 
+				unit_forget_bias=False, 
+				bias_initializer=ForgetBiasInitializer(0.8), 
+				dropout=0.1,
+				kernel_regularizer=self.regularizer,
+				bias_regularizer=self.regularizer,
+				recurrent_regularizer=self.regularizer
 			) for _ in range(RNNConfig.instance().lstmLayerNumber)]
 
 		self.stacked_cells = tf.keras.layers.StackedRNNCells(cells, input_shape=(None, input_size), dtype=tf.float32)
@@ -54,6 +54,7 @@ class RNNModel(object):
 
 
 		self._trainable_variables = self.stacked_cells.trainable_variables + self.dense.trainable_variables
+		self._losses = tf.reduce_sum(tf.convert_to_tensor(self.stacked_cells.losses + self.dense.losses))
 
 		self._ckpt = tf.train.Checkpoint(
 			stacked_cells=self.stacked_cells,
@@ -80,6 +81,11 @@ class RNNModel(object):
 	@property
 	def trainable_variables(self):
 		return self._trainable_variables
+
+	@property
+	def losses(self):
+		return self._losses
+	
 
 	def save(self, path):
 		self._ckpt.write(path)

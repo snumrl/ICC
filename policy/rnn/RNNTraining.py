@@ -193,14 +193,16 @@ def train(motion_name):
 				generated = tf.convert_to_tensor(generated)
 				generated = tf.transpose(generated, perm=[1,0,2])
 
-				loss = data.loss(batch_y, batch_x[:,1:], generated)
+				loss, loss_detail = data.loss(batch_y, batch_x[:,1:], generated)
+				reg_loss = model.losses
+				loss = loss + reg_loss
 
 			gradients = tape.gradient(loss, model.trainable_variables)
 			gradients, _grad_norm = tf.clip_by_global_norm(gradients, 0.5)
 			optimizer.apply_gradients(zip(gradients, model.trainable_variables))
 
 		if c%100 == 0:
-			loss_detail = tf.convert_to_tensor(loss[1]).numpy()
+			loss_detail = tf.convert_to_tensor(loss_detail).numpy()
 			loss_list = np.insert(loss_list, loss_list.shape[1], loss_detail, axis=1)
 			loss_list_smoothed = np.insert(loss_list_smoothed, loss_list_smoothed.shape[1], np.array([np.mean(loss_list[-10:], axis=1)]), axis=1)
 			Plot([*zip(loss_list_smoothed, loss_name)], "loss_s", 1)
