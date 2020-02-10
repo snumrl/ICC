@@ -106,6 +106,8 @@ class MotionGenerator(object):
 		target = self.rootPose[index].localToGlobal(local_pose).p
 		if self.motion == "walkrunfall":
 			target = target + [self.target_height]
+		elif self.motion == "chicken_hopping":
+			target = target
 		else:
 			print("policy/rnn/RNNManager.py/randomTarget: use default target generation")
 	
@@ -245,6 +247,9 @@ class MotionGenerator(object):
 			t = self.getTargets()
 			if self.motion == "walkrunfall":
 				t = t[:,:2]
+			elif self.motion == "chicken_hopping":
+				t = t
+				
 			target_trajectories.append(t)
 
 		trajectories = np.asarray([*zip(*trajectories)], dtype=np.float32)

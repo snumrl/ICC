@@ -51,6 +51,9 @@ class RNNConfig:
 		if self._motion == "walkrunfall":
 			self._xDimension = 3
 			self._yDimension = 111
+		elif self._motion == "chicken_hopping":
+			self._xDimension = 3
+			self._yDimension = 111
 		else:
 			print("RNNConfig : Unspecified motion!")
 			exit()
