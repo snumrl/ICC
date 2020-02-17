@@ -25,7 +25,7 @@ from rnn.MotionGenerator import MotionGenerator
 
 from IPython import embed
 
-# os.environ['CUDA_VISIBLE_DEVICES'] = ''
+os.environ['CUDA_VISIBLE_DEVICES'] = ''
 
 class Policy:
 	def __init__(self, action_size):

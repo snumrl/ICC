@@ -9,5 +9,5 @@ if __name__ == "__main__":
 	parser = argparse.ArgumentParser()
 	parser.add_argument('-m', '--motion', help='motion name(folder name)')
 	args = parser.parse_args()
-	with tf.device("/gpu:0"):
-		train(args.motion)
+	# with tf.device("/gpu:0"):
+	train(args.motion)

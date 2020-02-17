@@ -60,7 +60,7 @@ class MotionGenerator(object):
 		for i in range(self.num_slaves):
 			self.targets.append(self.randomTarget(i))
 
-	def resetAll(self, targets=None):
+	def resetProperties(self):
 		# reset root and character poses
 		self.characterPose = np.array(self.characterPose)
 		for i in range(self.num_slaves):
@@ -76,6 +76,9 @@ class MotionGenerator(object):
 		# reset state
 		if self.model is not None:
 			self.model.resetState(self.num_slaves)
+
+	def resetAll(self, targets=None):
+		self.resetProperties()
 
 		if targets is not None:
 			self.targets = targets
@@ -106,7 +109,7 @@ class MotionGenerator(object):
 		target = self.rootPose[index].localToGlobal(local_pose).p
 		if self.motion == "walkrunfall":
 			target = target + [self.target_height]
-		elif self.motion == "chicken_hopping":
+		elif self.motion == "chicken":
 			target = target
 		else:
 			print("policy/rnn/RNNManager.py/randomTarget: use default target generation")
@@ -247,9 +250,9 @@ class MotionGenerator(object):
 			t = self.getTargets()
 			if self.motion == "walkrunfall":
 				t = t[:,:2]
-			elif self.motion == "chicken_hopping":
+			elif self.motion == "chicken":
 				t = t
-				
+
 			target_trajectories.append(t)
 
 		trajectories = np.asarray([*zip(*trajectories)], dtype=np.float32)
@@ -258,8 +261,8 @@ class MotionGenerator(object):
 		return trajectories, target_trajectories
 
 	def getOriginalTrajectory(self, frame, origin_offset=0):
-		x_dat = loadData("../motions/{}/data/xData.dat".format(self.motion))
-		y_dat = loadData("../motions/{}/data/yData.dat".format(self.motion))
+		x_dat = loadData("../motions/{}/data/0_xData.dat".format(self.motion))
+		y_dat = loadData("../motions/{}/data/0_yData.dat".format(self.motion))
 
 		x_dat = x_dat[1+origin_offset:frame+1+origin_offset]
 		y_dat = y_dat[1+origin_offset:frame+1+origin_offset]
@@ -268,13 +271,13 @@ class MotionGenerator(object):
 		y_dat = np.array([RNNConfig.instance().yNormal.get_data_with_zeros(RNNConfig.instance().yNormal.de_normalize_l(y)) for y in y_dat])
 
 
-		self.resetAll()
+		self.resetProperties()
 
 		trajectories = []
 		targets = []
 
 		for x, y in zip(x_dat, y_dat):
-			localPose = Pose2d(x[:2])
+			localPose = Pose2d([x[0]*100, x[1]*100])
 			targets.append(self.rootPose[0].localToGlobal(localPose).p)
 			trajectories.append(self.getGlobalPositions(y, 0))
 
@@ -339,12 +342,12 @@ class MotionGenerator(object):
 
 	def setDynamicPose(self, dpose, index=0):
 		return
-		new_rootPose = Pose2d().transform([dpose[3],dpose[0],-dpose[2]])
+		new_rootPose = Pose2d().transform([-dpose[3],dpose[0],dpose[2]])
 		pose_delta = self.rootPosePrev[index].relativePose(new_rootPose)
 		new_characterPose = deepcopy(RNNConfig.instance().yNormal.de_normalize_l(self.characterPose[index]))
 
 		new_characterPose[0:2] = dpose[52:54] 			# foot contact
-		new_characterPose[2] = pose_delta.rotatedAngle() 	# root rotate
+		new_characterPose[2] = -pose_delta.rotatedAngle() 	# root rotate
 		new_characterPose[3:5] = pose_delta.p 				# root translate
 		new_characterPose[5] = dpose[1]					# root height
 		new_characterPose[6:63] = dpose[54:111] 			# positions

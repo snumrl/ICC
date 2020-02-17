@@ -15,8 +15,8 @@ class MotionData(object):
 	def __init__(self):
 		motion = RNNConfig.instance().motion
 
-		self.x_data = loadData("../motions/%s/data/xData.dat"%(motion))[:19000]
-		self.y_data = loadData("../motions/%s/data/yData.dat"%(motion))[:19000]
+		self.x_data = loadData("../motions/%s/data/0_xData.dat"%(motion))
+		self.y_data = loadData("../motions/%s/data/0_yData.dat"%(motion))
 
 		self.xDimension = RNNConfig.instance().xDimension
 		self.yDimension = RNNConfig.instance().yDimension
@@ -86,6 +86,7 @@ class MotionData(object):
 
 	@tf.function
 	def motion_mse_loss(self, y, output):
+
 		rootStart = 0
 		poseStart = self.rootDimension
 
@@ -99,8 +100,8 @@ class MotionData(object):
 		pose_weights[0] = 2
 
 		loss_pose = tf.reduce_mean(tf.square(output_pose - y_pose)*pose_weights)
-		
-			
+
+		       
 		return loss_root, loss_pose
 
 	@tf.function
@@ -112,7 +113,7 @@ class MotionData(object):
 		c_root = output_root
 		
 		# root, root height, Head_End, LeftHand
-		foot_indices = [2, 3, 5, 6]
+		foot_indices = [13, 14, 17, 18]
 		dist_list = []
 		for i in range(self.stepSize):
 			if (i == 0):
@@ -126,8 +127,8 @@ class MotionData(object):
 			cos = tf.cos(current_root[:,a_idx])
 			sin = tf.sin(current_root[:,a_idx])
 			dx_x = cos
-			dx_z = -sin
-			dy_x = sin
+			dx_z = sin
+			dy_x = -sin
 			dy_z = cos
 			t_x = current_root[:, a_idx+1]
 			t_z = -current_root[:, a_idx+2]
@@ -180,7 +181,7 @@ def train(motion_name):
 	RNNConfig.instance().loadData(motion_name)
 	data = MotionData()
 	model = RNNModel()
-	optimizer = tf.keras.optimizers.Adam(learning_rate=0.001)
+	optimizer = tf.keras.optimizers.Adam(learning_rate=0.0001)
 
 	loss_name = ["total", "root", "pose", "foot", "pred"]
 	loss_list = np.array([[]]*5)

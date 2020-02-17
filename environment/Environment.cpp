@@ -449,10 +449,10 @@ getReward()
 
 	// Evaluate total reward
 	double scale 	= 1.0;
-	double sig_p 	= 0.1 * scale; 		// 2
+	double sig_p 	= 0.5 * scale; 		// 2
 	double sig_v 	= 1.0 * scale;		// 3
-	double sig_com 	= 0.3 * scale;		// 4
-	double sig_ee 	= 0.3 * scale;		// 8
+	double sig_com 	= 0.2 * scale;		// 4
+	double sig_ee 	= 0.2 * scale;		// 8
 
 	double w_p 		= 0.35;
 	double w_v 		= 0.10;

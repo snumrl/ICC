@@ -202,7 +202,7 @@ setReferenceTargetTrajectory(int id, int frame, np::ndarray target_trajectory)
 	std::vector<Eigen::Vector3d> converted_traj;
 	converted_traj.resize(mat.rows());
 	for(int i = 0; i < mat.rows(); i++){
-		converted_traj[i] << mat(i,1)*0.01, 0, mat(i,0)*0.01;
+		converted_traj[i] << mat(i,0)*0.01, 0, mat(i,1)*0.01;
 	}
 	this->mSlaves[id]->setReferenceTargetTrajectory(converted_traj);
 }
@@ -215,7 +215,7 @@ setReferenceTargetTrajectories(int frame, np::ndarray ref_trajectory)
 	std::vector<Eigen::Vector3d> converted_traj;
 	converted_traj.resize(mat.rows());
 	for(int i = 0; i < mat.rows(); i++){
-		converted_traj[i] << mat(i,1)*0.01, 0, mat(i,0)*0.01;
+		converted_traj[i] << mat(i,0)*0.01, 0, mat(i,1)*0.01;
 	}
 #pragma omp parallel for
 	for(int id = 0; id < this->mNumSlaves; id++){

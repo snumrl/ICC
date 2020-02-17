@@ -1,13 +1,24 @@
 import struct
 import math
-from IPython import embed
+# original: >i, >d
+# c default: <i , <d
+
+# c default
+intsize= '<i'
+doublesize= '<d'
+
+# # original
+# intsize= '>i'
+# doublesize= '>d'
+
 
 def loadData(fName, sizeLimit=-1):
+    print(fName)
     f = open(fName, 'rb') 
     iSize = struct.calcsize('i')
     dSize = struct.calcsize('d')    
-    dataLen = struct.unpack('>i', f.read(iSize))[0]
-    dataSize = struct.unpack('>i', f.read(iSize))[0]
+    dataLen = struct.unpack(intsize, f.read(iSize))[0]
+    dataSize = struct.unpack(intsize, f.read(iSize))[0]
     if (sizeLimit >= 0):
         dataSize = sizeLimit
     print("load Data : len=%d, size=%d"%(dataLen, dataSize))
@@ -16,7 +27,7 @@ def loadData(fName, sizeLimit=-1):
         vList = [None]*dataLen
         for vIdx in range(dataLen):
             v = f.read(dSize)
-            vList[vIdx] = struct.unpack('>d', v)[0]
+            vList[vIdx] = struct.unpack(doublesize, v)[0]
         data[dIdx] = vList
     isEnd = (f.read(1) == b'')
     print("is valid End : %d"%isEnd)
@@ -27,20 +38,20 @@ def loadListData(fName, sizeLimit=-1):
     f = open(fName, 'rb') 
     iSize = struct.calcsize('i')
     dSize = struct.calcsize('d')    
-    dataLen = struct.unpack('>i', f.read(iSize))[0]
-    dataSize = struct.unpack('>i', f.read(iSize))[0]
+    dataLen = struct.unpack(intsize, f.read(iSize))[0]
+    dataSize = struct.unpack(intsize, f.read(iSize))[0]
     if (sizeLimit >= 0):
         dataSize = sizeLimit
     print("load Data : len=%d, size=%d"%(dataLen, dataSize))
     data = [None]*dataSize;
     for dIdx in range(dataSize):
-        l = struct.unpack('>i', f.read(iSize))[0]
+        l = struct.unpack(intsize, f.read(iSize))[0]
         subList = [None]*l
         for lIdx in range(l):
             vList = [None]*dataLen
             for vIdx in range(dataLen):
                 v = f.read(dSize)
-                vList[vIdx] = struct.unpack('>d', v)[0]
+                vList[vIdx] = struct.unpack(doublesize, v)[0]
             subList[lIdx] = vList
         data[dIdx] = subList
     isEnd = (f.read(1) == b'')
@@ -49,18 +60,19 @@ def loadListData(fName, sizeLimit=-1):
     return data
 
 def loadNormalData(fName):
+    print(fName)
     f = open(fName, 'rb') 
     iSize = struct.calcsize('i')
     dSize = struct.calcsize('d')    
-    dataSize = struct.unpack('>i', f.read(iSize))[0]
+    dataSize = struct.unpack(intsize, f.read(iSize))[0]
     mean = [None]*dataSize;
     std = [None]*dataSize;
     for dIdx in range(dataSize):
         v = f.read(dSize)
-        mean[dIdx] = struct.unpack('>d', v)[0]
+        mean[dIdx] = struct.unpack(doublesize, v)[0]
     for dIdx in range(dataSize):
         v = f.read(dSize)
-        std[dIdx] = struct.unpack('>d', v)[0]
+        std[dIdx] = struct.unpack(doublesize, v)[0]
     isEnd = (f.read(1) == b'')
     print("is valid End : %d"%isEnd)
     f.close()
@@ -72,11 +84,11 @@ def saveData(fName, data):
     dataSize = len(data)
     print("saveData : %d, %d"%(dataLen, dataSize))
     f = open(fName, 'wb')
-    f.write(struct.pack('>i', dataLen))
-    f.write(struct.pack('>i', dataSize))
+    f.write(struct.pack(intsize, dataLen))
+    f.write(struct.pack(intsize, dataSize))
     for dIdx in range(dataSize):
         for vIdx in range(dataLen):
-            f.write(struct.pack('>d', data[dIdx][vIdx]))
+            f.write(struct.pack(doublesize, data[dIdx][vIdx]))
     f.close()
     
 def meanAndStd(data):

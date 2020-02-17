@@ -1,13 +1,13 @@
 <Configuration>
 	<Learning>
-		<Motion>ckicken_hopping</Motion>
-		<Gamma>0.97</Gamma>
+		<Motion>chicken</Motion>
+		<Gamma>0.95</Gamma>
 		<Lambd>0.95</Lambd>
 		<ClipRange>0.2</ClipRange>
 		<ValueLayer size="512" number="2"/>
 		<PolicyLayer size="1024" number="4"/>
 		<ActivationFunction>relu</ActivationFunction>
-		<LearningRate policy="5e-5" value="1e-3" decay="0.9993"/>
+		<LearningRate policy="1e-4" value="1e-3" decay="0.9993"/>
 		<BatchSize>1024</BatchSize>
 		<TransitionsPerIteration>20000</TransitionsPerIteration>
 	</Learning>
@@ -16,14 +16,14 @@
 		<SimulationHz>600</SimulationHz>
 		<ControlHz>30</ControlHz>
 		<MotionHz>30</MotionHz>
-		<JointDamping>0.05</JointDamping>
+		<JointDamping>0.2</JointDamping>
 		<RootHeightOffset>0.0</RootHeightOffset>
 		<RewardType>Mul</RewardType>
 		<EarlyTermination>True</EarlyTermination>
 		<TerminalCondition>
 			<RootDiff>1.0</RootDiff>
 			<RootAngleDiff>2.2</RootAngleDiff>
-			<RootHeight lower="0.0" upper="2.0"/>
+			<RootHeight lower="0.5" upper="2.0"/>
 		</TerminalCondition>
 		<TCMotionSize>52</TCMotionSize>
 		<MGMotionSize>111</MGMotionSize>

@@ -38,7 +38,7 @@ class RNNConfig:
 		self._footSlideWeight = 6
 
 		# User control prediction
-		self._useControlPrediction = False
+		self._useControlPrediction = True
 
 	# load motion related parameters
 	def loadData(self, motion):
@@ -51,9 +51,9 @@ class RNNConfig:
 		if self._motion == "walkrunfall":
 			self._xDimension = 3
 			self._yDimension = 111
-		elif self._motion == "chicken_hopping":
-			self._xDimension = 3
-			self._yDimension = 111
+		elif self._motion == "chicken":
+			self._xDimension = 2
+			self._yDimension = 107
 		else:
 			print("RNNConfig : Unspecified motion!")
 			exit()

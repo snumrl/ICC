@@ -658,11 +658,11 @@ Eigen::VectorXd convertMGToTC(const Eigen::VectorXd& input, dart::dynamics::Skel
 	converted_motion.setZero();
 
 	// root position
-	converted_motion[3] = -input[2]*0.01;
+	converted_motion[3] = input[0]*0.01;
 	converted_motion[4] = input[1]*0.01 + Configurations::instance().getRootHeightOffset();
-	converted_motion[5] = input[0]*0.01;
+	converted_motion[5] = input[2]*0.01;
 	// root orientation
-	Eigen::Quaterniond root_y_ori(Eigen::AngleAxisd(input[3], Eigen::Vector3d::UnitY()));
+	Eigen::Quaterniond root_y_ori(Eigen::AngleAxisd(-input[3], Eigen::Vector3d::UnitY()));
 	Eigen::Quaterniond hip_ori = Utils::dartToQuat(input.segment<3>(4));
 	root_y_ori = root_y_ori * hip_ori;
 	converted_motion.segment<3>(0) = Utils::quatToDart(root_y_ori);
@@ -699,9 +699,9 @@ Eigen::VectorXd convertTCToMG(const Eigen::VectorXd& input, dart::dynamics::Skel
 
 	skel->setPositions(tp);
 	decomposed_positions.setZero();
-	decomposed_positions[0] = tp[5]*100;
+	decomposed_positions[0] = tp[3]*100;
 	decomposed_positions[1] = (tp[4]-Configurations::instance().getRootHeightOffset())*100;
-	decomposed_positions[2] = -tp[3]*100;
+	decomposed_positions[2] = tp[5]*100;
 	decomposed_positions.segment<4>(3) = decomposed_root;
 	decomposed_positions.segment<36>(7) = tp.segment<36>(6);
 	decomposed_positions.segment<9>(43) = tp.segment<9>(45);

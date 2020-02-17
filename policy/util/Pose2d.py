@@ -43,9 +43,9 @@ class Pose2d(object):
         return Pose2d(position, direction)
     
     def global_point_3d(self, point):
-        g_pose = Pose2d([point[0], -point[2]])
+        g_pose = Pose2d([point[0], point[2]])
         g_pose = self.localToGlobal(g_pose)
-        return [g_pose.p[0], point[1], -g_pose.p[1]]
+        return [g_pose.p[0], point[1], g_pose.p[1]]
     
     def toArray(self):
 #         return [self.p[0], self.p[1]]
@@ -53,3 +53,6 @@ class Pose2d(object):
 
     def rotatedAngle(self):
         return math.atan2(self.d[1], self.d[0])
+
+    def global_rotatedAngle(self):
+        return -math.atan2(self.d[1], self.d[0])
