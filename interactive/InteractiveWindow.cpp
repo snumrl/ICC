@@ -94,9 +94,15 @@ getPythonTarget()
 {
 	// convert target
 	p::list target;
-	target.append(this->mTarget[2]*100);
-	target.append(this->mTarget[0]*100);
-	target.append(this->mTarget[1]*100);
+	if(ICC::Configurations::instance().getMotionName() == "walkrunfall"){
+		target.append(this->mTarget[0]*100);
+		target.append(this->mTarget[2]*100);
+		target.append(this->mTarget[1]*100);
+	}
+	else if(ICC::Configurations::instance().getMotionName() == "chicken"){
+		target.append(this->mTarget[0]*100);
+		target.append(this->mTarget[2]*100);
+	}
 
 	p::list target_wrapper;
 	target_wrapper.append(target);

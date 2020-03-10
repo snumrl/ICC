@@ -131,3 +131,54 @@ class Normalize(object):
         for i in self.zero_indices:
             new_data = np.insert(new_data, i, self.total_mean[i])
         return new_data
+
+    def normalize_and_remove_zero(self,data):
+        result = []
+        zero_pass_cnt= 0
+        for i in range(len(data)):
+            if i in self.zero_indices:
+                zero_pass_cnt= zero_pass_cnt+1
+                continue
+            else:
+                result.append((data[i] - self.mean[i-zero_pass_cnt])/self.std[i-zero_pass_cnt])
+        return result
+
+    def denormalize_and_fill_zero(self,data):
+        result = []
+        zero_pass_cnt= 0
+        for i in range(len(data)+len(self.zero_indices)):
+            if i in self.zero_indices:
+                zero_pass_cnt= zero_pass_cnt+1
+                result.append(self.total_mean[i])
+                continue
+            else:
+                result.append(data[i-zero_pass_cnt]* self.std[i-zero_pass_cnt] + self.mean[i-zero_pass_cnt])
+        return result
+
+    def get_zero_not_removed_index(self, index):
+        removed_index_counter= 0
+        zero_index_counter= 0
+        for i in range(len(self.mean)+ len(self.zero_indices)):
+            if removed_index_counter== index:
+                return (removed_index_counter+ zero_index_counter)
+            if i in self.zero_indices:
+                zero_index_counter = zero_index_counter+1
+            else:
+                removed_index_counter= removed_index_counter+1
+
+    def get_zero_removed_index(self, index):
+        if index in self.zero_indices:
+            return -1
+        removed_index_counter= 0
+        zero_index_counter= 0
+        for i in range(len(self.mean)+ len(self.zero_indices)):
+            if (removed_index_counter+ zero_index_counter)== index:
+                # print("get_zero_removed_index of ", index, " = ", removed_index_counter)
+                return removed_index_counter
+            if i in self.zero_indices:
+                zero_index_counter = zero_index_counter+1
+            else:
+                removed_index_counter= removed_index_counter+1
+
+    def get_mean(self, index):
+        return self.total_mean[index]

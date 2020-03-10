@@ -441,9 +441,9 @@ Eigen::Quaterniond getYRotation(Eigen::Quaterniond q){
 
 Eigen::Vector3d changeToRNNPos(Eigen::Vector3d pos){
 	Eigen::Vector3d ret;
-	ret[0] = pos[2]*100;
+	ret[0] = pos[0]*100;
 	ret[1] = (pos[1] - Configurations::instance().getRootHeightOffset())*100;
-	ret[2] = -pos[0]*100;
+	ret[2] = pos[2]*100;
 	return ret;
 }
 
@@ -638,11 +638,11 @@ Eigen::Vector4d rootDecomposition(dart::dynamics::SkeletonPtr skel, Eigen::Vecto
 	Eigen::Vector3d z_vec = x_vec.cross(up_vec);
 	z_vec[1] = 0;
 	z_vec.normalize();
-	double angle = std::atan2(z_vec[0], z_vec[2]);
+	double angle = std::atan2(z_vec[2], z_vec[0]);
 
 	skel->setPositions(p_save);
 
-	Eigen::AngleAxisd aa_root(angle, Eigen::Vector3d::UnitY());
+	Eigen::AngleAxisd aa_root(-angle, Eigen::Vector3d::UnitY());
 	Eigen::AngleAxisd aa_hip(positions.segment<3>(0).norm(), positions.segment<3>(0).normalized());
 
 	Eigen::Vector3d hip_dart = quatToDart(Eigen::Quaterniond(aa_root).inverse()*Eigen::Quaterniond(aa_hip));
@@ -693,7 +693,7 @@ Eigen::VectorXd convertMGToTC(const Eigen::VectorXd& input, dart::dynamics::Skel
 Eigen::VectorXd convertTCToMG(const Eigen::VectorXd& input, dart::dynamics::SkeletonPtr skel){
 
 	Eigen::VectorXd pos = skel->getPositions();
-	Eigen::VectorXd tp = pos;
+	Eigen::VectorXd tp = input;
 	Eigen::Vector4d decomposed_root = rootDecomposition(skel, tp);
 	Eigen::VectorXd decomposed_positions(Configurations::instance().getMGMotionSize());
 
@@ -725,37 +725,38 @@ Eigen::VectorXd convertTCToMG(const Eigen::VectorXd& input, dart::dynamics::Skel
 
 	Eigen::Isometry3d cur_root_inv;
 	cur_root_inv.setIdentity();
-	cur_root_inv.linear() = Eigen::AngleAxisd(decomposed_root[0], Eigen::Vector3d::UnitY()).toRotationMatrix();
+	cur_root_inv.linear() = Eigen::AngleAxisd(-decomposed_root[0], Eigen::Vector3d::UnitY()).toRotationMatrix();
 	cur_root_inv.translation() = Eigen::Vector3d(tp[3], 0.0, tp[5]);
 	cur_root_inv = cur_root_inv.inverse();
 
-	decomposed_positions.segment<3>(54) = changeToRNNPos(cur_root_inv * skel->getBodyNode("Head")->getTransform()*Eigen::Vector3d(0.0, 0.1, 0.0));
+	decomposed_positions.segment<3>(54) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "Spine").translation());
+	decomposed_positions.segment<3>(57) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "Neck").translation());
+	decomposed_positions.segment<3>(60) = changeToRNNPos(cur_root_inv * skel->getBodyNode("Head")->getTransform()*Eigen::Vector3d(0.0, 0.1, 0.0));
 
-	decomposed_positions.segment<3>(57) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "HandL").translation());
-	decomposed_positions.segment<3>(60) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "FootL").translation());
 
-	decomposed_positions.segment<3>(63) = changeToRNNPos(cur_root_inv * skel->getBodyNode("FootL")->getTransform()*Eigen::Vector3d(0.0, 0.0, 0.15));
+	decomposed_positions.segment<3>(63) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "ArmL").translation());
+	decomposed_positions.segment<3>(66) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "ForeArmL").translation());
+	decomposed_positions.segment<3>(69) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "HandL").translation());
+	decomposed_positions.segment<3>(72) = changeToRNNPos(cur_root_inv * skel->getBodyNode("HandL")->getTransform()*Eigen::Vector3d(0.1, 0.0, 0.0));	
 
-	decomposed_positions.segment<3>(66) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "HandR").translation());
-	decomposed_positions.segment<3>(69) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "FootR").translation());
+	decomposed_positions.segment<3>(75) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "ArmR").translation());
+	decomposed_positions.segment<3>(78) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "ForeArmR").translation());
+	decomposed_positions.segment<3>(81) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "HandR").translation());
+	decomposed_positions.segment<3>(84) = changeToRNNPos(cur_root_inv * skel->getBodyNode("HandR")->getTransform()*Eigen::Vector3d(-0.15, 0.0, 0.0));
 
-	decomposed_positions.segment<3>(72) = changeToRNNPos(cur_root_inv * skel->getBodyNode("FootR")->getTransform()*Eigen::Vector3d(0.0, 0.0, 0.15));
 
-	decomposed_positions.segment<3>(75) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "ArmL").translation());
-	decomposed_positions.segment<3>(78) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "ArmR").translation());
+	decomposed_positions.segment<3>(87) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "FemurL").translation());
+	decomposed_positions.segment<3>(90) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "TibiaL").translation());
+	decomposed_positions.segment<3>(93) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "FootL").translation());
+	decomposed_positions.segment<3>(96) = changeToRNNPos(cur_root_inv * skel->getBodyNode("FootL")->getTransform()*Eigen::Vector3d(0.0, 0.0, 0.15));
 
-	decomposed_positions.segment<3>(81) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "ForeArmL").translation());
-	decomposed_positions.segment<3>(84) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "TibiaL").translation());
+	decomposed_positions.segment<3>(99) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "FemurR").translation());
+	decomposed_positions.segment<3>(102) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "TibiaR").translation());
+	decomposed_positions.segment<3>(105) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "FootR").translation());
+	decomposed_positions.segment<3>(108) = changeToRNNPos(cur_root_inv * skel->getBodyNode("FootR")->getTransform()*Eigen::Vector3d(0.0, 0.0, 0.15));
 
-	decomposed_positions.segment<3>(87) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "ForeArmR").translation());
-	decomposed_positions.segment<3>(90) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "TibiaR").translation());
 
-	decomposed_positions.segment<3>(93) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "Spine").translation());
-	decomposed_positions.segment<3>(96) = changeToRNNPos(cur_root_inv * skel->getBodyNode("HandL")->getTransform()*Eigen::Vector3d(0.1, 0.0, 0.0));
-	decomposed_positions.segment<3>(99) = changeToRNNPos(cur_root_inv * skel->getBodyNode("HandR")->getTransform()*Eigen::Vector3d(-0.15, 0.0, 0.0));
-	decomposed_positions.segment<3>(102) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "Neck").translation());
-	decomposed_positions.segment<3>(105) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "FemurL").translation());
-	decomposed_positions.segment<3>(108) = changeToRNNPos(cur_root_inv * getJointTransform(skel, "FemurR").translation());
+
 	skel->setPositions(pos);
 	return decomposed_positions;
 

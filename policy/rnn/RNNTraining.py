@@ -27,6 +27,7 @@ class MotionData(object):
 		self.yNormal = RNNConfig.instance().yNormal
 
 		self.rootDimension = RNNConfig.instance().rootDimension
+		self.rootAngleIdx = RNNConfig.instance().rootAngleIdx
 
 		self.stepSize = RNNConfig.instance().stepSize
 		self.batchSize = RNNConfig.instance().batchSize
@@ -94,12 +95,8 @@ class MotionData(object):
 		output_pose = tf.slice(output, [0, 0, poseStart], [-1, -1, self.yDimension - self.rootDimension])
 		y_root = tf.slice(y, [0, 0, rootStart], [-1, -1, self.rootDimension])
 		y_pose = tf.slice(y, [0, 0, poseStart], [-1, -1, self.yDimension - self.rootDimension])
-		loss_root = tf.reduce_mean(tf.square(output_root - y_root)*[6, 6, 1, 1, 1])
-
-		pose_weights = np.ones(self.yDimension - self.rootDimension)
-		pose_weights[0] = 2
-
-		loss_pose = tf.reduce_mean(tf.square(output_pose - y_pose)*pose_weights)
+		loss_root = tf.reduce_mean(tf.square(output_root - y_root)*[6,1,1,1])
+		loss_pose = tf.reduce_mean(tf.square(output_pose - y_pose))
 
 		       
 		return loss_root, loss_pose
@@ -107,7 +104,7 @@ class MotionData(object):
 	@tf.function
 	def foot_loss(self, output, prev_motion):
 		r_idx = self.rootDimension
-		a_idx = 2
+		a_idx = self.rootAngleIdx
 		output_root = output[:,:,0:r_idx]
 		output_pose = output[:,:,r_idx:]
 		c_root = output_root
@@ -134,11 +131,19 @@ class MotionData(object):
 			t_z = -current_root[:, a_idx+2]
 			
 			for j in range(len(foot_indices)):
-				idx = 1 + 3*foot_indices[j]
+				idx = self.yNormal.get_zero_removed_index(1 + 3*foot_indices[j])
 				if (j < 2):
-					f_contact = c_root[:,i,0]
+					fc_idx = self.yNormal.get_zero_removed_index(0)
+					if fc_idx == -1:
+						f_contact = tf.convert_to_tensor([self.yNormal.get_mean(0)]*c_root.shape[0])
+					else:
+						f_contact = c_root[:,i,0]
 				else:
-					f_contact = c_root[:,i,1]
+					fc_idx = self.yNormal.get_zero_removed_index(1)
+					if fc_idx == -1:
+						f_contact = tf.convert_to_tensor([self.yNormal.get_mean(1)]*c_root.shape[0])
+					else:
+						f_contact = c_root[:,i,1]
 				f_contact = tf.sign(tf.maximum(f_contact - 0.5, 0))
 	#				 f_contact = tf.clip_by_value(f_contact - 0.5, 0, 0.5)
 				moved_x = dx_x*current_pose[:,idx] + dy_x*current_pose[:,idx+2] + t_x

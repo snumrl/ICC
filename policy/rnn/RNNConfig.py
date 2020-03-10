@@ -27,6 +27,7 @@ class RNNConfig:
 		self._lstmLayerNumber = 4
 
 		self._rootDimension = 5
+		self._rootAngleIdx = 2
 
 
 		# training parametres
@@ -38,7 +39,7 @@ class RNNConfig:
 		self._footSlideWeight = 6
 
 		# User control prediction
-		self._useControlPrediction = True
+		self._useControlPrediction = False
 
 	# load motion related parameters
 	def loadData(self, motion):
@@ -47,6 +48,9 @@ class RNNConfig:
 		yMean, yStd = loadNormalData("../motions/%s/data/yNormal.dat"%(self._motion))
 		self._xNormal = Normalize(xMean, xStd)
 		self._yNormal = Normalize(yMean, yStd)
+
+		self._rootDimension = self._yNormal.get_zero_removed_index(self._rootDimension)
+		self._rootAngleIdx = self._yNormal.get_zero_removed_index(self._rootAngleIdx)
 
 		if self._motion == "walkrunfall":
 			self._xDimension = 3
@@ -118,6 +122,11 @@ class RNNConfig:
 	@property
 	def rootDimension(self):
 		return self._rootDimension
+
+	@property
+	def rootAngleIdx(self):
+		return self._rootAngleIdx
+	
 
 	@property
 	def xDimension(self):

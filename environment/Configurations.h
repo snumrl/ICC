@@ -30,6 +30,11 @@ public:
 		return *instance;
 	}
 
+	std::string getMotionName(){
+		return this->mMotionName;
+	}
+
+
 	double getJointDamping(){
 		return this->mJointDamping;
 	}
@@ -118,6 +123,8 @@ public:
 
 		TiXmlElement *sim = config->FirstChildElement("Simulation");
 
+		this->mMotionName = std::string(config->FirstChildElement("Learning")->FirstChildElement("Motion")->GetText());
+
 		// joint damping
 		this->mJointDamping = atof(sim->FirstChildElement("JointDamping")->GetText());
 
@@ -181,6 +188,7 @@ private:
 	}
 
 
+	std::string mMotionName;
 	double mJointDamping;
 
 	int mMotionHz, mControlHz, mSimulationHz;
