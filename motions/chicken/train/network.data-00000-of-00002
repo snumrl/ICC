@@ -1,0 +1,64 @@
+ÝKRYè
+
+	dense
+stacked_cells
+
+
+kernel
+bias
+
+	cells
+CA
+VARIABLE_VALUEkernel'dense/kernel/.ATTRIBUTES/VARIABLE_VALUE
+?=
+VARIABLE_VALUEbias%dense/bias/.ATTRIBUTES/VARIABLE_VALUE
+
+0
+1
+2
+	3
+,
+
+
+kernel
+recurrent_kernel
+bias
+,
+
+kernel
+recurrent_kernel
+bias
+,
+
+kernel
+recurrent_kernel
+bias
+,
+
+kernel
+recurrent_kernel
+bias
+SQ
+VARIABLE_VALUEkernel7stacked_cells/cells/0/kernel/.ATTRIBUTES/VARIABLE_VALUE
+ge
+VARIABLE_VALUErecurrent_kernelAstacked_cells/cells/0/recurrent_kernel/.ATTRIBUTES/VARIABLE_VALUE
+OM
+VARIABLE_VALUEbias5stacked_cells/cells/0/bias/.ATTRIBUTES/VARIABLE_VALUE
+SQ
+VARIABLE_VALUEkernel7stacked_cells/cells/1/kernel/.ATTRIBUTES/VARIABLE_VALUE
+ge
+VARIABLE_VALUErecurrent_kernelAstacked_cells/cells/1/recurrent_kernel/.ATTRIBUTES/VARIABLE_VALUE
+OM
+VARIABLE_VALUEbias5stacked_cells/cells/1/bias/.ATTRIBUTES/VARIABLE_VALUE
+SQ
+VARIABLE_VALUEkernel7stacked_cells/cells/2/kernel/.ATTRIBUTES/VARIABLE_VALUE
+ge
+VARIABLE_VALUErecurrent_kernelAstacked_cells/cells/2/recurrent_kernel/.ATTRIBUTES/VARIABLE_VALUE
+OM
+VARIABLE_VALUEbias5stacked_cells/cells/2/bias/.ATTRIBUTES/VARIABLE_VALUE
+SQ
+VARIABLE_VALUEkernel7stacked_cells/cells/3/kernel/.ATTRIBUTES/VARIABLE_VALUE
+ge
+VARIABLE_VALUErecurrent_kernelAstacked_cells/cells/3/recurrent_kernel/.ATTRIBUTES/VARIABLE_VALUE
+OM
+VARIABLE_VALUEbias5stacked_cells/cells/3/bias/.ATTRIBUTES/VARIABLE_VALUE

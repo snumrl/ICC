@@ -1,0 +1,54 @@
+--------------- MotionDB Info ---------------
+BVH Files List :  
+Annotation file # : 
+Tpose :  
+
+--------------- Type Info ---------------
+
+--------------- Construction Parameters ---------------
+BLEND_MARGIN:              10
+TRANS_IMPOSSIBLE_MARGIN:   30
+LOCAL_MINIMUM_MARGIN:      10
+TRANS_DISTANCE_THRESHOLD:  1.8
+
+--------------- Construction Result ---------------
+mVertices: 1370
+mEdges:    2539
+Graph vertices ann type/ count
+0/ 1205
+
+--------------- Exploration Parameters ---------------
+EXPLORE_TRANSITION_REST_PERIOD:    10
+EXPLORE_CANDIDATE_CHECK_MARGIN:    100
+MAX_ANNTYPE_PERIOD:                200
+MIN_ANNTYPE_PERIOD:                30
+EXPLORE_PICK_TYPE:                 0
+
+--------------- Exploration Result ---------------
+length: 20465
+explore ann type/ count
+0/ 20444
+
+--------------- Laplacian Editing Parameters ---------------
+CUT_MIN:       90
+CUT_MAX:       180
+lengthOffset:  0.2
+angleOffset:   0.628319
+timeOffset:    0.2
+BLEND_MARGIN:  10
+
+---------------  Control Objective Info --------------- 
+WalkControlObjective
+dimension: 3
+relative Direction , velocity avg(10frame) 
+
+--------------- xData : Final Data Dimension --------------- 
+reduced dimension: 2
+
+--------------- yData : Final Data Dimension --------------- 
+0 th std < 1e-4 , thus removed
+69 th std < 1e-4 , thus removed
+70 th std < 1e-4 , thus removed
+71 th std < 1e-4 , thus removed
+reduced dimension: 107
+
