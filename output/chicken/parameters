@@ -1,0 +1,16 @@
+2020-02-13 13:10:45
+Session Name         : chicken_3
+Motion               : chicken
+Slaves number        : 8
+State size           : 226
+Action size          : 51
+Learning rate        : 0.000100
+Gamma                : 0.95
+Lambda               : 0.95
+Batch size           : 1024
+Transitions per iter : 20000
+PPO clip range       : 0.2
+Trajectory length    : 19000
+Use original         : True
+Origin offset        : 0
+Loaded netowrks      : 

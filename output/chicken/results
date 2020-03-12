@@ -1,0 +1,4068 @@
+===============================================================
+2020-02-13 13:18:30
+Elapsed time         : 466.94s
+Simulation time      : 449.6142029762268s
+Training time        : 14.34859848022461s
+Session Name         : chicken_3
+Logging Count        : 0
+Noise                : 0.993
+Learning rate        : 0.000100
+Total episode        : 6622
+Total trans          : 201144
+Total trans per epi  : 30.38
+Episode              : 6622
+Transition           : 201144
+Trans per epi        : 30.38
+Max episode length   : 69
+Rewards per episodes : 2.99
+===============================================================
+===============================================================
+2020-02-13 13:26:12
+Elapsed time         : 929.69s
+Simulation time      : 897.5421619415283s
+Training time        : 28.595218658447266s
+Session Name         : chicken_3
+Logging Count        : 1
+Noise                : 0.982
+Learning rate        : 0.000100
+Total episode        : 12951
+Total trans          : 402409
+Total trans per epi  : 31.07
+Episode              : 6329
+Transition           : 201265
+Trans per epi        : 31.80
+Max episode length   : 74
+Rewards per episodes : 3.31
+===============================================================
+===============================================================
+2020-02-13 13:33:59
+Elapsed time         : 1396.54s
+Simulation time      : 1349.4998443126678s
+Training time        : 42.78623342514038s
+Session Name         : chicken_3
+Logging Count        : 2
+Noise                : 0.972
+Learning rate        : 0.000100
+Total episode        : 18958
+Total trans          : 603855
+Total trans per epi  : 31.85
+Episode              : 6007
+Transition           : 201446
+Trans per epi        : 33.54
+Max episode length   : 77
+Rewards per episodes : 3.69
+===============================================================
+===============================================================
+2020-02-13 13:41:43
+Elapsed time         : 1860.74s
+Simulation time      : 1798.764600276947s
+Training time        : 57.01688504219055s
+Session Name         : chicken_3
+Logging Count        : 3
+Noise                : 0.963
+Learning rate        : 0.000100
+Total episode        : 24773
+Total trans          : 805265
+Total trans per epi  : 32.51
+Episode              : 5815
+Transition           : 201410
+Trans per epi        : 34.64
+Max episode length   : 73
+Rewards per episodes : 3.96
+===============================================================
+===============================================================
+2020-02-13 13:49:29
+Elapsed time         : 2326.74s
+Simulation time      : 2249.9506669044495s
+Training time        : 71.13647866249084s
+Session Name         : chicken_3
+Logging Count        : 4
+Noise                : 0.953
+Learning rate        : 0.000100
+Total episode        : 30476
+Total trans          : 1006708
+Total trans per epi  : 33.03
+Episode              : 5703
+Transition           : 201443
+Trans per epi        : 35.32
+Max episode length   : 93
+Rewards per episodes : 4.17
+===============================================================
+===============================================================
+2020-02-13 13:57:17
+Elapsed time         : 2794.24s
+Simulation time      : 2702.5628476142883s
+Training time        : 85.32104921340942s
+Session Name         : chicken_3
+Logging Count        : 5
+Noise                : 0.944
+Learning rate        : 0.000100
+Total episode        : 36074
+Total trans          : 1208292
+Total trans per epi  : 33.49
+Episode              : 5598
+Transition           : 201584
+Trans per epi        : 36.01
+Max episode length   : 90
+Rewards per episodes : 4.41
+===============================================================
+===============================================================
+2020-02-13 14:05:04
+Elapsed time         : 3261.74s
+Simulation time      : 3155.235933303833s
+Training time        : 99.47072458267212s
+Session Name         : chicken_3
+Logging Count        : 6
+Noise                : 0.935
+Learning rate        : 0.000100
+Total episode        : 41553
+Total trans          : 1409667
+Total trans per epi  : 33.92
+Episode              : 5479
+Transition           : 201375
+Trans per epi        : 36.75
+Max episode length   : 82
+Rewards per episodes : 4.69
+===============================================================
+===============================================================
+2020-02-13 14:12:51
+Elapsed time         : 3727.96s
+Simulation time      : 3606.628641843796s
+Training time        : 113.6308822631836s
+Session Name         : chicken_3
+Logging Count        : 7
+Noise                : 0.926
+Learning rate        : 0.000099
+Total episode        : 46995
+Total trans          : 1611024
+Total trans per epi  : 34.28
+Episode              : 5442
+Transition           : 201357
+Trans per epi        : 37.00
+Max episode length   : 87
+Rewards per episodes : 4.90
+===============================================================
+===============================================================
+2020-02-13 14:20:35
+Elapsed time         : 4192.07s
+Simulation time      : 4055.78431391716s
+Training time        : 127.80065584182739s
+Session Name         : chicken_3
+Logging Count        : 8
+Noise                : 0.918
+Learning rate        : 0.000099
+Total episode        : 52331
+Total trans          : 1812703
+Total trans per epi  : 34.64
+Episode              : 5336
+Transition           : 201679
+Trans per epi        : 37.80
+Max episode length   : 94
+Rewards per episodes : 5.13
+===============================================================
+===============================================================
+2020-02-13 14:28:21
+Elapsed time         : 4658.22s
+Simulation time      : 4507.064766168594s
+Training time        : 141.95664978027344s
+Session Name         : chicken_3
+Logging Count        : 9
+Noise                : 0.910
+Learning rate        : 0.000099
+Total episode        : 57574
+Total trans          : 2014192
+Total trans per epi  : 34.98
+Episode              : 5243
+Transition           : 201489
+Trans per epi        : 38.43
+Max episode length   : 97
+Rewards per episodes : 5.39
+===============================================================
+===============================================================
+2020-02-13 14:36:03
+Elapsed time         : 5120.91s
+Simulation time      : 4954.869100570679s
+Training time        : 156.1300323009491s
+Session Name         : chicken_3
+Logging Count        : 10
+Noise                : 0.902
+Learning rate        : 0.000099
+Total episode        : 62774
+Total trans          : 2215958
+Total trans per epi  : 35.30
+Episode              : 5200
+Transition           : 201766
+Trans per epi        : 38.80
+Max episode length   : 87
+Rewards per episodes : 5.59
+===============================================================
+===============================================================
+2020-02-13 14:43:51
+Elapsed time         : 5588.22s
+Simulation time      : 5407.142746210098s
+Training time        : 170.46444654464722s
+Session Name         : chicken_3
+Logging Count        : 11
+Noise                : 0.895
+Learning rate        : 0.000099
+Total episode        : 67909
+Total trans          : 2417565
+Total trans per epi  : 35.60
+Episode              : 5135
+Transition           : 201607
+Trans per epi        : 39.26
+Max episode length   : 93
+Rewards per episodes : 5.83
+===============================================================
+===============================================================
+2020-02-13 14:51:36
+Elapsed time         : 6053.82s
+Simulation time      : 5857.9404327869415s
+Training time        : 184.55021786689758s
+Session Name         : chicken_3
+Logging Count        : 12
+Noise                : 0.887
+Learning rate        : 0.000099
+Total episode        : 73029
+Total trans          : 2619124
+Total trans per epi  : 35.86
+Episode              : 5120
+Transition           : 201559
+Trans per epi        : 39.37
+Max episode length   : 102
+Rewards per episodes : 5.98
+===============================================================
+===============================================================
+2020-02-13 14:59:20
+Elapsed time         : 6516.99s
+Simulation time      : 6306.264347553253s
+Training time        : 198.69085812568665s
+Session Name         : chicken_3
+Logging Count        : 13
+Noise                : 0.880
+Learning rate        : 0.000099
+Total episode        : 78084
+Total trans          : 2821003
+Total trans per epi  : 36.13
+Episode              : 5055
+Transition           : 201879
+Trans per epi        : 39.94
+Max episode length   : 112
+Rewards per episodes : 6.20
+===============================================================
+===============================================================
+2020-02-13 15:07:03
+Elapsed time         : 6980.77s
+Simulation time      : 6755.092124223709s
+Training time        : 212.8613510131836s
+Session Name         : chicken_3
+Logging Count        : 14
+Noise                : 0.873
+Learning rate        : 0.000099
+Total episode        : 83085
+Total trans          : 3022815
+Total trans per epi  : 36.38
+Episode              : 5001
+Transition           : 201812
+Trans per epi        : 40.35
+Max episode length   : 95
+Rewards per episodes : 6.46
+===============================================================
+===============================================================
+2020-02-13 15:14:50
+Elapsed time         : 7447.18s
+Simulation time      : 7206.73549413681s
+Training time        : 226.92084860801697s
+Session Name         : chicken_3
+Logging Count        : 15
+Noise                : 0.866
+Learning rate        : 0.000099
+Total episode        : 87962
+Total trans          : 3224588
+Total trans per epi  : 36.66
+Episode              : 4877
+Transition           : 201773
+Trans per epi        : 41.37
+Max episode length   : 107
+Rewards per episodes : 6.74
+===============================================================
+===============================================================
+2020-02-13 15:22:39
+Elapsed time         : 7916.53s
+Simulation time      : 7661.221625328064s
+Training time        : 241.06072163581848s
+Session Name         : chicken_3
+Logging Count        : 16
+Noise                : 0.860
+Learning rate        : 0.000099
+Total episode        : 92802
+Total trans          : 3426740
+Total trans per epi  : 36.93
+Episode              : 4840
+Transition           : 202152
+Trans per epi        : 41.77
+Max episode length   : 112
+Rewards per episodes : 7.01
+===============================================================
+===============================================================
+2020-02-13 15:30:25
+Elapsed time         : 8382.16s
+Simulation time      : 8111.986663341522s
+Training time        : 255.17226648330688s
+Session Name         : chicken_3
+Logging Count        : 17
+Noise                : 0.853
+Learning rate        : 0.000099
+Total episode        : 97543
+Total trans          : 3628665
+Total trans per epi  : 37.20
+Episode              : 4741
+Transition           : 201925
+Trans per epi        : 42.59
+Max episode length   : 103
+Rewards per episodes : 7.26
+===============================================================
+===============================================================
+2020-02-13 15:38:10
+Elapsed time         : 8847.23s
+Simulation time      : 8562.045927762985s
+Training time        : 269.4300482273102s
+Session Name         : chicken_3
+Logging Count        : 18
+Noise                : 0.847
+Learning rate        : 0.000099
+Total episode        : 102215
+Total trans          : 3830368
+Total trans per epi  : 37.47
+Episode              : 4672
+Transition           : 201703
+Trans per epi        : 43.17
+Max episode length   : 105
+Rewards per episodes : 7.46
+===============================================================
+===============================================================
+2020-02-13 15:45:56
+Elapsed time         : 9313.14s
+Simulation time      : 9013.176059246063s
+Training time        : 283.5103807449341s
+Session Name         : chicken_3
+Logging Count        : 19
+Noise                : 0.841
+Learning rate        : 0.000099
+Total episode        : 106856
+Total trans          : 4032320
+Total trans per epi  : 37.74
+Episode              : 4641
+Transition           : 201952
+Trans per epi        : 43.51
+Max episode length   : 131
+Rewards per episodes : 7.68
+===============================================================
+===============================================================
+2020-02-13 15:53:40
+Elapsed time         : 9777.53s
+Simulation time      : 9462.705923557281s
+Training time        : 297.62075448036194s
+Session Name         : chicken_3
+Logging Count        : 20
+Noise                : 0.835
+Learning rate        : 0.000099
+Total episode        : 111422
+Total trans          : 4234491
+Total trans per epi  : 38.00
+Episode              : 4566
+Transition           : 202171
+Trans per epi        : 44.28
+Max episode length   : 106
+Rewards per episodes : 7.98
+===============================================================
+===============================================================
+2020-02-13 16:01:27
+Elapsed time         : 10244.92s
+Simulation time      : 9915.261663198471s
+Training time        : 311.73013067245483s
+Session Name         : chicken_3
+Logging Count        : 21
+Noise                : 0.830
+Learning rate        : 0.000098
+Total episode        : 115919
+Total trans          : 4436608
+Total trans per epi  : 38.27
+Episode              : 4497
+Transition           : 202117
+Trans per epi        : 44.94
+Max episode length   : 124
+Rewards per episodes : 8.29
+===============================================================
+===============================================================
+2020-02-13 16:09:13
+Elapsed time         : 10710.47s
+Simulation time      : 10365.994089126587s
+Training time        : 325.8359670639038s
+Session Name         : chicken_3
+Logging Count        : 22
+Noise                : 0.824
+Learning rate        : 0.000098
+Total episode        : 120306
+Total trans          : 4638633
+Total trans per epi  : 38.56
+Episode              : 4387
+Transition           : 202025
+Trans per epi        : 46.05
+Max episode length   : 117
+Rewards per episodes : 8.61
+===============================================================
+===============================================================
+2020-02-13 16:17:01
+Elapsed time         : 11178.13s
+Simulation time      : 10818.87008023262s
+Training time        : 339.9114148616791s
+Session Name         : chicken_3
+Logging Count        : 23
+Noise                : 0.818
+Learning rate        : 0.000098
+Total episode        : 124658
+Total trans          : 4840819
+Total trans per epi  : 38.83
+Episode              : 4352
+Transition           : 202186
+Trans per epi        : 46.46
+Max episode length   : 103
+Rewards per episodes : 8.80
+===============================================================
+===============================================================
+2020-02-13 16:24:51
+Elapsed time         : 11648.20s
+Simulation time      : 11274.191114664078s
+Training time        : 353.9784550666809s
+Session Name         : chicken_3
+Logging Count        : 24
+Noise                : 0.812
+Learning rate        : 0.000098
+Total episode        : 128905
+Total trans          : 5043004
+Total trans per epi  : 39.12
+Episode              : 4247
+Transition           : 202185
+Trans per epi        : 47.61
+Max episode length   : 112
+Rewards per episodes : 9.13
+===============================================================
+===============================================================
+2020-02-13 16:32:36
+Elapsed time         : 12113.84s
+Simulation time      : 11725.0720744133s
+Training time        : 368.0424506664276s
+Session Name         : chicken_3
+Logging Count        : 25
+Noise                : 0.807
+Learning rate        : 0.000098
+Total episode        : 133129
+Total trans          : 5244947
+Total trans per epi  : 39.40
+Episode              : 4224
+Transition           : 201943
+Trans per epi        : 47.81
+Max episode length   : 113
+Rewards per episodes : 9.39
+===============================================================
+===============================================================
+2020-02-13 16:40:28
+Elapsed time         : 12585.52s
+Simulation time      : 12181.962207317352s
+Training time        : 382.12492179870605s
+Session Name         : chicken_3
+Logging Count        : 26
+Noise                : 0.802
+Learning rate        : 0.000098
+Total episode        : 137268
+Total trans          : 5447333
+Total trans per epi  : 39.68
+Episode              : 4139
+Transition           : 202386
+Trans per epi        : 48.90
+Max episode length   : 131
+Rewards per episodes : 9.74
+===============================================================
+===============================================================
+2020-02-13 16:48:13
+Elapsed time         : 13050.02s
+Simulation time      : 12631.630227088928s
+Training time        : 396.2298014163971s
+Session Name         : chicken_3
+Logging Count        : 27
+Noise                : 0.797
+Learning rate        : 0.000098
+Total episode        : 141246
+Total trans          : 5649395
+Total trans per epi  : 40.00
+Episode              : 3978
+Transition           : 202062
+Trans per epi        : 50.79
+Max episode length   : 119
+Rewards per episodes : 10.13
+===============================================================
+===============================================================
+2020-02-13 16:55:58
+Elapsed time         : 13515.87s
+Simulation time      : 13082.68834233284s
+Training time        : 410.31183767318726s
+Session Name         : chicken_3
+Logging Count        : 28
+Noise                : 0.792
+Learning rate        : 0.000098
+Total episode        : 145080
+Total trans          : 5851827
+Total trans per epi  : 40.34
+Episode              : 3834
+Transition           : 202432
+Trans per epi        : 52.80
+Max episode length   : 150
+Rewards per episodes : 10.64
+===============================================================
+===============================================================
+2020-02-13 17:03:44
+Elapsed time         : 13981.61s
+Simulation time      : 13533.671626091003s
+Training time        : 424.36337542533875s
+Session Name         : chicken_3
+Logging Count        : 29
+Noise                : 0.788
+Learning rate        : 0.000098
+Total episode        : 148778
+Total trans          : 6054106
+Total trans per epi  : 40.69
+Episode              : 3698
+Transition           : 202279
+Trans per epi        : 54.70
+Max episode length   : 181
+Rewards per episodes : 11.08
+===============================================================
+===============================================================
+2020-02-13 17:11:37
+Elapsed time         : 14454.06s
+Simulation time      : 13991.29274892807s
+Training time        : 438.44253396987915s
+Session Name         : chicken_3
+Logging Count        : 30
+Noise                : 0.783
+Learning rate        : 0.000098
+Total episode        : 152326
+Total trans          : 6257081
+Total trans per epi  : 41.08
+Episode              : 3548
+Transition           : 202975
+Trans per epi        : 57.21
+Max episode length   : 146
+Rewards per episodes : 11.64
+===============================================================
+===============================================================
+2020-02-13 17:19:25
+Elapsed time         : 14922.02s
+Simulation time      : 14444.506349563599s
+Training time        : 452.4325873851776s
+Session Name         : chicken_3
+Logging Count        : 31
+Noise                : 0.779
+Learning rate        : 0.000098
+Total episode        : 155734
+Total trans          : 6459198
+Total trans per epi  : 41.48
+Episode              : 3408
+Transition           : 202117
+Trans per epi        : 59.31
+Max episode length   : 177
+Rewards per episodes : 12.14
+===============================================================
+===============================================================
+2020-02-13 17:27:14
+Elapsed time         : 15391.84s
+Simulation time      : 14899.496334314346s
+Training time        : 466.50690150260925s
+Session Name         : chicken_3
+Logging Count        : 32
+Noise                : 0.775
+Learning rate        : 0.000098
+Total episode        : 159034
+Total trans          : 6661817
+Total trans per epi  : 41.89
+Episode              : 3300
+Transition           : 202619
+Trans per epi        : 61.40
+Max episode length   : 181
+Rewards per episodes : 12.82
+===============================================================
+===============================================================
+2020-02-13 17:35:04
+Elapsed time         : 15861.86s
+Simulation time      : 15354.75245833397s
+Training time        : 480.5493948459625s
+Session Name         : chicken_3
+Logging Count        : 33
+Noise                : 0.771
+Learning rate        : 0.000098
+Total episode        : 162198
+Total trans          : 6864448
+Total trans per epi  : 42.32
+Episode              : 3164
+Transition           : 202631
+Trans per epi        : 64.04
+Max episode length   : 199
+Rewards per episodes : 13.54
+===============================================================
+===============================================================
+2020-02-13 17:42:55
+Elapsed time         : 16332.68s
+Simulation time      : 15810.74099612236s
+Training time        : 494.53125190734863s
+Session Name         : chicken_3
+Logging Count        : 34
+Noise                : 0.767
+Learning rate        : 0.000098
+Total episode        : 165253
+Total trans          : 7067266
+Total trans per epi  : 42.77
+Episode              : 3055
+Transition           : 202818
+Trans per epi        : 66.39
+Max episode length   : 218
+Rewards per episodes : 14.25
+===============================================================
+===============================================================
+2020-02-13 17:50:50
+Elapsed time         : 16807.45s
+Simulation time      : 16270.809339761734s
+Training time        : 508.52658891677856s
+Session Name         : chicken_3
+Logging Count        : 35
+Noise                : 0.763
+Learning rate        : 0.000098
+Total episode        : 168160
+Total trans          : 7270244
+Total trans per epi  : 43.23
+Episode              : 2907
+Transition           : 202978
+Trans per epi        : 69.82
+Max episode length   : 268
+Rewards per episodes : 15.12
+===============================================================
+===============================================================
+2020-02-13 17:58:43
+Elapsed time         : 17280.70s
+Simulation time      : 16729.202494859695s
+Training time        : 522.5964608192444s
+Session Name         : chicken_3
+Logging Count        : 36
+Noise                : 0.760
+Learning rate        : 0.000097
+Total episode        : 170859
+Total trans          : 7473872
+Total trans per epi  : 43.74
+Episode              : 2699
+Transition           : 203628
+Trans per epi        : 75.45
+Max episode length   : 282
+Rewards per episodes : 16.42
+===============================================================
+===============================================================
+2020-02-13 18:06:37
+Elapsed time         : 17754.57s
+Simulation time      : 17188.20781135559s
+Training time        : 536.7165040969849s
+Session Name         : chicken_3
+Logging Count        : 37
+Noise                : 0.756
+Learning rate        : 0.000097
+Total episode        : 173384
+Total trans          : 7678097
+Total trans per epi  : 44.28
+Episode              : 2525
+Transition           : 204225
+Trans per epi        : 80.88
+Max episode length   : 272
+Rewards per episodes : 17.84
+===============================================================
+===============================================================
+2020-02-13 18:14:37
+Elapsed time         : 18234.61s
+Simulation time      : 17653.22191643715s
+Training time        : 551.0012629032135s
+Session Name         : chicken_3
+Logging Count        : 38
+Noise                : 0.753
+Learning rate        : 0.000097
+Total episode        : 175731
+Total trans          : 7882429
+Total trans per epi  : 44.86
+Episode              : 2347
+Transition           : 204332
+Trans per epi        : 87.06
+Max episode length   : 363
+Rewards per episodes : 19.04
+===============================================================
+===============================================================
+2020-02-13 18:22:35
+Elapsed time         : 18712.16s
+Simulation time      : 18115.884279489517s
+Training time        : 565.1377866268158s
+Session Name         : chicken_3
+Logging Count        : 39
+Noise                : 0.750
+Learning rate        : 0.000097
+Total episode        : 177816
+Total trans          : 8086754
+Total trans per epi  : 45.48
+Episode              : 2085
+Transition           : 204325
+Trans per epi        : 98.00
+Max episode length   : 437
+Rewards per episodes : 22.08
+===============================================================
+===============================================================
+2020-02-13 18:30:38
+Elapsed time         : 19195.11s
+Simulation time      : 18583.383311271667s
+Training time        : 579.7808380126953s
+Session Name         : chicken_3
+Logging Count        : 40
+Noise                : 0.746
+Learning rate        : 0.000097
+Total episode        : 179815
+Total trans          : 8292931
+Total trans per epi  : 46.12
+Episode              : 1999
+Transition           : 206177
+Trans per epi        : 103.14
+Max episode length   : 470
+Rewards per episodes : 23.56
+===============================================================
+===============================================================
+2020-02-13 18:38:52
+Elapsed time         : 19689.71s
+Simulation time      : 19062.725320100784s
+Training time        : 594.2919585704803s
+Session Name         : chicken_3
+Logging Count        : 41
+Noise                : 0.743
+Learning rate        : 0.000097
+Total episode        : 181630
+Total trans          : 8500470
+Total trans per epi  : 46.80
+Episode              : 1815
+Transition           : 207539
+Trans per epi        : 114.35
+Max episode length   : 588
+Rewards per episodes : 26.61
+===============================================================
+===============================================================
+2020-02-13 18:46:52
+Elapsed time         : 20169.69s
+Simulation time      : 19527.650576114655s
+Training time        : 608.5932621955872s
+Session Name         : chicken_3
+Logging Count        : 42
+Noise                : 0.740
+Learning rate        : 0.000097
+Total episode        : 183248
+Total trans          : 8706100
+Total trans per epi  : 47.51
+Episode              : 1618
+Transition           : 205630
+Trans per epi        : 127.09
+Max episode length   : 613
+Rewards per episodes : 30.15
+===============================================================
+===============================================================
+2020-02-13 18:55:06
+Elapsed time         : 20663.57s
+Simulation time      : 20006.140043258667s
+Training time        : 623.2663457393646s
+Session Name         : chicken_3
+Logging Count        : 43
+Noise                : 0.737
+Learning rate        : 0.000097
+Total episode        : 184696
+Total trans          : 8914865
+Total trans per epi  : 48.27
+Episode              : 1448
+Transition           : 208765
+Trans per epi        : 144.17
+Max episode length   : 658
+Rewards per episodes : 34.78
+===============================================================
+===============================================================
+2020-02-13 19:03:28
+Elapsed time         : 21165.82s
+Simulation time      : 20492.874858617783s
+Training time        : 638.0261671543121s
+Session Name         : chicken_3
+Logging Count        : 44
+Noise                : 0.733
+Learning rate        : 0.000097
+Total episode        : 185964
+Total trans          : 9125252
+Total trans per epi  : 49.07
+Episode              : 1268
+Transition           : 210387
+Trans per epi        : 165.92
+Max episode length   : 1052
+Rewards per episodes : 41.45
+===============================================================
+===============================================================
+2020-02-13 19:11:49
+Elapsed time         : 21666.59s
+Simulation time      : 20978.204649448395s
+Training time        : 652.7206292152405s
+Session Name         : chicken_3
+Logging Count        : 45
+Noise                : 0.730
+Learning rate        : 0.000097
+Total episode        : 187155
+Total trans          : 9335204
+Total trans per epi  : 49.88
+Episode              : 1191
+Transition           : 209952
+Trans per epi        : 176.28
+Max episode length   : 1531
+Rewards per episodes : 45.01
+===============================================================
+===============================================================
+2020-02-13 19:20:11
+Elapsed time         : 22168.81s
+Simulation time      : 21465.0682823658s
+Training time        : 667.3735990524292s
+Session Name         : chicken_3
+Logging Count        : 46
+Noise                : 0.726
+Learning rate        : 0.000097
+Total episode        : 188292
+Total trans          : 9546479
+Total trans per epi  : 50.70
+Episode              : 1137
+Transition           : 211275
+Trans per epi        : 185.82
+Max episode length   : 1064
+Rewards per episodes : 49.00
+===============================================================
+===============================================================
+2020-02-13 19:28:45
+Elapsed time         : 22682.21s
+Simulation time      : 21962.725607156754s
+Training time        : 682.3374426364899s
+Session Name         : chicken_3
+Logging Count        : 47
+Noise                : 0.723
+Learning rate        : 0.000097
+Total episode        : 189339
+Total trans          : 9759545
+Total trans per epi  : 51.55
+Episode              : 1047
+Transition           : 213066
+Trans per epi        : 203.50
+Max episode length   : 1006
+Rewards per episodes : 54.71
+===============================================================
+===============================================================
+2020-02-13 19:37:36
+Elapsed time         : 23213.30s
+Simulation time      : 22477.870449066162s
+Training time        : 697.4979257583618s
+Session Name         : chicken_3
+Logging Count        : 48
+Noise                : 0.719
+Learning rate        : 0.000097
+Total episode        : 190250
+Total trans          : 9976104
+Total trans per epi  : 52.44
+Episode              : 911
+Transition           : 216559
+Trans per epi        : 237.72
+Max episode length   : 1397
+Rewards per episodes : 65.14
+===============================================================
+===============================================================
+2020-02-13 19:46:23
+Elapsed time         : 23740.82s
+Simulation time      : 22989.488713502884s
+Training time        : 712.6619365215302s
+Session Name         : chicken_3
+Logging Count        : 49
+Noise                : 0.716
+Learning rate        : 0.000097
+Total episode        : 191134
+Total trans          : 10191115
+Total trans per epi  : 53.32
+Episode              : 884
+Transition           : 215011
+Trans per epi        : 243.23
+Max episode length   : 1277
+Rewards per episodes : 66.69
+===============================================================
+===============================================================
+2020-02-13 19:55:18
+Elapsed time         : 24275.26s
+Simulation time      : 23508.012799739838s
+Training time        : 727.8169870376587s
+Session Name         : chicken_3
+Logging Count        : 50
+Noise                : 0.712
+Learning rate        : 0.000096
+Total episode        : 191976
+Total trans          : 10408411
+Total trans per epi  : 54.22
+Episode              : 842
+Transition           : 217296
+Trans per epi        : 258.07
+Max episode length   : 1699
+Rewards per episodes : 71.48
+===============================================================
+===============================================================
+2020-02-13 20:04:34
+Elapsed time         : 24831.12s
+Simulation time      : 24047.6720392704s
+Training time        : 743.2530765533447s
+Session Name         : chicken_3
+Logging Count        : 51
+Noise                : 0.708
+Learning rate        : 0.000096
+Total episode        : 192683
+Total trans          : 10630473
+Total trans per epi  : 55.17
+Episode              : 707
+Transition           : 222062
+Trans per epi        : 314.09
+Max episode length   : 1897
+Rewards per episodes : 91.68
+===============================================================
+===============================================================
+2020-02-13 20:14:06
+Elapsed time         : 25403.12s
+Simulation time      : 24602.69441127777s
+Training time        : 759.407066822052s
+Session Name         : chicken_3
+Logging Count        : 52
+Noise                : 0.705
+Learning rate        : 0.000096
+Total episode        : 193309
+Total trans          : 10859855
+Total trans per epi  : 56.18
+Episode              : 626
+Transition           : 229382
+Trans per epi        : 366.42
+Max episode length   : 2031
+Rewards per episodes : 109.27
+===============================================================
+===============================================================
+2020-02-13 20:23:54
+Elapsed time         : 25991.43s
+Simulation time      : 25174.156065940857s
+Training time        : 775.4572367668152s
+Session Name         : chicken_3
+Logging Count        : 53
+Noise                : 0.701
+Learning rate        : 0.000096
+Total episode        : 193946
+Total trans          : 11088547
+Total trans per epi  : 57.17
+Episode              : 637
+Transition           : 228692
+Trans per epi        : 359.01
+Max episode length   : 2784
+Rewards per episodes : 107.02
+===============================================================
+===============================================================
+2020-02-13 20:34:30
+Elapsed time         : 26627.49s
+Simulation time      : 25793.14587163925s
+Training time        : 791.982839345932s
+Session Name         : chicken_3
+Logging Count        : 54
+Noise                : 0.697
+Learning rate        : 0.000096
+Total episode        : 194491
+Total trans          : 11324167
+Total trans per epi  : 58.22
+Episode              : 545
+Transition           : 235620
+Trans per epi        : 432.33
+Max episode length   : 2680
+Rewards per episodes : 132.46
+===============================================================
+===============================================================
+2020-02-13 20:45:04
+Elapsed time         : 27261.88s
+Simulation time      : 26409.681684732437s
+Training time        : 809.070583820343s
+Session Name         : chicken_3
+Logging Count        : 55
+Noise                : 0.692
+Learning rate        : 0.000096
+Total episode        : 194974
+Total trans          : 11565204
+Total trans per epi  : 59.32
+Episode              : 483
+Transition           : 241037
+Trans per epi        : 499.04
+Max episode length   : 2947
+Rewards per episodes : 158.20
+===============================================================
+===============================================================
+2020-02-13 20:55:36
+Elapsed time         : 27893.86s
+Simulation time      : 27023.747361421585s
+Training time        : 826.208482503891s
+Session Name         : chicken_3
+Logging Count        : 56
+Noise                : 0.688
+Learning rate        : 0.000096
+Total episode        : 195386
+Total trans          : 11807220
+Total trans per epi  : 60.43
+Episode              : 412
+Transition           : 242016
+Trans per epi        : 587.42
+Max episode length   : 3516
+Rewards per episodes : 194.48
+===============================================================
+===============================================================
+2020-02-13 21:08:18
+Elapsed time         : 28655.88s
+Simulation time      : 27766.851320028305s
+Training time        : 844.359126329422s
+Session Name         : chicken_3
+Logging Count        : 57
+Noise                : 0.683
+Learning rate        : 0.000096
+Total episode        : 195791
+Total trans          : 12067029
+Total trans per epi  : 61.63
+Episode              : 405
+Transition           : 259809
+Trans per epi        : 641.50
+Max episode length   : 4195
+Rewards per episodes : 216.62
+===============================================================
+===============================================================
+2020-02-13 21:20:53
+Elapsed time         : 29410.10s
+Simulation time      : 28501.31272482872s
+Training time        : 863.3097443580627s
+Session Name         : chicken_3
+Logging Count        : 58
+Noise                : 0.678
+Learning rate        : 0.000096
+Total episode        : 196111
+Total trans          : 12334272
+Total trans per epi  : 62.89
+Episode              : 320
+Transition           : 267243
+Trans per epi        : 835.13
+Max episode length   : 5128
+Rewards per episodes : 287.70
+===============================================================
+===============================================================
+2020-02-13 21:33:20
+Elapsed time         : 30157.58s
+Simulation time      : 29229.16118836403s
+Training time        : 882.1023790836334s
+Session Name         : chicken_3
+Logging Count        : 59
+Noise                : 0.673
+Learning rate        : 0.000096
+Total episode        : 196424
+Total trans          : 12600717
+Total trans per epi  : 64.15
+Episode              : 313
+Transition           : 266445
+Trans per epi        : 851.26
+Max episode length   : 4462
+Rewards per episodes : 299.79
+===============================================================
+===============================================================
+2020-02-13 21:46:59
+Elapsed time         : 30976.00s
+Simulation time      : 30027.1883122921s
+Training time        : 901.7027053833008s
+Session Name         : chicken_3
+Logging Count        : 60
+Noise                : 0.668
+Learning rate        : 0.000096
+Total episode        : 196769
+Total trans          : 12879231
+Total trans per epi  : 65.45
+Episode              : 345
+Transition           : 278514
+Trans per epi        : 807.29
+Max episode length   : 7749
+Rewards per episodes : 293.08
+===============================================================
+===============================================================
+2020-02-13 21:59:43
+Elapsed time         : 31740.42s
+Simulation time      : 30771.966969013214s
+Training time        : 920.7979700565338s
+Session Name         : chicken_3
+Logging Count        : 61
+Noise                : 0.664
+Learning rate        : 0.000096
+Total episode        : 197014
+Total trans          : 13147636
+Total trans per epi  : 66.73
+Episode              : 245
+Transition           : 268405
+Trans per epi        : 1095.53
+Max episode length   : 5520
+Rewards per episodes : 406.76
+===============================================================
+===============================================================
+2020-02-13 22:13:50
+Elapsed time         : 32587.15s
+Simulation time      : 31597.498490810394s
+Training time        : 941.1464855670929s
+Session Name         : chicken_3
+Logging Count        : 62
+Noise                : 0.659
+Learning rate        : 0.000096
+Total episode        : 197302
+Total trans          : 13432230
+Total trans per epi  : 68.08
+Episode              : 288
+Transition           : 284594
+Trans per epi        : 988.17
+Max episode length   : 7683
+Rewards per episodes : 367.76
+===============================================================
+===============================================================
+2020-02-13 22:29:13
+Elapsed time         : 33510.32s
+Simulation time      : 32498.873401641846s
+Training time        : 962.4163138866425s
+Session Name         : chicken_3
+Logging Count        : 63
+Noise                : 0.653
+Learning rate        : 0.000096
+Total episode        : 197529
+Total trans          : 13732356
+Total trans per epi  : 69.52
+Episode              : 227
+Transition           : 300126
+Trans per epi        : 1322.14
+Max episode length   : 7874
+Rewards per episodes : 508.57
+===============================================================
+===============================================================
+2020-02-13 22:44:01
+Elapsed time         : 34398.08s
+Simulation time      : 33364.11087369919s
+Training time        : 984.0556838512421s
+Session Name         : chicken_3
+Logging Count        : 64
+Noise                : 0.648
+Learning rate        : 0.000096
+Total episode        : 197759
+Total trans          : 14036924
+Total trans per epi  : 70.98
+Episode              : 230
+Transition           : 304568
+Trans per epi        : 1324.21
+Max episode length   : 7109
+Rewards per episodes : 510.97
+===============================================================
+===============================================================
+2020-02-13 23:02:24
+Elapsed time         : 35501.44s
+Simulation time      : 34442.32035112381s
+Training time        : 1008.3176407814026s
+Session Name         : chicken_3
+Logging Count        : 65
+Noise                : 0.642
+Learning rate        : 0.000095
+Total episode        : 197943
+Total trans          : 14376405
+Total trans per epi  : 72.63
+Episode              : 184
+Transition           : 339481
+Trans per epi        : 1845.01
+Max episode length   : 12647
+Rewards per episodes : 741.50
+===============================================================
+===============================================================
+2020-02-13 23:22:07
+Elapsed time         : 36684.20s
+Simulation time      : 35595.77020931244s
+Training time        : 1036.6982944011688s
+Session Name         : chicken_3
+Logging Count        : 66
+Noise                : 0.635
+Learning rate        : 0.000095
+Total episode        : 198132
+Total trans          : 14772539
+Total trans per epi  : 74.56
+Episode              : 189
+Transition           : 396134
+Trans per epi        : 2095.95
+Max episode length   : 9001
+Rewards per episodes : 867.27
+===============================================================
+===============================================================
+2020-02-13 23:38:21
+Elapsed time         : 37658.73s
+Simulation time      : 36545.59510707855s
+Training time        : 1060.4567639827728s
+Session Name         : chicken_3
+Logging Count        : 67
+Noise                : 0.630
+Learning rate        : 0.000095
+Total episode        : 198321
+Total trans          : 15103725
+Total trans per epi  : 76.16
+Episode              : 189
+Transition           : 331186
+Trans per epi        : 1752.31
+Max episode length   : 7328
+Rewards per episodes : 731.62
+===============================================================
+===============================================================
+2020-02-13 23:57:23
+Elapsed time         : 38800.05s
+Simulation time      : 37659.61077284813s
+Training time        : 1087.136904001236s
+Session Name         : chicken_3
+Logging Count        : 68
+Noise                : 0.623
+Learning rate        : 0.000095
+Total episode        : 198501
+Total trans          : 15477141
+Total trans per epi  : 77.97
+Episode              : 180
+Transition           : 373416
+Trans per epi        : 2074.53
+Max episode length   : 10385
+Rewards per episodes : 889.22
+===============================================================
+===============================================================
+2020-02-14 00:15:56
+Elapsed time         : 39912.97s
+Simulation time      : 38746.28313589096s
+Training time        : 1112.5693609714508s
+Session Name         : chicken_3
+Logging Count        : 69
+Noise                : 0.618
+Learning rate        : 0.000095
+Total episode        : 198690
+Total trans          : 15835438
+Total trans per epi  : 79.70
+Episode              : 189
+Transition           : 358297
+Trans per epi        : 1895.75
+Max episode length   : 10310
+Rewards per episodes : 826.56
+===============================================================
+===============================================================
+2020-02-14 00:40:49
+Elapsed time         : 41406.76s
+Simulation time      : 40208.96877980232s
+Training time        : 1143.0271949768066s
+Session Name         : chicken_3
+Logging Count        : 70
+Noise                : 0.611
+Learning rate        : 0.000095
+Total episode        : 198874
+Total trans          : 16256349
+Total trans per epi  : 81.74
+Episode              : 184
+Transition           : 420911
+Trans per epi        : 2287.56
+Max episode length   : 14728
+Rewards per episodes : 1006.98
+===============================================================
+===============================================================
+2020-02-14 01:02:43
+Elapsed time         : 42720.57s
+Simulation time      : 41491.38409614563s
+Training time        : 1173.3634638786316s
+Session Name         : chicken_3
+Logging Count        : 71
+Noise                : 0.604
+Learning rate        : 0.000095
+Total episode        : 199028
+Total trans          : 16678664
+Total trans per epi  : 83.80
+Episode              : 154
+Transition           : 422315
+Trans per epi        : 2742.31
+Max episode length   : 14658
+Rewards per episodes : 1232.32
+===============================================================
+===============================================================
+2020-02-14 01:29:55
+Elapsed time         : 44352.89s
+Simulation time      : 43087.32498240471s
+Training time        : 1208.5746307373047s
+Session Name         : chicken_3
+Logging Count        : 72
+Noise                : 0.597
+Learning rate        : 0.000095
+Total episode        : 199170
+Total trans          : 17169433
+Total trans per epi  : 86.20
+Episode              : 142
+Transition           : 490769
+Trans per epi        : 3456.12
+Max episode length   : 16779
+Rewards per episodes : 1603.46
+===============================================================
+===============================================================
+2020-02-14 01:51:22
+Elapsed time         : 45639.62s
+Simulation time      : 44342.92207765579s
+Training time        : 1238.5312163829803s
+Session Name         : chicken_3
+Logging Count        : 73
+Noise                : 0.591
+Learning rate        : 0.000095
+Total episode        : 199313
+Total trans          : 17584339
+Total trans per epi  : 88.22
+Episode              : 143
+Transition           : 414906
+Trans per epi        : 2901.44
+Max episode length   : 9751
+Rewards per episodes : 1354.44
+===============================================================
+===============================================================
+2020-02-14 02:12:46
+Elapsed time         : 46923.53s
+Simulation time      : 45596.60829615593s
+Training time        : 1268.096361875534s
+Session Name         : chicken_3
+Logging Count        : 74
+Noise                : 0.585
+Learning rate        : 0.000095
+Total episode        : 199487
+Total trans          : 17993612
+Total trans per epi  : 90.20
+Episode              : 174
+Transition           : 409273
+Trans per epi        : 2352.14
+Max episode length   : 9411
+Rewards per episodes : 1108.97
+===============================================================
+===============================================================
+2020-02-14 02:40:21
+Elapsed time         : 48578.54s
+Simulation time      : 47215.894314050674s
+Training time        : 1303.078309059143s
+Session Name         : chicken_3
+Logging Count        : 75
+Noise                : 0.578
+Learning rate        : 0.000095
+Total episode        : 199627
+Total trans          : 18477853
+Total trans per epi  : 92.56
+Episode              : 140
+Transition           : 484241
+Trans per epi        : 3458.86
+Max episode length   : 15868
+Rewards per episodes : 1676.13
+===============================================================
+===============================================================
+2020-02-14 03:11:41
+Elapsed time         : 50457.96s
+Simulation time      : 49053.63632130623s
+Training time        : 1343.4645085334778s
+Session Name         : chicken_3
+Logging Count        : 76
+Noise                : 0.570
+Learning rate        : 0.000095
+Total episode        : 199744
+Total trans          : 19037746
+Total trans per epi  : 95.31
+Episode              : 117
+Transition           : 559893
+Trans per epi        : 4785.41
+Max episode length   : 16457
+Rewards per episodes : 2382.02
+===============================================================
+===============================================================
+2020-02-14 03:43:05
+Elapsed time         : 52342.27s
+Simulation time      : 50894.371557712555s
+Training time        : 1385.7482416629791s
+Session Name         : chicken_3
+Logging Count        : 77
+Noise                : 0.562
+Learning rate        : 0.000095
+Total episode        : 199866
+Total trans          : 19620819
+Total trans per epi  : 98.17
+Episode              : 122
+Transition           : 583073
+Trans per epi        : 4779.29
+Max episode length   : 16119
+Rewards per episodes : 2415.67
+===============================================================
+===============================================================
+2020-02-14 04:11:04
+Elapsed time         : 54020.97s
+Simulation time      : 52534.89366650581s
+Training time        : 1422.8297805786133s
+Session Name         : chicken_3
+Logging Count        : 78
+Noise                : 0.556
+Learning rate        : 0.000095
+Total episode        : 199998
+Total trans          : 20133471
+Total trans per epi  : 100.67
+Episode              : 132
+Transition           : 512652
+Trans per epi        : 3883.73
+Max episode length   : 17788
+Rewards per episodes : 1995.02
+===============================================================
+===============================================================
+2020-02-14 04:46:58
+Elapsed time         : 56174.95s
+Simulation time      : 54640.20784687996s
+Training time        : 1470.6777684688568s
+Session Name         : chicken_3
+Logging Count        : 79
+Noise                : 0.547
+Learning rate        : 0.000095
+Total episode        : 200137
+Total trans          : 20788435
+Total trans per epi  : 103.87
+Episode              : 139
+Transition           : 654964
+Trans per epi        : 4711.97
+Max episode length   : 17442
+Rewards per episodes : 2471.42
+===============================================================
+===============================================================
+2020-02-14 05:22:25
+Elapsed time         : 58302.21s
+Simulation time      : 56720.76393508911s
+Training time        : 1516.1715397834778s
+Session Name         : chicken_3
+Logging Count        : 80
+Noise                : 0.540
+Learning rate        : 0.000094
+Total episode        : 200262
+Total trans          : 21413874
+Total trans per epi  : 106.93
+Episode              : 125
+Transition           : 625439
+Trans per epi        : 5003.51
+Max episode length   : 18161
+Rewards per episodes : 2681.26
+===============================================================
+===============================================================
+2020-02-14 05:58:57
+Elapsed time         : 60494.48s
+Simulation time      : 58861.81840491295s
+Training time        : 1565.9566588401794s
+Session Name         : chicken_3
+Logging Count        : 81
+Noise                : 0.532
+Learning rate        : 0.000094
+Total episode        : 200370
+Total trans          : 22093044
+Total trans per epi  : 110.26
+Episode              : 108
+Transition           : 679170
+Trans per epi        : 6288.61
+Max episode length   : 18429
+Rewards per episodes : 3414.37
+===============================================================
+===============================================================
+2020-02-14 06:40:41
+Elapsed time         : 62998.46s
+Simulation time      : 61307.26647686958s
+Training time        : 1622.9857640266418s
+Session Name         : chicken_3
+Logging Count        : 82
+Noise                : 0.523
+Learning rate        : 0.000094
+Total episode        : 200486
+Total trans          : 22874647
+Total trans per epi  : 114.10
+Episode              : 116
+Transition           : 781603
+Trans per epi        : 6737.96
+Max episode length   : 18566
+Rewards per episodes : 3735.29
+===============================================================
+===============================================================
+2020-02-14 07:21:23
+Elapsed time         : 65440.11s
+Simulation time      : 63691.989228487015s
+Training time        : 1678.3477461338043s
+Session Name         : chicken_3
+Logging Count        : 83
+Noise                : 0.515
+Learning rate        : 0.000094
+Total episode        : 200585
+Total trans          : 23626746
+Total trans per epi  : 117.79
+Episode              : 99
+Transition           : 752099
+Trans per epi        : 7596.96
+Max episode length   : 18806
+Rewards per episodes : 4306.76
+===============================================================
+===============================================================
+2020-02-14 08:06:02
+Elapsed time         : 68118.98s
+Simulation time      : 66303.6066801548s
+Training time        : 1743.978196144104s
+Session Name         : chicken_3
+Logging Count        : 84
+Noise                : 0.506
+Learning rate        : 0.000094
+Total episode        : 200695
+Total trans          : 24518191
+Total trans per epi  : 122.17
+Episode              : 110
+Transition           : 891445
+Trans per epi        : 8104.05
+Max episode length   : 18630
+Rewards per episodes : 4672.93
+===============================================================
+===============================================================
+2020-02-14 08:46:30
+Elapsed time         : 70547.66s
+Simulation time      : 68672.57853221893s
+Training time        : 1802.0108106136322s
+Session Name         : chicken_3
+Logging Count        : 85
+Noise                : 0.498
+Learning rate        : 0.000094
+Total episode        : 200806
+Total trans          : 25310360
+Total trans per epi  : 126.04
+Episode              : 111
+Transition           : 792169
+Trans per epi        : 7136.66
+Max episode length   : 18895
+Rewards per episodes : 4187.94
+===============================================================
+===============================================================
+2020-02-14 09:27:16
+Elapsed time         : 72993.93s
+Simulation time      : 71062.24353384972s
+Training time        : 1857.631834745407s
+Session Name         : chicken_3
+Logging Count        : 86
+Noise                : 0.491
+Learning rate        : 0.000094
+Total episode        : 200934
+Total trans          : 26070606
+Total trans per epi  : 129.75
+Episode              : 128
+Transition           : 760246
+Trans per epi        : 5939.42
+Max episode length   : 18963
+Rewards per episodes : 3524.58
+===============================================================
+===============================================================
+2020-02-14 10:01:50
+Elapsed time         : 75067.13s
+Simulation time      : 73090.30114793777s
+Training time        : 1901.8519384860992s
+Session Name         : chicken_3
+Logging Count        : 87
+Noise                : 0.485
+Learning rate        : 0.000094
+Total episode        : 201055
+Total trans          : 26680680
+Total trans per epi  : 132.70
+Episode              : 121
+Transition           : 610074
+Trans per epi        : 5041.93
+Max episode length   : 16856
+Rewards per episodes : 3028.47
+===============================================================
+===============================================================
+2020-02-14 10:36:13
+Elapsed time         : 77130.12s
+Simulation time      : 75105.67533969879s
+Training time        : 1948.623111486435s
+Session Name         : chicken_3
+Logging Count        : 88
+Noise                : 0.479
+Learning rate        : 0.000094
+Total episode        : 201191
+Total trans          : 27319680
+Total trans per epi  : 135.79
+Episode              : 136
+Transition           : 639000
+Trans per epi        : 4698.53
+Max episode length   : 18527
+Rewards per episodes : 2854.94
+===============================================================
+===============================================================
+2020-02-14 11:15:10
+Elapsed time         : 79467.09s
+Simulation time      : 77388.93662333488s
+Training time        : 2001.4342896938324s
+Session Name         : chicken_3
+Logging Count        : 89
+Noise                : 0.473
+Learning rate        : 0.000094
+Total episode        : 201304
+Total trans          : 28042348
+Total trans per epi  : 139.30
+Episode              : 113
+Transition           : 722668
+Trans per epi        : 6395.29
+Max episode length   : 18912
+Rewards per episodes : 3928.26
+===============================================================
+===============================================================
+2020-02-14 11:58:02
+Elapsed time         : 82039.67s
+Simulation time      : 79902.75648283958s
+Training time        : 2059.228781938553s
+Session Name         : chicken_3
+Logging Count        : 90
+Noise                : 0.466
+Learning rate        : 0.000094
+Total episode        : 201414
+Total trans          : 28828224
+Total trans per epi  : 143.13
+Episode              : 110
+Transition           : 785876
+Trans per epi        : 7144.33
+Max episode length   : 18944
+Rewards per episodes : 4440.95
+===============================================================
+===============================================================
+2020-02-14 12:36:04
+Elapsed time         : 84321.40s
+Simulation time      : 82133.86810445786s
+Training time        : 2108.9127967357635s
+Session Name         : chicken_3
+Logging Count        : 91
+Noise                : 0.461
+Learning rate        : 0.000094
+Total episode        : 201520
+Total trans          : 29507765
+Total trans per epi  : 146.43
+Episode              : 106
+Transition           : 679541
+Trans per epi        : 6410.76
+Max episode length   : 18469
+Rewards per episodes : 4039.78
+===============================================================
+===============================================================
+2020-02-14 13:11:20
+Elapsed time         : 86437.22s
+Simulation time      : 84200.02281212807s
+Training time        : 2157.684020280838s
+Session Name         : chicken_3
+Logging Count        : 92
+Noise                : 0.455
+Learning rate        : 0.000094
+Total episode        : 201627
+Total trans          : 30168898
+Total trans per epi  : 149.63
+Episode              : 107
+Transition           : 661133
+Trans per epi        : 6178.81
+Max episode length   : 16968
+Rewards per episodes : 3935.98
+===============================================================
+===============================================================
+2020-02-14 13:48:44
+Elapsed time         : 88681.35s
+Simulation time      : 86388.84897637367s
+Training time        : 2212.0897557735443s
+Session Name         : chicken_3
+Logging Count        : 93
+Noise                : 0.450
+Learning rate        : 0.000094
+Total episode        : 201734
+Total trans          : 30910970
+Total trans per epi  : 153.23
+Episode              : 107
+Transition           : 742072
+Trans per epi        : 6935.25
+Max episode length   : 18168
+Rewards per episodes : 4452.11
+===============================================================
+===============================================================
+2020-02-14 14:28:19
+Elapsed time         : 91056.06s
+Simulation time      : 88709.15967202187s
+Training time        : 2265.54194688797s
+Session Name         : chicken_3
+Logging Count        : 94
+Noise                : 0.444
+Learning rate        : 0.000094
+Total episode        : 201852
+Total trans          : 31638489
+Total trans per epi  : 156.74
+Episode              : 118
+Transition           : 727519
+Trans per epi        : 6165.42
+Max episode length   : 18211
+Rewards per episodes : 3992.04
+===============================================================
+===============================================================
+2020-02-14 15:04:58
+Elapsed time         : 93255.73s
+Simulation time      : 90855.47073554993s
+Training time        : 2317.9813532829285s
+Session Name         : chicken_3
+Logging Count        : 95
+Noise                : 0.440
+Learning rate        : 0.000093
+Total episode        : 201967
+Total trans          : 32349357
+Total trans per epi  : 160.17
+Episode              : 115
+Transition           : 710868
+Trans per epi        : 6181.46
+Max episode length   : 18312
+Rewards per episodes : 4029.36
+===============================================================
+===============================================================
+2020-02-14 15:46:42
+Elapsed time         : 95759.45s
+Simulation time      : 93300.75705504417s
+Training time        : 2375.4364919662476s
+Session Name         : chicken_3
+Logging Count        : 96
+Noise                : 0.434
+Learning rate        : 0.000093
+Total episode        : 202075
+Total trans          : 33129892
+Total trans per epi  : 163.95
+Episode              : 108
+Transition           : 780535
+Trans per epi        : 7227.18
+Max episode length   : 18760
+Rewards per episodes : 4737.34
+===============================================================
+===============================================================
+2020-02-14 16:24:55
+Elapsed time         : 98052.16s
+Simulation time      : 95537.84131717682s
+Training time        : 2429.5724251270294s
+Session Name         : chicken_3
+Logging Count        : 97
+Noise                : 0.429
+Learning rate        : 0.000093
+Total episode        : 202196
+Total trans          : 33858917
+Total trans per epi  : 167.46
+Episode              : 121
+Transition           : 729025
+Trans per epi        : 6025.00
+Max episode length   : 17957
+Rewards per episodes : 3997.87
+===============================================================
+===============================================================
+2020-02-14 17:11:05
+Elapsed time         : 100822.23s
+Simulation time      : 98237.24525976181s
+Training time        : 2499.1774866580963s
+Session Name         : chicken_3
+Logging Count        : 98
+Noise                : 0.423
+Learning rate        : 0.000093
+Total episode        : 202304
+Total trans          : 34803940
+Total trans per epi  : 172.04
+Episode              : 108
+Transition           : 945023
+Trans per epi        : 8750.21
+Max episode length   : 18893
+Rewards per episodes : 5862.50
+===============================================================
+===============================================================
+2020-02-14 17:50:59
+Elapsed time         : 103216.10s
+Simulation time      : 100574.47957253456s
+Training time        : 2553.837657928467s
+Session Name         : chicken_3
+Logging Count        : 99
+Noise                : 0.418
+Learning rate        : 0.000093
+Total episode        : 202419
+Total trans          : 35544530
+Total trans per epi  : 175.60
+Episode              : 115
+Transition           : 740590
+Trans per epi        : 6439.91
+Max episode length   : 18993
+Rewards per episodes : 4347.01
+===============================================================
+===============================================================
+2020-02-14 18:34:05
+Elapsed time         : 105802.71s
+Simulation time      : 103100.83285808563s
+Training time        : 2613.0974633693695s
+Session Name         : chicken_3
+Logging Count        : 100
+Noise                : 0.414
+Learning rate        : 0.000093
+Total episode        : 202539
+Total trans          : 36350381
+Total trans per epi  : 179.47
+Episode              : 120
+Transition           : 805851
+Trans per epi        : 6715.43
+Max episode length   : 18937
+Rewards per episodes : 4557.50
+===============================================================
+===============================================================
+2020-02-14 19:12:19
+Elapsed time         : 108096.36s
+Simulation time      : 105341.19015574455s
+Training time        : 2665.4199063777924s
+Session Name         : chicken_3
+Logging Count        : 101
+Noise                : 0.409
+Learning rate        : 0.000093
+Total episode        : 202658
+Total trans          : 37059893
+Total trans per epi  : 182.87
+Episode              : 119
+Transition           : 709512
+Trans per epi        : 5962.29
+Max episode length   : 18663
+Rewards per episodes : 4092.66
+===============================================================
+===============================================================
+2020-02-14 19:49:57
+Elapsed time         : 110354.74s
+Simulation time      : 107547.20609688759s
+Training time        : 2716.8192703723907s
+Session Name         : chicken_3
+Logging Count        : 102
+Noise                : 0.405
+Learning rate        : 0.000093
+Total episode        : 202766
+Total trans          : 37759474
+Total trans per epi  : 186.22
+Episode              : 108
+Transition           : 699581
+Trans per epi        : 6477.60
+Max episode length   : 18796
+Rewards per episodes : 4464.68
+===============================================================
+===============================================================
+2020-02-14 20:29:47
+Elapsed time         : 112744.41s
+Simulation time      : 109884.99155712128s
+Training time        : 2767.73246717453s
+Session Name         : chicken_3
+Logging Count        : 103
+Noise                : 0.401
+Learning rate        : 0.000093
+Total episode        : 202877
+Total trans          : 38455023
+Total trans per epi  : 189.55
+Episode              : 111
+Transition           : 695549
+Trans per epi        : 6266.21
+Max episode length   : 18044
+Rewards per episodes : 4362.14
+===============================================================
+===============================================================
+2020-02-14 21:07:06
+Elapsed time         : 114983.74s
+Simulation time      : 112074.31571054459s
+Training time        : 2816.8211255073547s
+Session Name         : chicken_3
+Logging Count        : 104
+Noise                : 0.398
+Learning rate        : 0.000093
+Total episode        : 202982
+Total trans          : 39122434
+Total trans per epi  : 192.74
+Episode              : 105
+Transition           : 667411
+Trans per epi        : 6356.30
+Max episode length   : 18977
+Rewards per episodes : 4433.55
+===============================================================
+===============================================================
+2020-02-14 21:45:10
+Elapsed time         : 117267.02s
+Simulation time      : 114305.49949645996s
+Training time        : 2867.9510369300842s
+Session Name         : chicken_3
+Logging Count        : 105
+Noise                : 0.394
+Learning rate        : 0.000093
+Total episode        : 203102
+Total trans          : 39821898
+Total trans per epi  : 196.07
+Episode              : 120
+Transition           : 699464
+Trans per epi        : 5828.87
+Max episode length   : 18869
+Rewards per episodes : 4061.31
+===============================================================
+===============================================================
+2020-02-14 22:28:24
+Elapsed time         : 119861.89s
+Simulation time      : 116839.0899734497s
+Training time        : 2928.2721829414368s
+Session Name         : chicken_3
+Logging Count        : 106
+Noise                : 0.390
+Learning rate        : 0.000093
+Total episode        : 203194
+Total trans          : 40643612
+Total trans per epi  : 200.02
+Episode              : 92
+Transition           : 821714
+Trans per epi        : 8931.67
+Max episode length   : 18850
+Rewards per episodes : 6312.13
+===============================================================
+===============================================================
+2020-02-14 23:09:39
+Elapsed time         : 122336.72s
+Simulation time      : 119255.00856566429s
+Training time        : 2985.165383577347s
+Session Name         : chicken_3
+Logging Count        : 107
+Noise                : 0.385
+Learning rate        : 0.000093
+Total episode        : 203288
+Total trans          : 41422209
+Total trans per epi  : 203.76
+Episode              : 94
+Transition           : 778597
+Trans per epi        : 8282.95
+Max episode length   : 18678
+Rewards per episodes : 5895.36
+===============================================================
+===============================================================
+2020-02-14 23:46:24
+Elapsed time         : 124540.94s
+Simulation time      : 121409.4948952198s
+Training time        : 3033.964879989624s
+Session Name         : chicken_3
+Logging Count        : 108
+Noise                : 0.382
+Learning rate        : 0.000093
+Total episode        : 203388
+Total trans          : 42090707
+Total trans per epi  : 206.95
+Episode              : 100
+Transition           : 668498
+Trans per epi        : 6684.98
+Max episode length   : 18119
+Rewards per episodes : 4758.63
+===============================================================
+===============================================================
+2020-02-15 00:30:08
+Elapsed time         : 127165.27s
+Simulation time      : 123972.35114908218s
+Training time        : 3094.4649953842163s
+Session Name         : chicken_3
+Logging Count        : 109
+Noise                : 0.378
+Learning rate        : 0.000093
+Total episode        : 203487
+Total trans          : 42917680
+Total trans per epi  : 210.91
+Episode              : 99
+Transition           : 826973
+Trans per epi        : 8353.26
+Max episode length   : 18901
+Rewards per episodes : 5977.38
+===============================================================
+===============================================================
+2020-02-15 01:07:23
+Elapsed time         : 129400.75s
+Simulation time      : 126153.06020712852s
+Training time        : 3148.2487556934357s
+Session Name         : chicken_3
+Logging Count        : 110
+Noise                : 0.374
+Learning rate        : 0.000093
+Total episode        : 203580
+Total trans          : 43654869
+Total trans per epi  : 214.44
+Episode              : 93
+Transition           : 737189
+Trans per epi        : 7926.76
+Max episode length   : 17573
+Rewards per episodes : 5720.94
+===============================================================
+===============================================================
+2020-02-15 01:52:43
+Elapsed time         : 132120.12s
+Simulation time      : 128804.0542151928s
+Training time        : 3215.5862975120544s
+Session Name         : chicken_3
+Logging Count        : 111
+Noise                : 0.370
+Learning rate        : 0.000092
+Total episode        : 203676
+Total trans          : 44573063
+Total trans per epi  : 218.84
+Episode              : 96
+Transition           : 918194
+Trans per epi        : 9564.52
+Max episode length   : 18835
+Rewards per episodes : 6955.09
+===============================================================
+===============================================================
+2020-02-15 02:35:06
+Elapsed time         : 134662.99s
+Simulation time      : 131284.98744654655s
+Training time        : 3275.370761156082s
+Session Name         : chicken_3
+Logging Count        : 112
+Noise                : 0.367
+Learning rate        : 0.000092
+Total episode        : 203774
+Total trans          : 45387923
+Total trans per epi  : 222.74
+Episode              : 98
+Transition           : 814860
+Trans per epi        : 8314.90
+Max episode length   : 18917
+Rewards per episodes : 6061.48
+===============================================================
+===============================================================
+2020-02-15 03:19:16
+Elapsed time         : 137313.79s
+Simulation time      : 133869.54158997536s
+Training time        : 3340.566961288452s
+Session Name         : chicken_3
+Logging Count        : 113
+Noise                : 0.363
+Learning rate        : 0.000092
+Total episode        : 203876
+Total trans          : 46273854
+Total trans per epi  : 226.97
+Episode              : 102
+Transition           : 885931
+Trans per epi        : 8685.60
+Max episode length   : 18744
+Rewards per episodes : 6365.30
+===============================================================
+===============================================================
+2020-02-15 04:02:59
+Elapsed time         : 139936.32s
+Simulation time      : 136428.24234747887s
+Training time        : 3403.3319165706635s
+Session Name         : chicken_3
+Logging Count        : 114
+Noise                : 0.360
+Learning rate        : 0.000092
+Total episode        : 203974
+Total trans          : 47126631
+Total trans per epi  : 231.04
+Episode              : 98
+Transition           : 852777
+Trans per epi        : 8701.81
+Max episode length   : 18861
+Rewards per episodes : 6407.79
+===============================================================
+===============================================================
+2020-02-15 04:46:40
+Elapsed time         : 142557.46s
+Simulation time      : 138984.75620126724s
+Training time        : 3466.8881554603577s
+Session Name         : chicken_3
+Logging Count        : 115
+Noise                : 0.356
+Learning rate        : 0.000092
+Total episode        : 204072
+Total trans          : 47987551
+Total trans per epi  : 235.15
+Episode              : 98
+Transition           : 860920
+Trans per epi        : 8784.90
+Max episode length   : 18988
+Rewards per episodes : 6502.66
+===============================================================
+===============================================================
+2020-02-15 05:27:04
+Elapsed time         : 144981.50s
+Simulation time      : 141351.65693569183s
+Training time        : 3523.003026485443s
+Session Name         : chicken_3
+Logging Count        : 116
+Noise                : 0.353
+Learning rate        : 0.000092
+Total episode        : 204171
+Total trans          : 48753007
+Total trans per epi  : 238.79
+Episode              : 99
+Transition           : 765456
+Trans per epi        : 7731.88
+Max episode length   : 18474
+Rewards per episodes : 5746.62
+===============================================================
+===============================================================
+2020-02-15 06:07:54
+Elapsed time         : 147431.21s
+Simulation time      : 143743.14603114128s
+Training time        : 3580.233067512512s
+Session Name         : chicken_3
+Logging Count        : 117
+Noise                : 0.350
+Learning rate        : 0.000092
+Total episode        : 204263
+Total trans          : 49527945
+Total trans per epi  : 242.47
+Episode              : 92
+Transition           : 774938
+Trans per epi        : 8423.24
+Max episode length   : 18954
+Rewards per episodes : 6267.46
+===============================================================
+===============================================================
+2020-02-15 06:44:55
+Elapsed time         : 149652.68s
+Simulation time      : 145913.1689236164s
+Training time        : 3630.7209362983704s
+Session Name         : chicken_3
+Logging Count        : 118
+Noise                : 0.348
+Learning rate        : 0.000092
+Total episode        : 204370
+Total trans          : 50217552
+Total trans per epi  : 245.72
+Episode              : 107
+Transition           : 689607
+Trans per epi        : 6444.93
+Max episode length   : 18590
+Rewards per episodes : 4795.97
+===============================================================
+===============================================================
+2020-02-15 07:25:31
+Elapsed time         : 152088.27s
+Simulation time      : 148293.25357580185s
+Training time        : 3685.2838826179504s
+Session Name         : chicken_3
+Logging Count        : 119
+Noise                : 0.345
+Learning rate        : 0.000092
+Total episode        : 204476
+Total trans          : 50961600
+Total trans per epi  : 249.23
+Episode              : 106
+Transition           : 744048
+Trans per epi        : 7019.32
+Max episode length   : 18053
+Rewards per episodes : 5239.25
+===============================================================
+===============================================================
+2020-02-15 08:04:31
+Elapsed time         : 154428.45s
+Simulation time      : 150576.3338418007s
+Training time        : 3741.4249641895294s
+Session Name         : chicken_3
+Logging Count        : 120
+Noise                : 0.342
+Learning rate        : 0.000092
+Total episode        : 204589
+Total trans          : 51729339
+Total trans per epi  : 252.85
+Episode              : 113
+Transition           : 767739
+Trans per epi        : 6794.15
+Max episode length   : 18935
+Rewards per episodes : 5064.90
+===============================================================
+===============================================================
+2020-02-15 08:47:15
+Elapsed time         : 156992.30s
+Simulation time      : 153080.8865287304s
+Training time        : 3799.7062141895294s
+Session Name         : chicken_3
+Logging Count        : 121
+Noise                : 0.339
+Learning rate        : 0.000092
+Total episode        : 204694
+Total trans          : 52528190
+Total trans per epi  : 256.62
+Episode              : 105
+Transition           : 798851
+Trans per epi        : 7608.10
+Max episode length   : 18865
+Rewards per episodes : 5719.48
+===============================================================
+===============================================================
+2020-02-15 09:25:58
+Elapsed time         : 159315.62s
+Simulation time      : 155351.68659567833s
+Training time        : 3851.257318019867s
+Session Name         : chicken_3
+Logging Count        : 122
+Noise                : 0.337
+Learning rate        : 0.000092
+Total episode        : 204799
+Total trans          : 53235551
+Total trans per epi  : 259.94
+Episode              : 105
+Transition           : 707361
+Trans per epi        : 6736.77
+Max episode length   : 18806
+Rewards per episodes : 5070.27
+===============================================================
+===============================================================
+2020-02-15 10:06:38
+Elapsed time         : 161755.54s
+Simulation time      : 157734.9396762848s
+Training time        : 3906.981268644333s
+Session Name         : chicken_3
+Logging Count        : 123
+Noise                : 0.335
+Learning rate        : 0.000092
+Total episode        : 204912
+Total trans          : 53996471
+Total trans per epi  : 263.51
+Episode              : 113
+Transition           : 760920
+Trans per epi        : 6733.81
+Max episode length   : 18717
+Rewards per episodes : 5069.93
+===============================================================
+===============================================================
+2020-02-15 10:38:23
+Elapsed time         : 163660.01s
+Simulation time      : 159594.38648581505s
+Training time        : 3951.1193463802338s
+Session Name         : chicken_3
+Logging Count        : 124
+Noise                : 0.333
+Learning rate        : 0.000092
+Total episode        : 205044
+Total trans          : 54601423
+Total trans per epi  : 266.29
+Episode              : 132
+Transition           : 604952
+Trans per epi        : 4582.97
+Max episode length   : 18883
+Rewards per episodes : 3450.57
+===============================================================
+===============================================================
+2020-02-15 11:14:47
+Elapsed time         : 165844.90s
+Simulation time      : 161731.47425866127s
+Training time        : 3998.0344791412354s
+Session Name         : chicken_3
+Logging Count        : 125
+Noise                : 0.331
+Learning rate        : 0.000092
+Total episode        : 205171
+Total trans          : 55244662
+Total trans per epi  : 269.26
+Episode              : 127
+Transition           : 643239
+Trans per epi        : 5064.87
+Max episode length   : 18451
+Rewards per episodes : 3827.35
+===============================================================
+===============================================================
+2020-02-15 11:49:15
+Elapsed time         : 167912.18s
+Simulation time      : 163748.8681423664s
+Training time        : 4047.0494618415833s
+Session Name         : chicken_3
+Logging Count        : 126
+Noise                : 0.329
+Learning rate        : 0.000091
+Total episode        : 205302
+Total trans          : 55911309
+Total trans per epi  : 272.34
+Episode              : 131
+Transition           : 666647
+Trans per epi        : 5088.91
+Max episode length   : 18441
+Rewards per episodes : 3856.89
+===============================================================
+===============================================================
+2020-02-15 12:27:59
+Elapsed time         : 170236.60s
+Simulation time      : 166017.66184186935s
+Training time        : 4101.751046895981s
+Session Name         : chicken_3
+Logging Count        : 127
+Noise                : 0.327
+Learning rate        : 0.000091
+Total episode        : 205443
+Total trans          : 56657716
+Total trans per epi  : 275.78
+Episode              : 141
+Transition           : 746407
+Trans per epi        : 5293.67
+Max episode length   : 18136
+Rewards per episodes : 4004.14
+===============================================================
+===============================================================
+2020-02-15 13:04:48
+Elapsed time         : 172445.83s
+Simulation time      : 168174.4776802063s
+Training time        : 4153.215956449509s
+Session Name         : chicken_3
+Logging Count        : 128
+Noise                : 0.325
+Learning rate        : 0.000091
+Total episode        : 205571
+Total trans          : 57358292
+Total trans per epi  : 279.02
+Episode              : 128
+Transition           : 700576
+Trans per epi        : 5473.25
+Max episode length   : 18840
+Rewards per episodes : 4154.14
+===============================================================
+===============================================================
+2020-02-15 13:43:12
+Elapsed time         : 174749.02s
+Simulation time      : 170425.2663640976s
+Training time        : 4204.703878879547s
+Session Name         : chicken_3
+Logging Count        : 129
+Noise                : 0.323
+Learning rate        : 0.000091
+Total episode        : 205691
+Total trans          : 58057768
+Total trans per epi  : 282.26
+Episode              : 120
+Transition           : 699476
+Trans per epi        : 5828.97
+Max episode length   : 17201
+Rewards per episodes : 4440.45
+===============================================================
+===============================================================
+2020-02-15 14:20:46
+Elapsed time         : 177003.57s
+Simulation time      : 172626.32127141953s
+Training time        : 4257.240946531296s
+Session Name         : chicken_3
+Logging Count        : 130
+Noise                : 0.321
+Learning rate        : 0.000091
+Total episode        : 205810
+Total trans          : 58774287
+Total trans per epi  : 285.58
+Episode              : 119
+Transition           : 716519
+Trans per epi        : 6021.17
+Max episode length   : 18905
+Rewards per episodes : 4588.23
+===============================================================
+===============================================================
+2020-02-15 14:53:20
+Elapsed time         : 178957.51s
+Simulation time      : 174532.38450074196s
+Training time        : 4304.234365463257s
+Session Name         : chicken_3
+Logging Count        : 131
+Noise                : 0.319
+Learning rate        : 0.000091
+Total episode        : 205953
+Total trans          : 59415413
+Total trans per epi  : 288.49
+Episode              : 143
+Transition           : 641126
+Trans per epi        : 4483.40
+Max episode length   : 18423
+Rewards per episodes : 3434.90
+===============================================================
+===============================================================
+2020-02-15 15:09:27
+Elapsed time         : 179924.74s
+Simulation time      : 175476.33360767365s
+Training time        : 4326.77533864975s
+Session Name         : chicken_3
+Logging Count        : 132
+Noise                : 0.318
+Learning rate        : 0.000091
+Total episode        : 206245
+Total trans          : 59727195
+Total trans per epi  : 289.59
+Episode              : 292
+Transition           : 311782
+Trans per epi        : 1067.75
+Max episode length   : 8085
+Rewards per episodes : 800.18
+===============================================================
+===============================================================
+2020-02-15 15:23:49
+Elapsed time         : 180786.10s
+Simulation time      : 176316.96599411964s
+Training time        : 4346.913812160492s
+Session Name         : chicken_3
+Logging Count        : 133
+Noise                : 0.317
+Learning rate        : 0.000091
+Total episode        : 206740
+Total trans          : 60009093
+Total trans per epi  : 290.26
+Episode              : 495
+Transition           : 281898
+Trans per epi        : 569.49
+Max episode length   : 6245
+Rewards per episodes : 421.84
+===============================================================
+===============================================================
+2020-02-15 15:48:09
+Elapsed time         : 182246.79s
+Simulation time      : 177744.55118250847s
+Training time        : 4379.375887393951s
+Session Name         : chicken_3
+Logging Count        : 134
+Noise                : 0.316
+Learning rate        : 0.000091
+Total episode        : 207133
+Total trans          : 60455108
+Total trans per epi  : 291.87
+Episode              : 393
+Transition           : 446015
+Trans per epi        : 1134.90
+Max episode length   : 17018
+Rewards per episodes : 851.29
+===============================================================
+===============================================================
+2020-02-15 16:18:31
+Elapsed time         : 184068.42s
+Simulation time      : 179523.7366526127s
+Training time        : 4421.0640070438385s
+Session Name         : chicken_3
+Logging Count        : 135
+Noise                : 0.315
+Learning rate        : 0.000091
+Total episode        : 207288
+Total trans          : 61022937
+Total trans per epi  : 294.39
+Episode              : 155
+Transition           : 567829
+Trans per epi        : 3663.41
+Max episode length   : 15392
+Rewards per episodes : 2809.15
+===============================================================
+===============================================================
+2020-02-15 16:34:48
+Elapsed time         : 185045.30s
+Simulation time      : 180477.8890788555s
+Training time        : 4443.092298269272s
+Session Name         : chicken_3
+Logging Count        : 136
+Noise                : 0.314
+Learning rate        : 0.000091
+Total episode        : 207521
+Total trans          : 61329412
+Total trans per epi  : 295.53
+Episode              : 233
+Transition           : 306475
+Trans per epi        : 1315.34
+Max episode length   : 7523
+Rewards per episodes : 995.70
+===============================================================
+===============================================================
+2020-02-15 16:58:30
+Elapsed time         : 186467.16s
+Simulation time      : 181868.02513575554s
+Training time        : 4474.173630475998s
+Session Name         : chicken_3
+Logging Count        : 137
+Noise                : 0.313
+Learning rate        : 0.000091
+Total episode        : 207701
+Total trans          : 61757854
+Total trans per epi  : 297.34
+Episode              : 180
+Transition           : 428442
+Trans per epi        : 2380.23
+Max episode length   : 18093
+Rewards per episodes : 1815.79
+===============================================================
+===============================================================
+2020-02-15 17:23:20
+Elapsed time         : 187957.55s
+Simulation time      : 183325.07932639122s
+Training time        : 4506.810030698776s
+Session Name         : chicken_3
+Logging Count        : 138
+Noise                : 0.312
+Learning rate        : 0.000091
+Total episode        : 207864
+Total trans          : 62209513
+Total trans per epi  : 299.28
+Episode              : 163
+Transition           : 451659
+Trans per epi        : 2770.91
+Max episode length   : 14084
+Rewards per episodes : 2115.36
+===============================================================
+===============================================================
+2020-02-15 17:43:43
+Elapsed time         : 189180.14s
+Simulation time      : 184520.1727423668s
+Training time        : 4533.630256652832s
+Session Name         : chicken_3
+Logging Count        : 139
+Noise                : 0.311
+Learning rate        : 0.000091
+Total episode        : 208043
+Total trans          : 62582588
+Total trans per epi  : 300.82
+Episode              : 179
+Transition           : 373075
+Trans per epi        : 2084.22
+Max episode length   : 14068
+Rewards per episodes : 1584.82
+===============================================================
+===============================================================
+2020-02-15 18:02:44
+Elapsed time         : 190321.03s
+Simulation time      : 185634.75934767723s
+Training time        : 4559.296037435532s
+Session Name         : chicken_3
+Logging Count        : 140
+Noise                : 0.310
+Learning rate        : 0.000091
+Total episode        : 208308
+Total trans          : 62937385
+Total trans per epi  : 302.14
+Episode              : 265
+Transition           : 354797
+Trans per epi        : 1338.86
+Max episode length   : 9247
+Rewards per episodes : 1015.83
+===============================================================
+===============================================================
+2020-02-15 18:18:26
+Elapsed time         : 191263.69s
+Simulation time      : 186554.77776241302s
+Training time        : 4581.350743293762s
+Session Name         : chicken_3
+Logging Count        : 141
+Noise                : 0.309
+Learning rate        : 0.000091
+Total episode        : 208569
+Total trans          : 63243837
+Total trans per epi  : 303.23
+Episode              : 261
+Transition           : 306452
+Trans per epi        : 1174.15
+Max episode length   : 7795
+Rewards per episodes : 880.54
+===============================================================
+===============================================================
+2020-02-15 18:33:03
+Elapsed time         : 192140.82s
+Simulation time      : 187410.8079674244s
+Training time        : 4601.883865356445s
+Session Name         : chicken_3
+Logging Count        : 142
+Noise                : 0.308
+Learning rate        : 0.000090
+Total episode        : 209330
+Total trans          : 63532284
+Total trans per epi  : 303.50
+Episode              : 761
+Transition           : 288447
+Trans per epi        : 379.04
+Max episode length   : 6033
+Rewards per episodes : 276.34
+===============================================================
+===============================================================
+2020-02-15 18:47:28
+Elapsed time         : 193005.59s
+Simulation time      : 188256.39149427414s
+Training time        : 4620.484089612961s
+Session Name         : chicken_3
+Logging Count        : 143
+Noise                : 0.307
+Learning rate        : 0.000090
+Total episode        : 210470
+Total trans          : 63792549
+Total trans per epi  : 303.10
+Episode              : 1140
+Transition           : 260265
+Trans per epi        : 228.30
+Max episode length   : 7347
+Rewards per episodes : 161.07
+===============================================================
+===============================================================
+2020-02-15 19:01:17
+Elapsed time         : 193834.85s
+Simulation time      : 189066.95703697205s
+Training time        : 4638.616681337357s
+Session Name         : chicken_3
+Logging Count        : 144
+Noise                : 0.307
+Learning rate        : 0.000090
+Total episode        : 211432
+Total trans          : 64048698
+Total trans per epi  : 302.93
+Episode              : 962
+Transition           : 256149
+Trans per epi        : 266.27
+Max episode length   : 5732
+Rewards per episodes : 189.09
+===============================================================
+===============================================================
+2020-02-15 19:16:09
+Elapsed time         : 194726.32s
+Simulation time      : 189938.65979099274s
+Training time        : 4657.766496658325s
+Session Name         : chicken_3
+Logging Count        : 145
+Noise                : 0.306
+Learning rate        : 0.000090
+Total episode        : 212238
+Total trans          : 64318263
+Total trans per epi  : 303.05
+Episode              : 806
+Transition           : 269565
+Trans per epi        : 334.45
+Max episode length   : 6486
+Rewards per episodes : 240.59
+===============================================================
+===============================================================
+2020-02-15 19:30:10
+Elapsed time         : 195567.51s
+Simulation time      : 190761.34984469414s
+Training time        : 4675.7188947200775s
+Session Name         : chicken_3
+Logging Count        : 146
+Noise                : 0.305
+Learning rate        : 0.000090
+Total episode        : 213656
+Total trans          : 64572981
+Total trans per epi  : 302.23
+Episode              : 1418
+Transition           : 254718
+Trans per epi        : 179.63
+Max episode length   : 5919
+Rewards per episodes : 131.31
+===============================================================
+===============================================================
+2020-02-15 19:43:18
+Elapsed time         : 196355.62s
+Simulation time      : 191531.03601264954s
+Training time        : 4693.580999851227s
+Session Name         : chicken_3
+Logging Count        : 147
+Noise                : 0.304
+Learning rate        : 0.000090
+Total episode        : 214926
+Total trans          : 64823252
+Total trans per epi  : 301.61
+Episode              : 1270
+Transition           : 250271
+Trans per epi        : 197.06
+Max episode length   : 5767
+Rewards per episodes : 146.59
+===============================================================
+===============================================================
+2020-02-15 19:55:38
+Elapsed time         : 197094.95s
+Simulation time      : 192252.77453064919s
+Training time        : 4710.5972945690155s
+Session Name         : chicken_3
+Logging Count        : 148
+Noise                : 0.303
+Learning rate        : 0.000090
+Total episode        : 216345
+Total trans          : 65063041
+Total trans per epi  : 300.74
+Episode              : 1419
+Transition           : 239789
+Trans per epi        : 168.98
+Max episode length   : 5457
+Rewards per episodes : 124.28
+===============================================================
+===============================================================
+2020-02-15 20:10:32
+Elapsed time         : 197989.35s
+Simulation time      : 193127.31065034866s
+Training time        : 4729.922011852264s
+Session Name         : chicken_3
+Logging Count        : 149
+Noise                : 0.302
+Learning rate        : 0.000090
+Total episode        : 217692
+Total trans          : 65336172
+Total trans per epi  : 300.13
+Episode              : 1347
+Transition           : 273131
+Trans per epi        : 202.77
+Max episode length   : 6357
+Rewards per episodes : 151.29
+===============================================================
+===============================================================
+2020-02-15 20:23:23
+Elapsed time         : 198760.37s
+Simulation time      : 193880.0380833149s
+Training time        : 4747.656520366669s
+Session Name         : chicken_3
+Logging Count        : 150
+Noise                : 0.302
+Learning rate        : 0.000090
+Total episode        : 218868
+Total trans          : 65585696
+Total trans per epi  : 299.66
+Episode              : 1176
+Transition           : 249524
+Trans per epi        : 212.18
+Max episode length   : 6213
+Rewards per episodes : 151.09
+===============================================================
+===============================================================
+2020-02-15 20:36:16
+Elapsed time         : 199533.66s
+Simulation time      : 194635.28681778908s
+Training time        : 4765.134953022003s
+Session Name         : chicken_3
+Logging Count        : 151
+Noise                : 0.301
+Learning rate        : 0.000090
+Total episode        : 219548
+Total trans          : 65836049
+Total trans per epi  : 299.87
+Episode              : 680
+Transition           : 250353
+Trans per epi        : 368.17
+Max episode length   : 5725
+Rewards per episodes : 258.91
+===============================================================
+===============================================================
+2020-02-15 20:51:37
+Elapsed time         : 200454.06s
+Simulation time      : 195534.092846632s
+Training time        : 4786.139956951141s
+Session Name         : chicken_3
+Logging Count        : 152
+Noise                : 0.301
+Learning rate        : 0.000090
+Total episode        : 220008
+Total trans          : 66131656
+Total trans per epi  : 300.59
+Episode              : 460
+Transition           : 295607
+Trans per epi        : 642.62
+Max episode length   : 8190
+Rewards per episodes : 466.65
+===============================================================
+===============================================================
+2020-02-15 21:10:11
+Elapsed time         : 201568.85s
+Simulation time      : 196626.7795214653s
+Training time        : 4807.678268194199s
+Session Name         : chicken_3
+Logging Count        : 153
+Noise                : 0.300
+Learning rate        : 0.000090
+Total episode        : 220532
+Total trans          : 66435071
+Total trans per epi  : 301.25
+Episode              : 524
+Transition           : 303415
+Trans per epi        : 579.04
+Max episode length   : 13635
+Rewards per episodes : 422.36
+===============================================================
+===============================================================
+2020-02-15 21:24:00
+Elapsed time         : 202397.30s
+Simulation time      : 197435.88845705986s
+Training time        : 4826.462482690811s
+Session Name         : chicken_3
+Logging Count        : 154
+Noise                : 0.300
+Learning rate        : 0.000090
+Total episode        : 221101
+Total trans          : 66700596
+Total trans per epi  : 301.67
+Episode              : 569
+Transition           : 265525
+Trans per epi        : 466.65
+Max episode length   : 12619
+Rewards per episodes : 335.06
+===============================================================
+===============================================================
+2020-02-15 21:37:28
+Elapsed time         : 203205.61s
+Simulation time      : 198225.67268276215s
+Training time        : 4844.3784420490265s
+Session Name         : chicken_3
+Logging Count        : 155
+Noise                : 0.299
+Learning rate        : 0.000090
+Total episode        : 221710
+Total trans          : 66954642
+Total trans per epi  : 301.99
+Episode              : 609
+Transition           : 254046
+Trans per epi        : 417.15
+Max episode length   : 6050
+Rewards per episodes : 300.96
+===============================================================
+===============================================================
+2020-02-15 21:50:51
+Elapsed time         : 204008.59s
+Simulation time      : 199009.1857843399s
+Training time        : 4863.255370855331s
+Session Name         : chicken_3
+Logging Count        : 156
+Noise                : 0.298
+Learning rate        : 0.000090
+Total episode        : 222723
+Total trans          : 67221493
+Total trans per epi  : 301.82
+Episode              : 1013
+Transition           : 266851
+Trans per epi        : 263.43
+Max episode length   : 6326
+Rewards per episodes : 192.29
+===============================================================
+===============================================================
+2020-02-15 22:03:30
+Elapsed time         : 204767.71s
+Simulation time      : 199750.08013653755s
+Training time        : 4880.946058750153s
+Session Name         : chicken_3
+Logging Count        : 157
+Noise                : 0.298
+Learning rate        : 0.000090
+Total episode        : 223349
+Total trans          : 67471996
+Total trans per epi  : 302.09
+Episode              : 626
+Transition           : 250503
+Trans per epi        : 400.16
+Max episode length   : 5795
+Rewards per episodes : 285.85
+===============================================================
+===============================================================
+2020-02-15 22:22:29
+Elapsed time         : 205906.76s
+Simulation time      : 200862.81844568253s
+Training time        : 4906.687659025192s
+Session Name         : chicken_3
+Logging Count        : 158
+Noise                : 0.297
+Learning rate        : 0.000089
+Total episode        : 223662
+Total trans          : 67834833
+Total trans per epi  : 303.29
+Episode              : 313
+Transition           : 362837
+Trans per epi        : 1159.22
+Max episode length   : 8150
+Rewards per episodes : 866.31
+===============================================================
+===============================================================
+2020-02-15 22:41:44
+Elapsed time         : 207061.68s
+Simulation time      : 201990.699229002s
+Training time        : 4933.09370303154s
+Session Name         : chicken_3
+Logging Count        : 159
+Noise                : 0.296
+Learning rate        : 0.000089
+Total episode        : 224043
+Total trans          : 68203414
+Total trans per epi  : 304.42
+Episode              : 381
+Transition           : 368581
+Trans per epi        : 967.40
+Max episode length   : 13889
+Rewards per episodes : 723.07
+===============================================================
+===============================================================
+2020-02-15 22:57:02
+Elapsed time         : 207979.87s
+Simulation time      : 202888.6124331951s
+Training time        : 4952.777183771133s
+Session Name         : chicken_3
+Logging Count        : 160
+Noise                : 0.296
+Learning rate        : 0.000089
+Total episode        : 224547
+Total trans          : 68484050
+Total trans per epi  : 304.99
+Episode              : 504
+Transition           : 280636
+Trans per epi        : 556.82
+Max episode length   : 8350
+Rewards per episodes : 406.40
+===============================================================
+===============================================================
+2020-02-15 23:10:07
+Elapsed time         : 208764.30s
+Simulation time      : 203654.4413602352s
+Training time        : 4970.785315036774s
+Session Name         : chicken_3
+Logging Count        : 161
+Noise                : 0.295
+Learning rate        : 0.000089
+Total episode        : 225162
+Total trans          : 68739960
+Total trans per epi  : 305.29
+Episode              : 615
+Transition           : 255910
+Trans per epi        : 416.11
+Max episode length   : 6345
+Rewards per episodes : 300.95
+===============================================================
+===============================================================
+2020-02-15 23:22:23
+Elapsed time         : 209500.52s
+Simulation time      : 204373.12424325943s
+Training time        : 4987.7503843307495s
+Session Name         : chicken_3
+Logging Count        : 162
+Noise                : 0.295
+Learning rate        : 0.000089
+Total episode        : 226022
+Total trans          : 68981369
+Total trans per epi  : 305.20
+Episode              : 860
+Transition           : 241409
+Trans per epi        : 280.71
+Max episode length   : 6304
+Rewards per episodes : 201.32
+===============================================================
+===============================================================
+2020-02-15 23:34:22
+Elapsed time         : 210219.79s
+Simulation time      : 205074.45817947388s
+Training time        : 5005.153653383255s
+Session Name         : chicken_3
+Logging Count        : 163
+Noise                : 0.294
+Learning rate        : 0.000089
+Total episode        : 226812
+Total trans          : 69229525
+Total trans per epi  : 305.23
+Episode              : 790
+Transition           : 248156
+Trans per epi        : 314.12
+Max episode length   : 5686
+Rewards per episodes : 227.98
+===============================================================
+===============================================================
+2020-02-15 23:46:45
+Elapsed time         : 210962.35s
+Simulation time      : 205799.15369296074s
+Training time        : 5022.468472242355s
+Session Name         : chicken_3
+Logging Count        : 164
+Noise                : 0.294
+Learning rate        : 0.000089
+Total episode        : 227513
+Total trans          : 69475541
+Total trans per epi  : 305.37
+Episode              : 701
+Transition           : 246016
+Trans per epi        : 350.95
+Max episode length   : 7474
+Rewards per episodes : 248.50
+===============================================================
+===============================================================
+2020-02-15 23:59:51
+Elapsed time         : 211748.27s
+Simulation time      : 206566.7390320301s
+Training time        : 5040.217924594879s
+Session Name         : chicken_3
+Logging Count        : 165
+Noise                : 0.294
+Learning rate        : 0.000089
+Total episode        : 228257
+Total trans          : 69727742
+Total trans per epi  : 305.48
+Episode              : 744
+Transition           : 252201
+Trans per epi        : 338.98
+Max episode length   : 7379
+Rewards per episodes : 246.81
+===============================================================
+===============================================================
+2020-02-16 00:13:41
+Elapsed time         : 212578.50s
+Simulation time      : 207377.01614642143s
+Training time        : 5059.6015820503235s
+Session Name         : chicken_3
+Logging Count        : 166
+Noise                : 0.293
+Learning rate        : 0.000089
+Total episode        : 228765
+Total trans          : 70001542
+Total trans per epi  : 306.00
+Episode              : 508
+Transition           : 273800
+Trans per epi        : 538.98
+Max episode length   : 5708
+Rewards per episodes : 399.59
+===============================================================
+===============================================================
+2020-02-16 00:26:16
+Elapsed time         : 213333.67s
+Simulation time      : 208114.5160934925s
+Training time        : 5076.735574245453s
+Session Name         : chicken_3
+Logging Count        : 167
+Noise                : 0.293
+Learning rate        : 0.000089
+Total episode        : 229407
+Total trans          : 70246829
+Total trans per epi  : 306.21
+Episode              : 642
+Transition           : 245287
+Trans per epi        : 382.07
+Max episode length   : 5998
+Rewards per episodes : 280.97
+===============================================================
+===============================================================
+2020-02-16 00:40:07
+Elapsed time         : 214164.33s
+Simulation time      : 208925.67450785637s
+Training time        : 5095.716277837753s
+Session Name         : chicken_3
+Logging Count        : 168
+Noise                : 0.292
+Learning rate        : 0.000089
+Total episode        : 230116
+Total trans          : 70514247
+Total trans per epi  : 306.43
+Episode              : 709
+Transition           : 267418
+Trans per epi        : 377.18
+Max episode length   : 6519
+Rewards per episodes : 276.17
+===============================================================
+===============================================================
+2020-02-16 00:55:17
+Elapsed time         : 215073.98s
+Simulation time      : 209813.91733503342s
+Training time        : 5116.568420171738s
+Session Name         : chicken_3
+Logging Count        : 169
+Noise                : 0.291
+Learning rate        : 0.000089
+Total episode        : 230667
+Total trans          : 70809302
+Total trans per epi  : 306.98
+Episode              : 551
+Transition           : 295055
+Trans per epi        : 535.49
+Max episode length   : 5800
+Rewards per episodes : 399.93
+===============================================================
+===============================================================
+2020-02-16 01:16:44
+Elapsed time         : 216361.44s
+Simulation time      : 211070.1062092781s
+Training time        : 5147.233021736145s
+Session Name         : chicken_3
+Logging Count        : 170
+Noise                : 0.290
+Learning rate        : 0.000089
+Total episode        : 230989
+Total trans          : 71233598
+Total trans per epi  : 308.39
+Episode              : 322
+Transition           : 424296
+Trans per epi        : 1317.69
+Max episode length   : 14479
+Rewards per episodes : 1001.20
+===============================================================
+===============================================================
+2020-02-16 01:39:43
+Elapsed time         : 217740.93s
+Simulation time      : 212415.26695728302s
+Training time        : 5180.870576620102s
+Session Name         : chicken_3
+Logging Count        : 171
+Noise                : 0.289
+Learning rate        : 0.000089
+Total episode        : 231177
+Total trans          : 71697170
+Total trans per epi  : 310.14
+Episode              : 188
+Transition           : 463572
+Trans per epi        : 2465.81
+Max episode length   : 14485
+Rewards per episodes : 1907.10
+===============================================================
+===============================================================
+2020-02-16 02:08:08
+Elapsed time         : 219445.23s
+Simulation time      : 214079.19884681702s
+Training time        : 5220.488718509674s
+Session Name         : chicken_3
+Logging Count        : 172
+Noise                : 0.288
+Learning rate        : 0.000089
+Total episode        : 231367
+Total trans          : 72244086
+Total trans per epi  : 312.25
+Episode              : 190
+Transition           : 546916
+Trans per epi        : 2878.51
+Max episode length   : 14493
+Rewards per episodes : 2226.92
+===============================================================
+===============================================================
+2020-02-16 02:33:09
+Elapsed time         : 220946.62s
+Simulation time      : 215544.35328793526s
+Training time        : 5255.97541975975s
+Session Name         : chicken_3
+Logging Count        : 173
+Noise                : 0.287
+Learning rate        : 0.000089
+Total episode        : 231545
+Total trans          : 72737236
+Total trans per epi  : 314.14
+Episode              : 178
+Transition           : 493150
+Trans per epi        : 2770.51
+Max episode length   : 14496
+Rewards per episodes : 2147.77
+===============================================================
+===============================================================
+2020-02-16 03:00:19
+Elapsed time         : 222575.95s
+Simulation time      : 217136.6107852459s
+Training time        : 5292.315769672394s
+Session Name         : chicken_3
+Logging Count        : 174
+Noise                : 0.286
+Learning rate        : 0.000088
+Total episode        : 231737
+Total trans          : 73236403
+Total trans per epi  : 316.03
+Episode              : 192
+Transition           : 499167
+Trans per epi        : 2599.83
+Max episode length   : 14490
+Rewards per episodes : 2020.32
+===============================================================
+===============================================================
+2020-02-16 03:37:33
+Elapsed time         : 224810.31s
+Simulation time      : 219319.7888700962s
+Training time        : 5342.536564588547s
+Session Name         : chicken_3
+Logging Count        : 175
+Noise                : 0.284
+Learning rate        : 0.000088
+Total episode        : 231886
+Total trans          : 73928501
+Total trans per epi  : 318.81
+Episode              : 149
+Transition           : 692098
+Trans per epi        : 4644.95
+Max episode length   : 16199
+Rewards per episodes : 3646.14
+===============================================================
+===============================================================
+2020-02-16 04:10:17
+Elapsed time         : 226774.34s
+Simulation time      : 221240.254291296s
+Training time        : 5385.237402915955s
+Session Name         : chicken_3
+Logging Count        : 176
+Noise                : 0.283
+Learning rate        : 0.000088
+Total episode        : 232074
+Total trans          : 74516881
+Total trans per epi  : 321.09
+Episode              : 188
+Transition           : 588380
+Trans per epi        : 3129.68
+Max episode length   : 16795
+Rewards per episodes : 2438.77
+===============================================================
+===============================================================
+2020-02-16 04:47:23
+Elapsed time         : 229000.04s
+Simulation time      : 223415.20733857155s
+Training time        : 5435.1009130477905s
+Session Name         : chicken_3
+Logging Count        : 177
+Noise                : 0.282
+Learning rate        : 0.000088
+Total episode        : 232217
+Total trans          : 75198958
+Total trans per epi  : 323.83
+Episode              : 143
+Transition           : 682077
+Trans per epi        : 4769.77
+Max episode length   : 18345
+Rewards per episodes : 3742.59
+===============================================================
+===============================================================
+2020-02-16 05:16:07
+Elapsed time         : 230724.40s
+Simulation time      : 225100.45416522026s
+Training time        : 5473.353678226471s
+Session Name         : chicken_3
+Logging Count        : 178
+Noise                : 0.281
+Learning rate        : 0.000088
+Total episode        : 232351
+Total trans          : 75725350
+Total trans per epi  : 325.91
+Episode              : 134
+Transition           : 526392
+Trans per epi        : 3928.30
+Max episode length   : 15705
+Rewards per episodes : 3093.58
+===============================================================
+===============================================================
+2020-02-16 05:53:21
+Elapsed time         : 232958.18s
+Simulation time      : 227282.6502621174s
+Training time        : 5524.084654092789s
+Session Name         : chicken_3
+Logging Count        : 179
+Noise                : 0.280
+Learning rate        : 0.000088
+Total episode        : 232490
+Total trans          : 76420742
+Total trans per epi  : 328.71
+Episode              : 139
+Transition           : 695392
+Trans per epi        : 5002.82
+Max episode length   : 18857
+Rewards per episodes : 3957.08
+===============================================================
+===============================================================
+2020-02-16 06:21:11
+Elapsed time         : 234628.54s
+Simulation time      : 228914.90053534508s
+Training time        : 5561.378420352936s
+Session Name         : chicken_3
+Logging Count        : 180
+Noise                : 0.279
+Learning rate        : 0.000088
+Total episode        : 232603
+Total trans          : 76933930
+Total trans per epi  : 330.75
+Episode              : 113
+Transition           : 513188
+Trans per epi        : 4541.49
+Max episode length   : 17431
+Rewards per episodes : 3592.27
+===============================================================
+===============================================================
+2020-02-16 07:01:48
+Elapsed time         : 237065.41s
+Simulation time      : 231292.20877313614s
+Training time        : 5620.068352937698s
+Session Name         : chicken_3
+Logging Count        : 181
+Noise                : 0.277
+Learning rate        : 0.000088
+Total episode        : 232698
+Total trans          : 77734853
+Total trans per epi  : 334.06
+Episode              : 95
+Transition           : 800923
+Trans per epi        : 8430.77
+Max episode length   : 18730
+Rewards per episodes : 6730.17
+===============================================================
+===============================================================
+2020-02-16 07:39:46
+Elapsed time         : 239343.55s
+Simulation time      : 233518.6769347191s
+Training time        : 5670.779881000519s
+Session Name         : chicken_3
+Logging Count        : 182
+Noise                : 0.276
+Learning rate        : 0.000088
+Total episode        : 232801
+Total trans          : 78430889
+Total trans per epi  : 336.90
+Episode              : 103
+Transition           : 696036
+Trans per epi        : 6757.63
+Max episode length   : 18957
+Rewards per episodes : 5388.60
+===============================================================
+===============================================================
+2020-02-16 08:18:28
+Elapsed time         : 241665.75s
+Simulation time      : 235783.3826637268s
+Training time        : 5727.314833641052s
+Session Name         : chicken_3
+Logging Count        : 183
+Noise                : 0.275
+Learning rate        : 0.000088
+Total episode        : 232921
+Total trans          : 79204522
+Total trans per epi  : 340.05
+Episode              : 120
+Transition           : 773633
+Trans per epi        : 6446.94
+Max episode length   : 18666
+Rewards per episodes : 5148.67
+===============================================================
+===============================================================
+2020-02-16 09:02:16
+Elapsed time         : 244292.95s
+Simulation time      : 238343.73815870285s
+Training time        : 5793.116240739822s
+Session Name         : chicken_3
+Logging Count        : 184
+Noise                : 0.274
+Learning rate        : 0.000088
+Total episode        : 233020
+Total trans          : 80104066
+Total trans per epi  : 343.76
+Episode              : 99
+Transition           : 899544
+Trans per epi        : 9086.30
+Max episode length   : 18974
+Rewards per episodes : 7280.47
+===============================================================
+===============================================================
+2020-02-16 09:47:19
+Elapsed time         : 246996.72s
+Simulation time      : 240980.30240869522s
+Training time        : 5858.3251168727875s
+Session Name         : chicken_3
+Logging Count        : 185
+Noise                : 0.272
+Learning rate        : 0.000088
+Total episode        : 233123
+Total trans          : 80994690
+Total trans per epi  : 347.43
+Episode              : 103
+Transition           : 890624
+Trans per epi        : 8646.83
+Max episode length   : 18986
+Rewards per episodes : 6946.98
+===============================================================
+===============================================================
+2020-02-16 10:29:26
+Elapsed time         : 249523.68s
+Simulation time      : 243441.40432691574s
+Training time        : 5923.096918821335s
+Session Name         : chicken_3
+Logging Count        : 186
+Noise                : 0.271
+Learning rate        : 0.000088
+Total episode        : 233231
+Total trans          : 81880964
+Total trans per epi  : 351.07
+Episode              : 108
+Transition           : 886274
+Trans per epi        : 8206.24
+Max episode length   : 18829
+Rewards per episodes : 6612.11
+===============================================================
+===============================================================
+2020-02-16 11:01:18
+Elapsed time         : 251435.08s
+Simulation time      : 245308.9433133602s
+Training time        : 5965.977514266968s
+Session Name         : chicken_3
+Logging Count        : 187
+Noise                : 0.270
+Learning rate        : 0.000088
+Total episode        : 233356
+Total trans          : 82467833
+Total trans per epi  : 353.40
+Episode              : 125
+Transition           : 586869
+Trans per epi        : 4694.95
+Max episode length   : 18310
+Rewards per episodes : 3768.56
+===============================================================
+===============================================================
+2020-02-16 11:33:08
+Elapsed time         : 253345.08s
+Simulation time      : 247176.84811353683s
+Training time        : 6007.235521316528s
+Session Name         : chicken_3
+Logging Count        : 188
+Noise                : 0.269
+Learning rate        : 0.000088
+Total episode        : 233501
+Total trans          : 83037743
+Total trans per epi  : 355.62
+Episode              : 145
+Transition           : 569910
+Trans per epi        : 3930.41
+Max episode length   : 17127
+Rewards per episodes : 3145.15
+===============================================================
+===============================================================
+2020-02-16 12:14:58
+Elapsed time         : 255855.10s
+Simulation time      : 249624.17358326912s
+Training time        : 6068.968262910843s
+Session Name         : chicken_3
+Logging Count        : 189
+Noise                : 0.267
+Learning rate        : 0.000088
+Total episode        : 233611
+Total trans          : 83879095
+Total trans per epi  : 359.05
+Episode              : 110
+Transition           : 841352
+Trans per epi        : 7648.65
+Max episode length   : 17633
+Rewards per episodes : 6172.33
+===============================================================
+===============================================================
+2020-02-16 12:51:56
+Elapsed time         : 258073.41s
+Simulation time      : 251792.20256829262s
+Training time        : 6118.253021001816s
+Session Name         : chicken_3
+Logging Count        : 190
+Noise                : 0.266
+Learning rate        : 0.000087
+Total episode        : 233731
+Total trans          : 84553264
+Total trans per epi  : 361.75
+Episode              : 120
+Transition           : 674169
+Trans per epi        : 5618.07
+Max episode length   : 16667
+Rewards per episodes : 4519.51
+===============================================================
+===============================================================
+2020-02-16 13:31:41
+Elapsed time         : 260458.94s
+Simulation time      : 254121.9620103836s
+Training time        : 6173.082571268082s
+Session Name         : chicken_3
+Logging Count        : 191
+Noise                : 0.265
+Learning rate        : 0.000087
+Total episode        : 233839
+Total trans          : 85306799
+Total trans per epi  : 364.81
+Episode              : 108
+Transition           : 753535
+Trans per epi        : 6977.18
+Max episode length   : 18408
+Rewards per episodes : 5648.98
+===============================================================
+===============================================================
+2020-02-16 14:04:40
+Elapsed time         : 262437.92s
+Simulation time      : 256053.9827296734s
+Training time        : 6219.102586507797s
+Session Name         : chicken_3
+Logging Count        : 192
+Noise                : 0.264
+Learning rate        : 0.000087
+Total episode        : 233956
+Total trans          : 85937171
+Total trans per epi  : 367.32
+Episode              : 117
+Transition           : 630372
+Trans per epi        : 5387.79
+Max episode length   : 18486
+Rewards per episodes : 4342.34
+===============================================================
+===============================================================
+2020-02-16 14:43:15
+Elapsed time         : 264752.89s
+Simulation time      : 258311.02062773705s
+Training time        : 6276.085361480713s
+Session Name         : chicken_3
+Logging Count        : 193
+Noise                : 0.263
+Learning rate        : 0.000087
+Total episode        : 234060
+Total trans          : 86716868
+Total trans per epi  : 370.49
+Episode              : 104
+Transition           : 779697
+Trans per epi        : 7497.09
+Max episode length   : 18921
+Rewards per episodes : 6063.94
+===============================================================
+===============================================================
+2020-02-16 15:24:55
+Elapsed time         : 267252.63s
+Simulation time      : 260753.02509093285s
+Training time        : 6332.8073081970215s
+Session Name         : chicken_3
+Logging Count        : 194
+Noise                : 0.262
+Learning rate        : 0.000087
+Total episode        : 234169
+Total trans          : 87493514
+Total trans per epi  : 373.63
+Episode              : 109
+Transition           : 776646
+Trans per epi        : 7125.19
+Max episode length   : 18861
+Rewards per episodes : 5779.46
+===============================================================
+===============================================================
+2020-02-16 16:09:11
+Elapsed time         : 269908.21s
+Simulation time      : 263343.53268289566s
+Training time        : 6396.818520069122s
+Session Name         : chicken_3
+Logging Count        : 195
+Noise                : 0.260
+Learning rate        : 0.000087
+Total episode        : 234264
+Total trans          : 88366712
+Total trans per epi  : 377.21
+Episode              : 95
+Transition           : 873198
+Trans per epi        : 9191.56
+Max episode length   : 18702
+Rewards per episodes : 7475.90
+===============================================================
+===============================================================
+2020-02-16 16:45:22
+Elapsed time         : 272079.22s
+Simulation time      : 265464.0228693485s
+Training time        : 6445.3410704135895s
+Session Name         : chicken_3
+Logging Count        : 196
+Noise                : 0.259
+Learning rate        : 0.000087
+Total episode        : 234370
+Total trans          : 89029190
+Total trans per epi  : 379.87
+Episode              : 106
+Transition           : 662478
+Trans per epi        : 6249.79
+Max episode length   : 17827
+Rewards per episodes : 5069.92
+===============================================================
+===============================================================
+2020-02-16 17:32:16
+Elapsed time         : 274893.06s
+Simulation time      : 268206.6740591526s
+Training time        : 6515.473707199097s
+Session Name         : chicken_3
+Logging Count        : 197
+Noise                : 0.258
+Learning rate        : 0.000087
+Total episode        : 234463
+Total trans          : 89984538
+Total trans per epi  : 383.79
+Episode              : 93
+Transition           : 955348
+Trans per epi        : 10272.56
+Max episode length   : 18894
+Rewards per episodes : 8370.89
+===============================================================
+===============================================================
+2020-02-16 18:16:35
+Elapsed time         : 277552.89s
+Simulation time      : 270796.9477016926s
+Training time        : 6582.028706789017s
+Session Name         : chicken_3
+Logging Count        : 198
+Noise                : 0.257
+Learning rate        : 0.000087
+Total episode        : 234554
+Total trans          : 90891060
+Total trans per epi  : 387.51
+Episode              : 91
+Transition           : 906522
+Trans per epi        : 9961.78
+Max episode length   : 18365
+Rewards per episodes : 8158.88
+===============================================================
+===============================================================
+2020-02-16 18:48:46
+Elapsed time         : 279483.55s
+Simulation time      : 272684.9285874367s
+Training time        : 6623.727924585342s
+Session Name         : chicken_3
+Logging Count        : 199
+Noise                : 0.256
+Learning rate        : 0.000087
+Total episode        : 234696
+Total trans          : 91465827
+Total trans per epi  : 389.72
+Episode              : 142
+Transition           : 574767
+Trans per epi        : 4047.65
+Max episode length   : 18561
+Rewards per episodes : 3279.45
+===============================================================
+===============================================================
+2020-02-16 19:19:52
+Elapsed time         : 281349.06s
+Simulation time      : 274506.7836136818s
+Training time        : 6666.516286373138s
+Session Name         : chicken_3
+Logging Count        : 200
+Noise                : 0.255
+Learning rate        : 0.000087
+Total episode        : 234852
+Total trans          : 92056134
+Total trans per epi  : 391.98
+Episode              : 156
+Transition           : 590307
+Trans per epi        : 3784.02
+Max episode length   : 18614
+Rewards per episodes : 3031.00
+===============================================================
+===============================================================
+2020-02-16 19:58:20
+Elapsed time         : 283657.78s
+Simulation time      : 276764.63031339645s
+Training time        : 6716.50930929184s
+Session Name         : chicken_3
+Logging Count        : 201
+Noise                : 0.254
+Learning rate        : 0.000087
+Total episode        : 234975
+Total trans          : 92744572
+Total trans per epi  : 394.70
+Episode              : 123
+Transition           : 688438
+Trans per epi        : 5597.06
+Max episode length   : 18124
+Rewards per episodes : 4542.19
+===============================================================
+===============================================================
+2020-02-16 20:42:26
+Elapsed time         : 286303.38s
+Simulation time      : 279347.10679864883s
+Training time        : 6778.605239391327s
+Session Name         : chicken_3
+Logging Count        : 202
+Noise                : 0.253
+Learning rate        : 0.000087
+Total episode        : 235070
+Total trans          : 93590374
+Total trans per epi  : 398.14
+Episode              : 95
+Transition           : 845802
+Trans per epi        : 8903.18
+Max episode length   : 18991
+Rewards per episodes : 7272.30
+===============================================================
+===============================================================
+2020-02-16 21:24:39
+Elapsed time         : 288836.27s
+Simulation time      : 281822.46610450745s
+Training time        : 6835.025769710541s
+Session Name         : chicken_3
+Logging Count        : 203
+Noise                : 0.252
+Learning rate        : 0.000087
+Total episode        : 235175
+Total trans          : 94366242
+Total trans per epi  : 401.26
+Episode              : 105
+Transition           : 775868
+Trans per epi        : 7389.22
+Max episode length   : 18940
+Rewards per episodes : 6018.84
+===============================================================
+===============================================================
+2020-02-16 22:05:34
+Elapsed time         : 291291.48s
+Simulation time      : 284219.3032836914s
+Training time        : 6892.376437425613s
+Session Name         : chicken_3
+Logging Count        : 204
+Noise                : 0.251
+Learning rate        : 0.000087
+Total episode        : 235269
+Total trans          : 95152788
+Total trans per epi  : 404.44
+Episode              : 94
+Transition           : 786546
+Trans per epi        : 8367.51
+Max episode length   : 18786
+Rewards per episodes : 6842.68
+===============================================================
+===============================================================
+2020-02-16 22:49:37
+Elapsed time         : 293934.85s
+Simulation time      : 286798.10236239433s
+Training time        : 6955.913557052612s
+Session Name         : chicken_3
+Logging Count        : 205
+Noise                : 0.250
+Learning rate        : 0.000087
+Total episode        : 235389
+Total trans          : 96021143
+Total trans per epi  : 407.93
+Episode              : 120
+Transition           : 868355
+Trans per epi        : 7236.29
+Max episode length   : 18965
+Rewards per episodes : 5904.05
+===============================================================
+===============================================================
+2020-02-16 23:30:56
+Elapsed time         : 296413.34s
+Simulation time      : 289214.450953722s
+Training time        : 7016.948541164398s
+Session Name         : chicken_3
+Logging Count        : 206
+Noise                : 0.249
+Learning rate        : 0.000087
+Total episode        : 235503
+Total trans          : 96851176
+Total trans per epi  : 411.25
+Episode              : 114
+Transition           : 830033
+Trans per epi        : 7280.99
+Max episode length   : 18450
+Rewards per episodes : 5955.86
+===============================================================
+===============================================================
+2020-02-17 00:12:08
+Elapsed time         : 298885.82s
+Simulation time      : 291628.353672266s
+Training time        : 7074.409943580627s
+Session Name         : chicken_3
+Logging Count        : 207
+Noise                : 0.248
+Learning rate        : 0.000086
+Total episode        : 235612
+Total trans          : 97636319
+Total trans per epi  : 414.39
+Episode              : 109
+Transition           : 785143
+Trans per epi        : 7203.15
+Max episode length   : 18710
+Rewards per episodes : 5909.28
+===============================================================
+===============================================================
+2020-02-17 00:53:36
+Elapsed time         : 301373.18s
+Simulation time      : 294057.111027956s
+Training time        : 7132.014444589615s
+Session Name         : chicken_3
+Logging Count        : 208
+Noise                : 0.247
+Learning rate        : 0.000086
+Total episode        : 235723
+Total trans          : 98423634
+Total trans per epi  : 417.54
+Episode              : 111
+Transition           : 787315
+Trans per epi        : 7092.93
+Max episode length   : 18851
+Rewards per episodes : 5808.68
+===============================================================
+===============================================================
+2020-02-17 01:34:03
+Elapsed time         : 303800.06s
+Simulation time      : 296422.5311937332s
+Training time        : 7192.476833343506s
+Session Name         : chicken_3
+Logging Count        : 209
+Noise                : 0.246
+Learning rate        : 0.000086
+Total episode        : 235832
+Total trans          : 99253519
+Total trans per epi  : 420.87
+Episode              : 109
+Transition           : 829885
+Trans per epi        : 7613.62
+Max episode length   : 18727
+Rewards per episodes : 6246.60
+===============================================================
+===============================================================
+2020-02-17 02:17:52
+Elapsed time         : 306429.65s
+Simulation time      : 298986.919277668s
+Training time        : 7256.621375083923s
+Session Name         : chicken_3
+Logging Count        : 210
+Noise                : 0.245
+Learning rate        : 0.000086
+Total episode        : 235935
+Total trans          : 100129952
+Total trans per epi  : 424.40
+Episode              : 103
+Transition           : 876433
+Trans per epi        : 8509.06
+Max episode length   : 18423
+Rewards per episodes : 7005.28
+===============================================================
+===============================================================
+2020-02-17 02:57:39
+Elapsed time         : 308816.75s
+Simulation time      : 301321.2450647354s
+Training time        : 7308.404354810715s
+Session Name         : chicken_3
+Logging Count        : 211
+Noise                : 0.244
+Learning rate        : 0.000086
+Total episode        : 236041
+Total trans          : 100842656
+Total trans per epi  : 427.23
+Episode              : 106
+Transition           : 712704
+Trans per epi        : 6723.62
+Max episode length   : 17543
+Rewards per episodes : 5517.77
+===============================================================
+===============================================================
+2020-02-17 03:28:07
+Elapsed time         : 310644.60s
+Simulation time      : 303108.88413596153s
+Training time        : 7347.750571727753s
+Session Name         : chicken_3
+Logging Count        : 212
+Noise                : 0.244
+Learning rate        : 0.000086
+Total episode        : 236177
+Total trans          : 101385274
+Total trans per epi  : 429.28
+Episode              : 136
+Transition           : 542618
+Trans per epi        : 3989.84
+Max episode length   : 15269
+Rewards per episodes : 3254.46
+===============================================================
+===============================================================
+2020-02-17 03:58:00
+Elapsed time         : 312437.18s
+Simulation time      : 304863.10231900215s
+Training time        : 7385.346426486969s
+Session Name         : chicken_3
+Logging Count        : 213
+Noise                : 0.243
+Learning rate        : 0.000086
+Total episode        : 236318
+Total trans          : 101902888
+Total trans per epi  : 431.21
+Episode              : 141
+Transition           : 517614
+Trans per epi        : 3671.02
+Max episode length   : 15209
+Rewards per episodes : 2983.16
+===============================================================
+===============================================================
+2020-02-17 04:30:26
+Elapsed time         : 314383.37s
+Simulation time      : 306768.0456533432s
+Training time        : 7425.812177658081s
+Session Name         : chicken_3
+Logging Count        : 214
+Noise                : 0.243
+Learning rate        : 0.000086
+Total episode        : 236443
+Total trans          : 102457505
+Total trans per epi  : 433.33
+Episode              : 125
+Transition           : 554617
+Trans per epi        : 4436.94
+Max episode length   : 18795
+Rewards per episodes : 3622.88
+===============================================================
+===============================================================
+2020-02-17 05:02:31
+Elapsed time         : 316308.54s
+Simulation time      : 308652.89348840714s
+Training time        : 7465.208135604858s
+Session Name         : chicken_3
+Logging Count        : 215
+Noise                : 0.242
+Learning rate        : 0.000086
+Total episode        : 236583
+Total trans          : 103000844
+Total trans per epi  : 435.37
+Episode              : 140
+Transition           : 543339
+Trans per epi        : 3880.99
+Max episode length   : 18906
+Rewards per episodes : 3155.99
+===============================================================
+===============================================================
+2020-02-17 05:37:11
+Elapsed time         : 318388.28s
+Simulation time      : 310688.4320087433s
+Training time        : 7508.5863218307495s
+Session Name         : chicken_3
+Logging Count        : 216
+Noise                : 0.241
+Learning rate        : 0.000086
+Total episode        : 236725
+Total trans          : 103599526
+Total trans per epi  : 437.64
+Episode              : 142
+Transition           : 598682
+Trans per epi        : 4216.07
+Max episode length   : 16539
+Rewards per episodes : 3442.23
+===============================================================
+===============================================================
+2020-02-17 06:06:51
+Elapsed time         : 320168.64s
+Simulation time      : 312429.33545160294s
+Training time        : 7547.245879173279s
+Session Name         : chicken_3
+Logging Count        : 217
+Noise                : 0.241
+Learning rate        : 0.000086
+Total episode        : 236861
+Total trans          : 104130629
+Total trans per epi  : 439.63
+Episode              : 136
+Transition           : 531103
+Trans per epi        : 3905.17
+Max episode length   : 16263
+Rewards per episodes : 3188.07
+===============================================================
+===============================================================
+2020-02-17 06:40:16
+Elapsed time         : 322173.19s
+Simulation time      : 314391.14462566376s
+Training time        : 7589.151585102081s
+Session Name         : chicken_3
+Logging Count        : 218
+Noise                : 0.240
+Learning rate        : 0.000086
+Total episode        : 237005
+Total trans          : 104707827
+Total trans per epi  : 441.80
+Episode              : 144
+Transition           : 577198
+Trans per epi        : 4008.32
+Max episode length   : 17451
+Rewards per episodes : 3273.79
+===============================================================
+===============================================================
+2020-02-17 07:07:55
+Elapsed time         : 323831.95s
+Simulation time      : 316012.95859599113s
+Training time        : 7625.295771360397s
+Session Name         : chicken_3
+Logging Count        : 219
+Noise                : 0.240
+Learning rate        : 0.000086
+Total episode        : 237138
+Total trans          : 105205190
+Total trans per epi  : 443.65
+Episode              : 133
+Transition           : 497363
+Trans per epi        : 3739.57
+Max episode length   : 17573
+Rewards per episodes : 3051.20
+===============================================================
+===============================================================
+2020-02-17 07:50:28
+Elapsed time         : 326384.95s
+Simulation time      : 318506.05115914345s
+Training time        : 7684.2891964912415s
+Session Name         : chicken_3
+Logging Count        : 220
+Noise                : 0.239
+Learning rate        : 0.000086
+Total episode        : 237253
+Total trans          : 106010518
+Total trans per epi  : 446.82
+Episode              : 115
+Transition           : 805328
+Trans per epi        : 7002.85
+Max episode length   : 18847
+Rewards per episodes : 5773.25
+===============================================================
+===============================================================
+2020-02-17 08:29:49
+Elapsed time         : 328746.81s
+Simulation time      : 320811.7083308697s
+Training time        : 7739.50981426239s
+Session Name         : chicken_3
+Logging Count        : 221
+Noise                : 0.238
+Learning rate        : 0.000086
+Total episode        : 237357
+Total trans          : 106763833
+Total trans per epi  : 449.80
+Episode              : 104
+Transition           : 753315
+Trans per epi        : 7243.41
+Max episode length   : 18277
+Rewards per episodes : 5972.44
+===============================================================
+===============================================================
+2020-02-17 08:59:51
+Elapsed time         : 330548.27s
+Simulation time      : 322572.33727526665s
+Training time        : 7779.37858581543s
+Session Name         : chicken_3
+Logging Count        : 222
+Noise                : 0.238
+Learning rate        : 0.000086
+Total episode        : 237483
+Total trans          : 107313974
+Total trans per epi  : 451.88
+Episode              : 126
+Transition           : 550141
+Trans per epi        : 4366.20
+Max episode length   : 16493
+Rewards per episodes : 3591.32
+===============================================================
+===============================================================
+2020-02-17 09:36:51
+Elapsed time         : 332768.09s
+Simulation time      : 324740.2892229557s
+Training time        : 7830.388964653015s
+Session Name         : chicken_3
+Logging Count        : 223
+Noise                : 0.237
+Learning rate        : 0.000085
+Total episode        : 237604
+Total trans          : 108009719
+Total trans per epi  : 454.58
+Episode              : 121
+Transition           : 695745
+Trans per epi        : 5749.96
+Max episode length   : 17655
+Rewards per episodes : 4709.19
+===============================================================
+===============================================================
+2020-02-17 10:12:48
+Elapsed time         : 334925.16s
+Simulation time      : 326848.73230814934s
+Training time        : 7878.089844226837s
+Session Name         : chicken_3
+Logging Count        : 224
+Noise                : 0.237
+Learning rate        : 0.000085
+Total episode        : 237724
+Total trans          : 108666400
+Total trans per epi  : 457.11
+Episode              : 120
+Transition           : 656681
+Trans per epi        : 5472.34
+Max episode length   : 18844
+Rewards per episodes : 4501.59
+===============================================================
+===============================================================
+2020-02-17 10:41:03
+Elapsed time         : 336620.89s
+Simulation time      : 328507.22548890114s
+Training time        : 7914.501129150391s
+Session Name         : chicken_3
+Logging Count        : 225
+Noise                : 0.236
+Learning rate        : 0.000085
+Total episode        : 238052
+Total trans          : 109167469
+Total trans per epi  : 458.59
+Episode              : 328
+Transition           : 501069
+Trans per epi        : 1527.65
+Max episode length   : 15693
+Rewards per episodes : 1231.98
+===============================================================
