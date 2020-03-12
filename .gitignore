@@ -2,6 +2,7 @@ lib
 build
 motions
 output
+trajectories
 */__pycache__
 */*/__pycache__
 */*.so
