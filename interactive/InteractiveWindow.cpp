@@ -100,8 +100,8 @@ getPythonTarget()
 		target.append(this->mTarget[1]*100);
 	}
 	else if(ICC::Configurations::instance().getMotionName() == "chicken"){
-		target.append(this->mTarget[0]*100);
-		target.append(this->mTarget[2]*100);
+		target.append(this->mTarget[0]);
+		target.append(this->mTarget[2]);
 	}
 
 	p::list target_wrapper;
@@ -439,6 +439,7 @@ keyboard(unsigned char key,int x,int y)
 		case 'o': this->mCurFrame-=99; this->prevFrame();break;
 		case 'p': this->mCurFrame+=99; this->nextFrame();break;
 		case 's': std::cout << this->mCurFrame << std::endl;break;
+		case 'S': this->mMotionGenerator.attr("saveTrajectory")();break;
 		case 'r': this->reset();break;
 		case 'C': mIsCapture = true; break;
 		case 't': mTrackCamera = !mTrackCamera; this->setFrame(this->mCurFrame); break;

@@ -11,6 +11,7 @@ from copy import deepcopy
 from IPython import embed
 import time
 import math
+import os
 
 class MotionGenerator(object):
 	def __init__(self, num_slaves, motion="walk"):
@@ -55,6 +56,10 @@ class MotionGenerator(object):
 		self.target_angle_upper = math.pi*0.5
 		self.target_angle_lower = math.pi*(-0.5)
 
+		# trajectory save
+		self.log_trajectory = []
+		self.log_target_trajectory = []
+
 		# initialize targets
 		self.targets = []
 		for i in range(self.num_slaves):
@@ -89,6 +94,10 @@ class MotionGenerator(object):
 		for _ in range(100):
 			self.getReferences(targets)
 
+		# trajectory save reset
+		self.log_trajectory = [] 
+		self.log_target_trajectory = []
+
 
 	def loadNetworks(self, targets=None):
 		# initialize rnn model
@@ -110,7 +119,8 @@ class MotionGenerator(object):
 		if self.motion == "walkrunfall":
 			target = target + [self.target_height]
 		elif self.motion == "chicken":
-			target = target
+			target[0] /= 100
+			target[1] /= 100
 		else:
 			print("policy/rnn/RNNManager.py/randomTarget: use default target generation")
 	
@@ -176,24 +186,25 @@ class MotionGenerator(object):
 				self.updateCharacterFallState(j)
 
 				t = targets[j][:2]
-				t = Pose2d(t)
+				t = Pose2d([t[0]*100, t[1]*100])
 				t = self.rootPose[j].relativePose(t)
 				t = t.p
-
+				t[0] /= 100
+				t[1] /= 100
 				t_len = math.sqrt(t[0]*t[0] + t[1]*t[1])
 
 				t_angle = math.atan2(t[1], t[0]);
 				t_angle = np.clip(t_angle, -0.6*np.pi, 0.6*np.pi)
 
-				clip_len = 60
+				clip_len = 0.6
 
 				t_len = np.clip(t_len, 0.0, clip_len)
 				
 				t[0] = np.cos(t_angle)*t_len;
 				t[1] = np.sin(t_angle)*t_len;
 
-				targets[j][0] = t[0]/100
-				targets[j][1] = t[1]/100
+				targets[j][0] = t[0]
+				targets[j][1] = t[1]
 				targets[j] = RNNConfig.instance().xNormal.normalize_and_remove_zero(targets[j])
 
 		return np.array(targets, dtype=np.float32)
@@ -254,13 +265,31 @@ class MotionGenerator(object):
 		self.characterPose = np.array(self.characterPose, dtype=np.float32)
 		self.controlPrediction = np.array(self.controlPrediction, dtype=np.float32)
 
+
 		pose_list = []
 		for j in range(self.num_slaves):
 			pose = RNNConfig.instance().yNormal.denormalize_and_fill_zero(self.characterPose[j])
 			pose = self.getGlobalPositions(pose, j)
 			pose_list.append(pose)
+
+		# log trajectory
+		self.log_trajectory.append(pose_list)
+		self.log_target_trajectory.append(self.getTargets())
+
 		return np.array(pose_list, dtype=np.float32)
 
+	def saveTrajectory(self):
+		if not os.path.exists("../trajectories/"):
+			os.mkdir("../trajectories/")
+		if not os.path.exists("../trajectories/{}/".format(self.motion)):
+			os.mkdir("../trajectories/{}/".format(self.motion))
+
+		trajectories = np.asarray([*zip(*self.log_trajectory)], dtype=np.float32)[:,::2,:]
+		target_trajectories = np.asarray([*zip(*self.log_target_trajectory)], dtype=np.float32)[:,::2,:]
+
+		np.save("../trajectories/{}/traj.npy".format(self.motion), np.array(trajectories))
+		np.save("../trajectories/{}/goal.npy".format(self.motion), np.array(target_trajectories))
+		print("Trajectory is saved in ../trajectories/{}/".format(self.motion))
 
 	def getTrajectory(self, frame=2000, targets=None):
 		self.resetAll(targets)
@@ -299,7 +328,7 @@ class MotionGenerator(object):
 
 		for x, y in zip(x_dat, y_dat):
 			localPose = Pose2d([x[0]*100, x[1]*100])
-			targets.append(self.rootPose[0].localToGlobal(localPose).p)
+			targets.append(np.array(self.rootPose[0].localToGlobal(localPose).p)/100)
 			trajectories.append(self.getGlobalPositions(y, 0))
 
 		trajectories = np.asarray(trajectories, dtype=np.float32)
@@ -360,7 +389,6 @@ class MotionGenerator(object):
 		self.target_height = h
 
 	def setDynamicPose(self, dpose, index=0):
-		# return
 		new_rootPose = Pose2d().transform([dpose[3],dpose[0],dpose[2]])
 		pose_delta = self.rootPosePrev[index].relativePose(new_rootPose)
 		new_characterPose = deepcopy(RNNConfig.instance().yNormal.denormalize_and_fill_zero(self.characterPose[index]))

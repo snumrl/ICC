@@ -19,8 +19,8 @@ if __name__=="__main__":
 		tracking_controller.initialize(
 			configuration_filepath=args.config,
 			session_name="follow",
-			trajectory_length=3000,
-			origin=True,
+			trajectory_length=200,
+			origin=False,
 			origin_offset=0
 		)
 		tracking_controller.followReference()
