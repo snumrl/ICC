@@ -19,7 +19,7 @@ if __name__=="__main__":
 		tracking_controller.initialize(
 			configuration_filepath=args.config,
 			session_name="follow",
-			trajectory_length=200,
+			trajectory_length=1000,
 			origin=False,
 			origin_offset=0
 		)

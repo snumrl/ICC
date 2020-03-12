@@ -94,10 +94,13 @@ python3 train_mg.py -m chicken
 - Train tracking controller
 ```bash
 cd policy
-python3 train.py -s chicken_0 -c ../configurations/chicken.xml
+# -s : session name, output networks will be stored in output/{session_name}
+# -c : configurations file path
+python3 train.py -s chicken -c ../configurations/chicken.xml
 ```
 
 - Generate trajectory from trained motion generator
+After training motion genrator, you can test it in interactive viewer.
 ```bash
 cd policy
 # ../build/interactive/interactive path type
@@ -106,6 +109,6 @@ cd policy
 #  None : latest network
 #  smax : network whose step is max
 #  rmax : network whose reward is max
-../build/interactive/interactive ../output/chicken_0 smax
+../build/interactive/interactive ../output/chicken smax
 ```
 

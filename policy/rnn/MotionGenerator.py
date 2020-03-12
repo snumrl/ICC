@@ -51,10 +51,10 @@ class MotionGenerator(object):
 		self.isWalk = True
 
 		# random target parameters
-		self.target_dist_lower = 600.0
-		self.target_dist_upper = 650.0
-		self.target_angle_upper = math.pi*0.5
-		self.target_angle_lower = math.pi*(-0.5)
+		self.target_dist_lower = 300.0
+		self.target_dist_upper = 350.0
+		self.target_angle_upper = math.pi*0.9
+		self.target_angle_lower = math.pi*(-0.9)
 
 		# trajectory save
 		self.log_trajectory = []
@@ -245,7 +245,7 @@ class MotionGenerator(object):
 		else:
 			for i in range(self.num_slaves):
 				cur_pose = self.rootPose[i].p
-				target = self.targets[i]
+				target = [self.targets[i][0]*100, self.targets[i][1]*100]
 				dx = cur_pose[0] - target[0]
 				dy = cur_pose[1] - target[1]
 				if(dx*dx+dy*dy<100*100):
