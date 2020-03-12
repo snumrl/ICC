@@ -36,7 +36,7 @@ class RNNModel(object):
 				units=RNNConfig.instance().lstmLayerSize, 
 				unit_forget_bias=False, 
 				bias_initializer=ForgetBiasInitializer(0.8), 
-				dropout=0.1,
+				dropout=0.0,
 				kernel_regularizer=self.regularizer,
 				bias_regularizer=self.regularizer,
 				recurrent_regularizer=self.regularizer
@@ -49,7 +49,7 @@ class RNNModel(object):
 			dtype=tf.float32)
 
 		self.stacked_cells.build(input_shape=(None, input_size))
-		self.dropout = tf.keras.layers.Dropout(0.1)
+		self.dropout = tf.keras.layers.Dropout(0.0)
 		self.dense.build(input_shape=(None, RNNConfig.instance().lstmLayerSize))
 
 

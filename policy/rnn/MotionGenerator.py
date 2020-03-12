@@ -179,12 +179,13 @@ class MotionGenerator(object):
 				t = Pose2d(t)
 				t = self.rootPose[j].relativePose(t)
 				t = t.p
+
 				t_len = math.sqrt(t[0]*t[0] + t[1]*t[1])
 
 				t_angle = math.atan2(t[1], t[0]);
 				t_angle = np.clip(t_angle, -0.6*np.pi, 0.6*np.pi)
 
-				clip_len = 80
+				clip_len = 60
 
 				t_len = np.clip(t_len, 0.0, clip_len)
 				
@@ -354,14 +355,12 @@ class MotionGenerator(object):
 		else:
 			self.standUpCount[index] += 1
 
-		print(self.fallOverCount[index])
-		print(self.standUpCount[index])
 
 	def setTargetHeight(self, h):
 		self.target_height = h
 
 	def setDynamicPose(self, dpose, index=0):
-		return
+		# return
 		new_rootPose = Pose2d().transform([dpose[3],dpose[0],dpose[2]])
 		pose_delta = self.rootPosePrev[index].relativePose(new_rootPose)
 		new_characterPose = deepcopy(RNNConfig.instance().yNormal.denormalize_and_fill_zero(self.characterPose[index]))
