@@ -47,7 +47,7 @@ sudo apt-get install -y libxi-dev libxmu-dev freeglut3-dev
 sudo apt-get install -y libopenscenegraph-dev
 ```
 
-### Install DART 6.3
+### Install DART
 
 Please refer to http://dartsim.github.io/
 
