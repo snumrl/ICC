@@ -28,11 +28,6 @@ sudo apt-get install -y liburdfdom-dev
 sudo apt-get install -y libxi-dev libxmu-dev freeglut3-dev
 sudo apt-get install -y libopenscenegraph-dev
 
-echo "downloading boost 1.66.0"
-wget https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.gz
-tar -xzf ./boost_1_66_0.tar.gz
-rm ./boost_1_66_0.tar.gz
-
 echo "cloning ICC"
 git clone https://github.com/snumrl/ICC.git
 
@@ -43,17 +38,9 @@ echo "installing tensorflow"
 pip3 install --upgrade pip
 pip3 install tensorflow
 
-echo "installing boost"
-cd ./boost_1_66_0
-./bootstrap.sh --with-python=python3 --with-libraries=atomic,chrono,filesystem,python,system,regex
-sudo ./b2 --with-python --with-filesystem --with-regex --with-system install
-cd ..
-
 echo "installing dart"
 cd dart
 git checkout tags/v6.7.0
-
-cp ../ICC/cmake_module/FindBoost.cmake ./cmake
 
 mkdir build
 cd build
@@ -64,12 +51,8 @@ cd ../..
 
 echo "installing ICC"
 cd ICC
-# git checkout BasketBallFull
 mkdir build
 cd build
 cmake .. -DCMAKE_BUILD_TYPE=Release
 make -j4
-cd ..
-mkdir motions
-mkdir trajectories
 cd ..
