@@ -28,15 +28,23 @@ sudo apt-get install -y liburdfdom-dev
 sudo apt-get install -y libxi-dev libxmu-dev freeglut3-dev
 sudo apt-get install -y libopenscenegraph-dev
 
-echo "cloning ICC"
-git clone https://github.com/snumrl/ICC.git
+echo "downloading boost 1.66.0"
+wget https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.gz
+tar -xzf ./boost_1_66_0.tar.gz
+rm ./boost_1_66_0.tar.gz
 
-echo "cloning dart"
-git clone https://github.com/dartsim/dart.git
+echo "installing boost"
+cd ./boost_1_66_0
+./bootstrap.sh --with-python=python3 --with-libraries=atomic,chrono,filesystem,python,system,regex
+sudo ./b2 --with-python --with-filesystem --with-regex --with-system install
+cd ..
 
 echo "installing tensorflow"
 pip3 install --upgrade pip
 pip3 install tensorflow
+
+echo "cloning dart"
+git clone https://github.com/dartsim/dart.git
 
 echo "installing dart"
 cd dart
@@ -48,6 +56,9 @@ cmake ..
 make -j4
 sudo make install
 cd ../..
+
+echo "cloning ICC"
+git clone https://github.com/snumrl/ICC.git
 
 echo "installing ICC"
 cd ICC

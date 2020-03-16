@@ -47,6 +47,21 @@ sudo apt-get install -y libxi-dev libxmu-dev freeglut3-dev
 sudo apt-get install -y libopenscenegraph-dev
 ```
 
+### Install Boost
+
+```bash
+echo "downloading boost 1.66.0"
+wget https://dl.bintray.com/boostorg/release/1.66.0/source/boost_1_66_0.tar.gz
+tar -xzf ./boost_1_66_0.tar.gz
+rm ./boost_1_66_0.tar.gz
+
+echo "installing boost"
+cd ./boost_1_66_0
+./bootstrap.sh --with-python=python3 --with-libraries=atomic,chrono,filesystem,python,system,regex
+sudo ./b2 --with-python --with-filesystem --with-regex --with-system install
+cd ..
+```
+
 ### Install DART
 
 Please refer to http://dartsim.github.io/
