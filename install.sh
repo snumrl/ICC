@@ -46,9 +46,14 @@ pip3 install tensorflow
 echo "cloning dart"
 git clone https://github.com/dartsim/dart.git
 
+echo "cloning ICC"
+git clone https://github.com/snumrl/ICC.git
+
 echo "installing dart"
 cd dart
 git checkout tags/v6.7.0
+
+cp ../ICC/cmake_module/FindBoost.cmake ./cmake
 
 mkdir build
 cd build
@@ -56,9 +61,6 @@ cmake ..
 make -j4
 sudo make install
 cd ../..
-
-echo "cloning ICC"
-git clone https://github.com/snumrl/ICC.git
 
 echo "installing ICC"
 cd ICC
