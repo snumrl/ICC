@@ -19,7 +19,7 @@ Paper : http://mrl.snu.ac.kr/publications/ProjectICC/ICC.pdf
 
 ### OS
 
-We checked that the code works in Ubuntu 16.04 and 18.04. However, we recommand Ubuntu 18.04 because if you install in 16.04, you need to install boost 1.66.
+We checked that the code works in Ubuntu 16.04 and 18.04.
 
 ### Install dependencies
 
