@@ -15,6 +15,10 @@ Youtube : https://youtu.be/9dgUMli0HFU
 
 Paper : http://mrl.snu.ac.kr/publications/ProjectICC/ICC.pdf
 
+## Blog
+
+http://mrl.snu.ac.kr/blog/ProjectICC
+
 ## How to install
 
 ### OS
