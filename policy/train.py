@@ -9,7 +9,7 @@ if __name__=="__main__":
 	parser = argparse.ArgumentParser()
 	parser.add_argument('-s', '--session_name', help='session name')
 	parser.add_argument('-c', '--config', help='configuration file path')
-	parser.add_argument('-ns', '--num_slaves', help='the number of slaves', default=8)
+	parser.add_argument('-ns', '--num_slaves', help='the number of slaves', default=8, type=int)
 	parser.add_argument('-n', '--network', help='network file path')
 	parser.add_argument('-t', '--network_type', help='type of the network, None : final network, rmax : maximum reward, smax : maximum step ', choices={'rmax', 'smax'})
 	args = parser.parse_args()
